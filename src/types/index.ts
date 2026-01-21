@@ -27,6 +27,7 @@ export interface User {
   invitesAccepted: number;
   referredBy?: string;
   avatar?: string;
+  readNuggets: string[]; // IDs of read daily nuggets
 }
 
 export interface Invite {
