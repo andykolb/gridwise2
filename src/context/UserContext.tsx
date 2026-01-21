@@ -1,12 +1,24 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { User, Language, Topic, UserLevel, Achievement, ChatMessage } from '@/types';
 import { achievements as achievementData } from '@/data/content';
+
+interface XPAnimation {
+  amount: number;
+  id: number;
+}
+
+interface LevelUpEvent {
+  newLevel: UserLevel;
+  id: number;
+}
 
 interface UserContextType {
   user: User | null;
   isOnboarded: boolean;
   achievements: Achievement[];
   chatMessages: ChatMessage[];
+  xpAnimation: XPAnimation | null;
+  levelUpEvent: LevelUpEvent | null;
   setUser: (user: User | null) => void;
   updateUser: (updates: Partial<User>) => void;
   startOnboarding: () => void;
@@ -20,6 +32,8 @@ interface UserContextType {
   clearChat: () => void;
   resetApp: () => void;
   processReferral: (referralCode: string) => void;
+  clearXPAnimation: () => void;
+  clearLevelUpEvent: () => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -44,6 +58,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const [achievements, setAchievements] = useState<Achievement[]>(achievementData);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
   const [isOnboarded, setIsOnboarded] = useState(false);
+  const [xpAnimation, setXPAnimation] = useState<XPAnimation | null>(null);
+  const [levelUpEvent, setLevelUpEvent] = useState<LevelUpEvent | null>(null);
 
   // Load from localStorage on mount
   useEffect(() => {
@@ -150,20 +166,33 @@ export function UserProvider({ children }: { children: ReactNode }) {
     console.log(`Referral processed: ${referralCode} -> ${inviteeId}`);
   };
 
-  const addXP = (amount: number) => {
+  const addXP = useCallback((amount: number) => {
     if (user) {
       const newXP = user.xp + amount;
       let newLevel = user.level;
+      let didLevelUp = false;
       
       // Level thresholds
       if (newXP >= 3000 && user.level !== 'expert') {
         newLevel = 'expert';
+        didLevelUp = true;
         unlockAchievement('level-up');
-      } else if (newXP >= 1500 && user.level === 'beginner') {
-        newLevel = 'intermediate';
-        unlockAchievement('level-up');
+      } else if (newXP >= 1500 && user.level !== 'advanced' && user.level !== 'expert') {
+        newLevel = 'advanced';
+        didLevelUp = true;
       } else if (newXP >= 500 && user.level === 'beginner') {
         newLevel = 'intermediate';
+        didLevelUp = true;
+      }
+
+      // Trigger XP animation
+      setXPAnimation({ amount, id: Date.now() });
+
+      // Trigger level up celebration after a delay (so XP animation shows first)
+      if (didLevelUp) {
+        setTimeout(() => {
+          setLevelUpEvent({ newLevel, id: Date.now() });
+        }, 1500);
       }
 
       setUserState({
@@ -172,7 +201,15 @@ export function UserProvider({ children }: { children: ReactNode }) {
         level: newLevel,
       });
     }
-  };
+  }, [user]);
+
+  const clearXPAnimation = useCallback(() => {
+    setXPAnimation(null);
+  }, []);
+
+  const clearLevelUpEvent = useCallback(() => {
+    setLevelUpEvent(null);
+  }, []);
 
   const incrementStreak = () => {
     if (user) {
@@ -272,6 +309,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
         isOnboarded,
         achievements,
         chatMessages,
+        xpAnimation,
+        levelUpEvent,
         setUser,
         updateUser,
         startOnboarding,
@@ -285,6 +324,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
         clearChat,
         resetApp,
         processReferral,
+        clearXPAnimation,
+        clearLevelUpEvent,
       }}
     >
       {children}
