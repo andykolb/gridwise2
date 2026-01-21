@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useUser } from '@/context/UserContext';
 import { dailyNuggets } from '@/data/content';
 import { DailyNugget } from '@/types';
 import { 
   Flame, Zap, BookOpen, MessageCircle, Trophy, 
-  ChevronRight, Sparkles, Target, Swords
+  ChevronRight, Sparkles, Target, Swords, ChevronDown
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -28,6 +28,7 @@ export function LearningHome({
 }: LearningHomeProps) {
   const { user, incrementStreak } = useUser();
   const [dailyNugget, setDailyNugget] = useState<DailyNugget | null>(null);
+  const [showLearnMore, setShowLearnMore] = useState(false);
 
   useEffect(() => {
     incrementStreak();
@@ -176,6 +177,39 @@ export function LearningHome({
             <p className="text-muted-foreground text-sm leading-relaxed">
               {dailyNugget.content[language]}
             </p>
+            
+            {/* Learn More Button */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowLearnMore(!showLearnMore)}
+              className="mt-4 w-full justify-between text-primary hover:text-primary hover:bg-primary/10"
+            >
+              <span className="flex items-center gap-2">
+                <BookOpen className="w-4 h-4" />
+                {language === 'en' ? 'Learn More' : 'Mehr erfahren'}
+              </span>
+              <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${showLearnMore ? 'rotate-180' : ''}`} />
+            </Button>
+            
+            {/* Learn More Content */}
+            <AnimatePresence>
+              {showLearnMore && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <div className="mt-4 p-4 rounded-xl bg-background/50 border border-primary/10">
+                    <p className="text-sm text-foreground leading-relaxed">
+                      {dailyNugget.learnMore[language]}
+                    </p>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         )}
 

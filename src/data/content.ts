@@ -18,6 +18,10 @@ export const dailyNuggets: DailyNugget[] = [
       en: 'Power prices are primarily driven by fuel costs (especially gas), CO2 prices, renewable generation, and demand patterns. When wind and solar are high, prices drop. When gas prices spike, electricity follows.',
       de: 'Strompreise werden hauptsächlich durch Brennstoffkosten (insbesondere Gas), CO2-Preise, erneuerbare Erzeugung und Nachfragemuster bestimmt. Bei hoher Wind- und Solarproduktion sinken die Preise. Steigen die Gaspreise, folgt der Strom.'
     },
+    learnMore: {
+      en: 'The German power market is one of the most complex in Europe due to its ambitious energy transition (Energiewende). Natural gas prices have become increasingly influential since the phase-out of nuclear power, as gas plants often set the marginal price during peak demand hours. The EU Emissions Trading System (ETS) adds another layer of cost, with CO2 allowances now exceeding €80 per tonne. Weather patterns directly impact supply—Germany can generate over 70% of its electricity from renewables on optimal days, but cloudy, windless periods require backup from conventional plants, driving prices up significantly.',
+      de: 'Der deutsche Strommarkt ist aufgrund der ambitionierten Energiewende einer der komplexesten in Europa. Erdgaspreise sind seit dem Atomausstieg immer einflussreicher geworden, da Gaskraftwerke oft den Grenzpreis in Spitzenlastzeiten setzen. Das EU-Emissionshandelssystem (ETS) fügt eine weitere Kostenebene hinzu, wobei CO2-Zertifikate mittlerweile über 80€ pro Tonne kosten. Wettermuster beeinflussen das Angebot direkt—Deutschland kann an optimalen Tagen über 70% seines Stroms aus Erneuerbaren erzeugen, aber wolkige, windstille Perioden erfordern konventionelle Kraftwerke als Backup, was die Preise deutlich steigen lässt.'
+    },
     topic: 'price-drivers'
   },
   {
@@ -26,6 +30,10 @@ export const dailyNuggets: DailyNugget[] = [
     content: {
       en: 'Spot markets trade electricity for immediate delivery (day-ahead, intraday). Futures markets trade contracts for future delivery, helping companies hedge against price volatility.',
       de: 'Spotmärkte handeln Strom für sofortige Lieferung (Day-ahead, Intraday). Terminmärkte handeln Verträge für zukünftige Lieferung und helfen Unternehmen, sich gegen Preisschwankungen abzusichern.'
+    },
+    learnMore: {
+      en: 'The day-ahead market closes at noon for delivery the next day, with hourly products traded on EPEX SPOT. Intraday trading continues until 5 minutes before delivery, allowing market participants to balance their positions as forecasts improve. Futures contracts on the EEX cover periods from weeks to years ahead, enabling utilities and large consumers to lock in prices and manage risk. The spread between spot and futures prices reflects market expectations about future supply, demand, and fuel costs—a crucial indicator for trading strategies.',
+      de: 'Der Day-ahead-Markt schließt mittags für die Lieferung am nächsten Tag, wobei stündliche Produkte an der EPEX SPOT gehandelt werden. Der Intraday-Handel läuft bis 5 Minuten vor Lieferung weiter, sodass Marktteilnehmer ihre Positionen anpassen können, wenn sich Prognosen verbessern. Terminkontrakte an der EEX decken Zeiträume von Wochen bis Jahren ab und ermöglichen es Versorgern und Großverbrauchern, Preise zu fixieren und Risiken zu managen. Der Spread zwischen Spot- und Terminpreisen spiegelt Markterwartungen über zukünftiges Angebot, Nachfrage und Brennstoffkosten wider—ein entscheidender Indikator für Handelsstrategien.'
     },
     topic: 'trading'
   },
@@ -36,6 +44,10 @@ export const dailyNuggets: DailyNugget[] = [
       en: 'Grid frequency must stay at 50Hz. Balancing energy (primary, secondary, tertiary reserves) keeps supply and demand matched in real-time. TSOs activate these reserves when forecasts deviate.',
       de: 'Die Netzfrequenz muss bei 50Hz bleiben. Regelenergie (Primär-, Sekundär-, Tertiärreserve) gleicht Angebot und Nachfrage in Echtzeit aus. ÜNBs aktivieren diese Reserven bei Prognoseabweichungen.'
     },
+    learnMore: {
+      en: 'Primary reserve (FCR) responds within seconds automatically to frequency deviations. Secondary reserve (aFRR) activates within 5 minutes to restore frequency and relieve primary reserve. Tertiary reserve (mFRR) activates within 15 minutes for longer imbalances. In Germany, four TSOs (50Hertz, Amprion, TenneT, TransnetBW) coordinate through a common balancing market. With increasing renewable penetration, balancing needs are growing, creating opportunities for flexible assets like batteries, demand response, and virtual power plants to participate in these lucrative markets.',
+      de: 'Primärreserve (FCR) reagiert innerhalb von Sekunden automatisch auf Frequenzabweichungen. Sekundärreserve (aFRR) aktiviert sich innerhalb von 5 Minuten, um die Frequenz wiederherzustellen und die Primärreserve zu entlasten. Tertiärreserve (mFRR) aktiviert sich innerhalb von 15 Minuten bei längeren Ungleichgewichten. In Deutschland koordinieren vier ÜNBs (50Hertz, Amprion, TenneT, TransnetBW) über einen gemeinsamen Regelenergiemarkt. Mit zunehmender erneuerbarer Durchdringung wächst der Regelenergiebedarf und schafft Chancen für flexible Anlagen wie Batterien, Laststeuerung und virtuelle Kraftwerke, an diesen lukrativen Märkten teilzunehmen.'
+    },
     topic: 'grid-dso'
   },
   {
@@ -44,6 +56,10 @@ export const dailyNuggets: DailyNugget[] = [
     content: {
       en: 'Distribution System Operators (DSOs) manage medium and low voltage grids. They connect customers, maintain infrastructure, and increasingly manage grid congestion from distributed renewables.',
       de: 'Verteilnetzbetreiber (VNB) verwalten Mittel- und Niederspannungsnetze. Sie schließen Kunden an, warten die Infrastruktur und managen zunehmend Netzengpässe durch dezentrale Erneuerbare.'
+    },
+    learnMore: {
+      en: 'Germany has over 800 DSOs, ranging from large regional operators like E.ON-affiliated companies to small municipal utilities. Their role is evolving dramatically with the energy transition. As solar panels, heat pumps, and EV chargers proliferate at the distribution level, DSOs must invest in grid reinforcement, smart grid technologies, and congestion management systems. The regulatory framework (ARegV) incentivizes efficiency improvements while ensuring reliable service. Future DSOs will act more like system operators, actively managing bidirectional power flows rather than simply delivering electricity downstream.',
+      de: 'Deutschland hat über 800 VNBs, von großen regionalen Betreibern wie E.ON-verbundenen Unternehmen bis hin zu kleinen Stadtwerken. Ihre Rolle entwickelt sich mit der Energiewende dramatisch weiter. Da Solaranlagen, Wärmepumpen und E-Auto-Ladestationen auf Verteilnetzebene zunehmen, müssen VNBs in Netzverstärkung, Smart-Grid-Technologien und Engpassmanagementsysteme investieren. Der regulatorische Rahmen (ARegV) fördert Effizienzverbesserungen bei gleichzeitiger Gewährleistung zuverlässiger Versorgung. Künftige VNBs werden eher wie Systembetreiber agieren und bidirektionale Stromflüsse aktiv steuern, anstatt Strom nur nach unten zu verteilen.'
     },
     topic: 'grid-dso'
   },
@@ -54,6 +70,10 @@ export const dailyNuggets: DailyNugget[] = [
       en: 'Power plants are dispatched by marginal cost (merit order). Renewables bid at zero, then nuclear, coal, and gas. The last plant needed to meet demand sets the price for all.',
       de: 'Kraftwerke werden nach Grenzkosten (Merit Order) eingesetzt. Erneuerbare bieten zu null, dann Kernkraft, Kohle und Gas. Das letzte zur Deckung benötigte Kraftwerk setzt den Preis für alle.'
     },
+    learnMore: {
+      en: 'The merit order principle ensures economic efficiency by dispatching the cheapest available generation first. However, it creates the so-called "merit order effect"—when renewables flood the market, they push expensive gas plants out of the stack, lowering wholesale prices. This effect was particularly visible during the 2022 energy crisis, when high gas prices made gas plants extremely expensive, pushing electricity prices to record highs whenever they were needed. Some policymakers debate whether this marginal pricing system should be reformed, but it remains the foundation of European electricity markets.',
+      de: 'Das Merit-Order-Prinzip gewährleistet wirtschaftliche Effizienz, indem die günstigste verfügbare Erzeugung zuerst eingesetzt wird. Es erzeugt jedoch den sogenannten "Merit-Order-Effekt"—wenn Erneuerbare den Markt fluten, verdrängen sie teure Gaskraftwerke aus dem Stack und senken die Großhandelspreise. Dieser Effekt war während der Energiekrise 2022 besonders sichtbar, als hohe Gaspreise Gaskraftwerke extrem teuer machten und die Strompreise auf Rekordhöhen trieben, wann immer sie benötigt wurden. Einige Politiker diskutieren, ob dieses Grenzpreissystem reformiert werden sollte, aber es bleibt das Fundament der europäischen Strommärkte.'
+    },
     topic: 'energy-basics'
   },
   {
@@ -62,6 +82,10 @@ export const dailyNuggets: DailyNugget[] = [
     content: {
       en: 'Renewable generation is weather-dependent, creating price volatility. Sunny, windy days can push prices negative. Calm, cloudy days see price spikes. Flexibility and storage become crucial.',
       de: 'Erneuerbare Erzeugung ist wetterabhängig und erzeugt Preisvolatilität. Sonnige, windige Tage können negative Preise verursachen. Windstille, bedeckte Tage sehen Preisspitzen. Flexibilität und Speicher werden entscheidend.'
+    },
+    learnMore: {
+      en: 'Germany experienced over 300 hours of negative electricity prices in 2023, a record driven by renewable oversupply during low-demand periods. This volatility creates both challenges and opportunities. Industrial consumers can shift production to low-price hours, while battery storage operators arbitrage price differences. The correlation between weather forecasts and price movements has made meteorological data essential for energy trading. As renewable capacity continues to grow toward Germany\'s 80% target by 2030, managing this volatility through storage, demand flexibility, and grid expansion becomes increasingly critical.',
+      de: 'Deutschland erlebte 2023 über 300 Stunden negativer Strompreise, ein Rekord getrieben durch Überangebot Erneuerbarer in Niedriglastzeiten. Diese Volatilität schafft Herausforderungen und Chancen zugleich. Industrieverbraucher können ihre Produktion in Niedrigpreisstunden verlagern, während Batteriespeicherbetreiber Preisdifferenzen arbitrieren. Die Korrelation zwischen Wetterprognosen und Preisbewegungen hat meteorologische Daten für den Energiehandel unverzichtbar gemacht. Mit weiterem Ausbau der erneuerbaren Kapazitäten in Richtung Deutschlands 80%-Ziel bis 2030 wird das Management dieser Volatilität durch Speicher, Lastflexibilität und Netzausbau zunehmend kritisch.'
     },
     topic: 'renewables'
   },
@@ -72,6 +96,10 @@ export const dailyNuggets: DailyNugget[] = [
       en: 'Gas plants often set the marginal price in Europe. When gas prices rise (like during the 2022 crisis), electricity prices follow. This "gas-to-power spread" is a key market indicator.',
       de: 'Gaskraftwerke setzen oft den Grenzpreis in Europa. Steigen Gaspreise (wie in der Krise 2022), folgen Strompreise. Dieser "Gas-Strom-Spread" ist ein wichtiger Marktindikator.'
     },
+    learnMore: {
+      en: 'The gas-to-power spread (also called spark spread) measures the profit margin for gas-fired power generation. It\'s calculated as the electricity price minus gas costs (adjusted for plant efficiency) and CO2 costs. A positive spark spread means gas plants are profitable to run. During the 2022 crisis, TTF gas prices spiked to €340/MWh, driving German baseload electricity to over €500/MWh. Understanding this linkage is crucial for forecasting electricity prices, as gas typically sets the marginal price during 40-60% of hours in Germany, depending on renewable output.',
+      de: 'Der Gas-Strom-Spread (auch Spark Spread genannt) misst die Gewinnmarge für gasbefeuerte Stromerzeugung. Er wird als Strompreis minus Gaskosten (angepasst an Anlageneffizienz) und CO2-Kosten berechnet. Ein positiver Spark Spread bedeutet, dass Gaskraftwerke profitabel laufen. Während der Krise 2022 stiegen TTF-Gaspreise auf €340/MWh und trieben deutschen Baseload-Strom auf über €500/MWh. Das Verständnis dieser Verknüpfung ist entscheidend für die Strompreisprognose, da Gas typischerweise in 40-60% der Stunden in Deutschland den Grenzpreis setzt, abhängig von der erneuerbaren Erzeugung.'
+    },
     topic: 'price-drivers'
   },
   {
@@ -80,6 +108,10 @@ export const dailyNuggets: DailyNugget[] = [
     content: {
       en: 'Redispatch adjusts power plant output to relieve grid congestion. Plants behind the bottleneck reduce output; plants on the other side increase. Costs are socialized through grid fees.',
       de: 'Redispatch passt die Kraftwerksleistung an, um Netzengpässe zu entlasten. Anlagen hinter dem Engpass reduzieren; Anlagen auf der anderen Seite erhöhen. Kosten werden über Netzentgelte sozialisiert.'
+    },
+    learnMore: {
+      en: 'Redispatch costs in Germany exceeded €4 billion in 2022, highlighting the urgency of grid expansion. The main bottleneck runs north-south, as wind power generated in the North Sea and Baltic regions struggles to reach industrial consumers in Bavaria and Baden-Württemberg. Redispatch 2.0, introduced in 2021, expanded the system to include smaller renewable plants and storage systems. The participating assets receive compensation for curtailment or increased generation. New HVDC transmission lines (SuedLink, SuedOstLink) are under construction to reduce these costly interventions by 2030.',
+      de: 'Redispatch-Kosten in Deutschland überstiegen 2022 €4 Milliarden und unterstreichen die Dringlichkeit des Netzausbaus. Der Hauptengpass verläuft Nord-Süd, da Windstrom aus der Nord- und Ostsee Schwierigkeiten hat, Industrieverbraucher in Bayern und Baden-Württemberg zu erreichen. Redispatch 2.0, eingeführt 2021, erweiterte das System um kleinere Erneuerbare-Anlagen und Speichersysteme. Teilnehmende Anlagen erhalten Vergütung für Abregelung oder erhöhte Erzeugung. Neue HGÜ-Leitungen (SuedLink, SuedOstLink) sind im Bau, um diese kostspieligen Eingriffe bis 2030 zu reduzieren.'
     },
     topic: 'grid-dso'
   },
@@ -90,6 +122,10 @@ export const dailyNuggets: DailyNugget[] = [
       en: 'The EU ETS puts a price on carbon emissions. Companies buy allowances to emit CO2. Higher CO2 prices make fossil fuels more expensive and renewables more competitive.',
       de: 'Das EU-ETS bepreist CO2-Emissionen. Unternehmen kaufen Zertifikate für CO2-Ausstoß. Höhere CO2-Preise machen fossile Brennstoffe teurer und Erneuerbare wettbewerbsfähiger.'
     },
+    learnMore: {
+      en: 'The EU Emissions Trading System is the world\'s largest carbon market, covering power generation, heavy industry, and aviation. The "Fit for 55" reforms tightened the cap on allowances, driving prices from under €30 in 2020 to over €80 by 2023. For power generation, each MWh from a coal plant requires about 0.9 allowances, while gas plants need about 0.4. This cost difference accelerates the coal-to-gas switch and improves renewable economics. Germany also has a national CO2 price for heating and transport fuels, starting at €25 in 2021 and rising annually.',
+      de: 'Das EU-Emissionshandelssystem ist der weltweit größte Kohlenstoffmarkt und deckt Stromerzeugung, Schwerindustrie und Luftfahrt ab. Die "Fit for 55"-Reformen verschärften die Obergrenze für Zertifikate und trieben die Preise von unter €30 in 2020 auf über €80 bis 2023. Für die Stromerzeugung benötigt jede MWh aus einem Kohlekraftwerk etwa 0,9 Zertifikate, während Gaskraftwerke etwa 0,4 brauchen. Dieser Kostenunterschied beschleunigt den Wechsel von Kohle zu Gas und verbessert die Wirtschaftlichkeit Erneuerbarer. Deutschland hat auch einen nationalen CO2-Preis für Heiz- und Kraftstoffe, der 2021 bei €25 startete und jährlich steigt.'
+    },
     topic: 'regulation'
   },
   {
@@ -98,6 +134,10 @@ export const dailyNuggets: DailyNugget[] = [
     content: {
       en: 'Retail energy margins are thin (1-3%). Suppliers manage procurement, balance supply/demand, and handle customer service. Differentiation comes from pricing models, green products, and digital services.',
       de: 'Energievertriebsmargen sind dünn (1-3%). Lieferanten managen Beschaffung, gleichen Angebot/Nachfrage aus und bieten Kundenservice. Differenzierung durch Preismodelle, grüne Produkte und digitale Services.'
+    },
+    learnMore: {
+      en: 'The German retail electricity market is highly competitive with over 1,000 suppliers. The typical residential bill breaks down roughly as: wholesale costs (25-35%), grid fees (20-25%), taxes and levies (25-30%), and supplier margin (3-5%). The 2022 price crisis forced many suppliers into insolvency as wholesale costs exceeded their fixed-price contracts. Successful retailers increasingly focus on value-added services: smart home integration, solar+storage bundles, EV charging solutions, and dynamic tariffs that pass wholesale price signals to consumers. E.ON and other major players are investing heavily in digital customer platforms.',
+      de: 'Der deutsche Stromeinzelhandelsmarkt ist mit über 1.000 Anbietern hochkompetitiv. Die typische Haushaltsrechnung gliedert sich grob in: Großhandelskosten (25-35%), Netzentgelte (20-25%), Steuern und Abgaben (25-30%) und Lieferantenmarge (3-5%). Die Preiskrise 2022 zwang viele Anbieter in die Insolvenz, als Großhandelskosten ihre Festpreisverträge überstiegen. Erfolgreiche Einzelhändler konzentrieren sich zunehmend auf Mehrwertdienste: Smart-Home-Integration, Solar+Speicher-Bundles, E-Auto-Ladelösungen und dynamische Tarife, die Großhandelspreissignale an Verbraucher weitergeben. E.ON und andere große Player investieren stark in digitale Kundenplattformen.'
     },
     topic: 'retail'
   },
