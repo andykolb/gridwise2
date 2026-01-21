@@ -37,7 +37,7 @@ function AppContent() {
   }
 
   return (
-    <div className="min-h-screen bg-background overflow-y-auto">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       <AnimatePresence mode="wait">
         {currentView === 'home' && (
           <LearningHome
