@@ -22,6 +22,21 @@ export interface User {
   completedQuizzes: number;
   questionsAsked: number;
   achievements: string[];
+  referralCode: string;
+  invitesSent: number;
+  invitesAccepted: number;
+  referredBy?: string;
+}
+
+export interface Invite {
+  id: string;
+  inviterUserId: string;
+  inviteCode: string;
+  createdAt: string;
+  channel: 'copy_link' | 'teams' | 'email';
+  inviteeUserId?: string;
+  acceptedAt?: string;
+  rewardGranted: boolean;
 }
 
 export interface DailyNugget {

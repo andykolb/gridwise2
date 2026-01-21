@@ -19,6 +19,7 @@ interface UserContextType {
   addChatMessage: (message: Omit<ChatMessage, 'id' | 'timestamp'>) => void;
   clearChat: () => void;
   resetApp: () => void;
+  processReferral: (referralCode: string) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -26,6 +27,17 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 const STORAGE_KEY = 'gridwise_user';
 const ACHIEVEMENTS_KEY = 'gridwise_achievements';
 const CHAT_KEY = 'gridwise_chat';
+const REFERRALS_KEY = 'gridwise_referrals';
+
+// Generate a unique referral code
+function generateReferralCode(): string {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = '';
+  for (let i = 0; i < 6; i++) {
+    code += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return code;
+}
 
 export function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUserState] = useState<User | null>(null);
@@ -85,20 +97,57 @@ export function UserProvider({ children }: { children: ReactNode }) {
   };
 
   const completeOnboarding = (userData: Partial<User>) => {
+    // Check for referral code in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const referralCode = urlParams.get('ref');
+    
+    // Calculate initial XP (bonus if referred)
+    const initialXP = referralCode ? 50 : 0;
+    
     const newUser: User = {
       name: userData.name || 'Learner',
       language: userData.language || 'en',
       interests: userData.interests || [],
       level: userData.level || 'beginner',
-      xp: 0,
+      xp: initialXP,
       streak: 1,
       lastActiveDate: new Date().toISOString().split('T')[0],
       completedQuizzes: 0,
       questionsAsked: 0,
       achievements: [],
+      referralCode: generateReferralCode(),
+      invitesSent: 0,
+      invitesAccepted: 0,
+      referredBy: referralCode || undefined,
     };
     setUserState(newUser);
     setIsOnboarded(true);
+
+    // Process referral if exists
+    if (referralCode) {
+      processReferral(referralCode);
+      // Clean URL
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  };
+
+  const processReferral = (referralCode: string) => {
+    // In a real app, this would call an API to validate and process the referral
+    // For now, we store it locally and grant rewards
+    const storedReferrals = localStorage.getItem(REFERRALS_KEY);
+    const referrals: Record<string, string[]> = storedReferrals ? JSON.parse(storedReferrals) : {};
+    
+    // Store this referral (inviter code -> list of invitee IDs)
+    if (!referrals[referralCode]) {
+      referrals[referralCode] = [];
+    }
+    
+    // Add current user's referral code as invitee identifier
+    const inviteeId = Date.now().toString();
+    referrals[referralCode].push(inviteeId);
+    localStorage.setItem(REFERRALS_KEY, JSON.stringify(referrals));
+    
+    console.log(`Referral processed: ${referralCode} -> ${inviteeId}`);
   };
 
   const addXP = (amount: number) => {
@@ -235,6 +284,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         addChatMessage,
         clearChat,
         resetApp,
+        processReferral,
       }}
     >
       {children}
