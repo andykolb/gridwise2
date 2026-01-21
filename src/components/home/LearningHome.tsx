@@ -154,6 +154,10 @@ export function LearningHome({
             </span>
           </div>
           <Progress value={levelProgress.percent} className="h-3" />
+          <div className="flex justify-between items-center mt-2 text-xs text-muted-foreground">
+            <span className="font-medium text-primary">{levelProgress.currentXP} XP</span>
+            <span>{levelProgress.nextLevelXP} XP</span>
+          </div>
         </motion.div>
 
         {/* Daily Nugget */}
@@ -281,7 +285,7 @@ function calculateLevelProgress(xp: number, level: string) {
   const percent = Math.min((progress / range) * 100, 100);
   const remaining = Math.max(current.max - xp, 0);
 
-  return { percent, remaining };
+  return { percent, remaining, currentXP: xp, nextLevelXP: current.max };
 }
 
 function getLevelGerman(level: string) {
