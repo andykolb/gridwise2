@@ -117,15 +117,17 @@ export function UserProvider({ children }: { children: ReactNode }) {
     const urlParams = new URLSearchParams(window.location.search);
     const referralCode = urlParams.get('ref');
     
-    // Calculate initial XP (bonus if referred)
-    const initialXP = referralCode ? 50 : 0;
+    // Welcome bonus: 25 XP for new users, +25 extra if referred (50 total)
+    const welcomeBonus = 25;
+    const referralBonus = referralCode ? 25 : 0;
+    const totalWelcomeXP = welcomeBonus + referralBonus;
     
     const newUser: User = {
       name: userData.name || 'Learner',
       language: userData.language || 'en',
       interests: userData.interests || [],
       level: userData.level || 'beginner',
-      xp: initialXP,
+      xp: 0, // Start at 0, we'll add XP with animation
       streak: 1,
       lastActiveDate: new Date().toISOString().split('T')[0],
       completedQuizzes: 0,
@@ -138,6 +140,13 @@ export function UserProvider({ children }: { children: ReactNode }) {
     };
     setUserState(newUser);
     setIsOnboarded(true);
+
+    // Trigger welcome XP animation after a short delay
+    setTimeout(() => {
+      // Directly set XP animation state and update user XP
+      setXPAnimation({ amount: totalWelcomeXP, id: Date.now() });
+      setUserState(prev => prev ? { ...prev, xp: totalWelcomeXP } : prev);
+    }, 800);
 
     // Process referral if exists
     if (referralCode) {
