@@ -10,7 +10,7 @@ interface BottomNavProps {
 }
 
 export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
-  const { user } = useUser();
+  const { user, newAchievementCount } = useUser();
   const language = user?.language || 'en';
 
   const tabs = [
@@ -36,6 +36,16 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
             >
               <div className={`relative ${isActive ? 'text-primary' : 'text-muted-foreground'}`}>
                 <Icon className="w-6 h-6" />
+                {/* Badge notification for achievements */}
+                {tab.id === 'achievements' && newAchievementCount > 0 && (
+                  <motion.span
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="absolute -top-1 -right-1 min-w-[18px] h-[18px] flex items-center justify-center bg-primary text-primary-foreground text-[10px] font-bold rounded-full px-1"
+                  >
+                    {newAchievementCount}
+                  </motion.span>
+                )}
                 {isActive && (
                   <motion.div
                     layoutId="activeTab"

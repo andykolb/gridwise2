@@ -659,6 +659,13 @@ export const mockLeaderboard: LeaderboardUser[] = [
 
 export const achievements: Achievement[] = [
   {
+    id: 'welcome',
+    name: { en: 'Welcome!', de: 'Willkommen!' },
+    description: { en: 'Join the learning journey', de: 'Starte deine Lernreise' },
+    icon: '👋',
+    unlocked: false
+  },
+  {
     id: 'first-quiz',
     name: { en: 'First Steps', de: 'Erste Schritte' },
     description: { en: 'Complete your first quiz', de: 'Schließe dein erstes Quiz ab' },

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useUser } from '@/context/UserContext';
 import { X, Lock } from 'lucide-react';
@@ -7,7 +8,12 @@ interface AchievementsProps {
 }
 
 export function Achievements({ onClose }: AchievementsProps) {
-  const { user, achievements } = useUser();
+  const { user, achievements, clearNewAchievements } = useUser();
+
+  // Clear new achievement notifications when viewing
+  useEffect(() => {
+    clearNewAchievements();
+  }, [clearNewAchievements]);
 
   if (!user) return null;
 
