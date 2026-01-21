@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { useUser } from '@/context/UserContext';
 import { Home, BookOpen, Trophy, Award, MessageCircle } from 'lucide-react';
 
-type TabId = 'home' | 'quiz' | 'duel' | 'leaderboard' | 'achievements' | 'chat';
+type TabId = 'home' | 'quiz-hub' | 'quiz' | 'duel' | 'leaderboard' | 'achievements' | 'chat';
 
 interface BottomNavProps {
   activeTab: TabId;
@@ -15,7 +15,7 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
 
   const tabs = [
     { id: 'home' as TabId, icon: Home, label: { en: 'Home', de: 'Start' } },
-    { id: 'quiz' as TabId, icon: BookOpen, label: { en: 'Quiz', de: 'Quiz' } },
+    { id: 'quiz-hub' as TabId, icon: BookOpen, label: { en: 'Quiz', de: 'Quiz' } },
     { id: 'leaderboard' as TabId, icon: Trophy, label: { en: 'Rank', de: 'Rang' } },
     { id: 'achievements' as TabId, icon: Award, label: { en: 'Badges', de: 'Erfolge' } },
     { id: 'chat' as TabId, icon: MessageCircle, label: { en: 'Agent', de: 'Agent' } },
@@ -25,7 +25,7 @@ export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
     <nav className="fixed bottom-0 left-0 right-0 bg-card border-t border-border z-40">
       <div className="max-w-2xl mx-auto flex justify-around py-2">
         {tabs.map((tab) => {
-          const isActive = activeTab === tab.id;
+          const isActive = activeTab === tab.id || (tab.id === 'quiz-hub' && activeTab === 'quiz');
           const Icon = tab.icon;
 
           return (

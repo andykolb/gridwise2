@@ -3,6 +3,7 @@ import { AnimatePresence } from 'framer-motion';
 import { UserProvider, useUser } from '@/context/UserContext';
 import { OnboardingFlow } from '@/components/onboarding/OnboardingFlow';
 import { LearningHome } from '@/components/home/LearningHome';
+import { QuizHub } from '@/components/quiz/QuizHub';
 import { QuizMode } from '@/components/quiz/QuizMode';
 import { QuizDuel } from '@/components/quiz/QuizDuel';
 import { Leaderboard } from '@/components/leaderboard/Leaderboard';
@@ -10,7 +11,7 @@ import { Achievements } from '@/components/achievements/Achievements';
 import { AgentChat } from '@/components/chat/AgentChat';
 import { BottomNav } from '@/components/navigation/BottomNav';
 
-type View = 'home' | 'quiz' | 'duel' | 'leaderboard' | 'achievements' | 'chat';
+type View = 'home' | 'quiz-hub' | 'quiz' | 'duel' | 'leaderboard' | 'achievements' | 'chat';
 
 function AppContent() {
   const { isOnboarded } = useUser();
@@ -26,18 +27,25 @@ function AppContent() {
         {currentView === 'home' && (
           <LearningHome
             key="home"
-            onStartQuiz={() => setCurrentView('quiz')}
+            onStartQuiz={() => setCurrentView('quiz-hub')}
             onStartDuel={() => setCurrentView('duel')}
             onOpenChat={() => setCurrentView('chat')}
             onOpenLeaderboard={() => setCurrentView('leaderboard')}
             onOpenAchievements={() => setCurrentView('achievements')}
           />
         )}
+        {currentView === 'quiz-hub' && (
+          <QuizHub 
+            key="quiz-hub" 
+            onClose={() => setCurrentView('home')} 
+            onStartQuiz={() => setCurrentView('quiz')}
+          />
+        )}
         {currentView === 'duel' && (
           <QuizDuel key="duel" onClose={() => setCurrentView('home')} />
         )}
         {currentView === 'quiz' && (
-          <QuizMode key="quiz" onClose={() => setCurrentView('home')} />
+          <QuizMode key="quiz" onClose={() => setCurrentView('quiz-hub')} />
         )}
         {currentView === 'leaderboard' && (
           <Leaderboard key="leaderboard" onClose={() => setCurrentView('home')} />
@@ -50,7 +58,7 @@ function AppContent() {
         )}
       </AnimatePresence>
 
-      <BottomNav activeTab={currentView} onTabChange={setCurrentView} />
+      <BottomNav activeTab={currentView === 'quiz-hub' || currentView === 'quiz' ? 'quiz-hub' : currentView} onTabChange={setCurrentView} />
     </div>
   );
 }
