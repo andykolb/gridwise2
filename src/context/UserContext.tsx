@@ -19,6 +19,7 @@ interface UserContextType {
   chatMessages: ChatMessage[];
   xpAnimation: XPAnimation | null;
   levelUpEvent: LevelUpEvent | null;
+  newAchievementCount: number;
   setUser: (user: User | null) => void;
   updateUser: (updates: Partial<User>) => void;
   startOnboarding: () => void;
@@ -36,6 +37,7 @@ interface UserContextType {
   clearLevelUpEvent: () => void;
   markNuggetAsRead: (nuggetId: string) => void;
   isNuggetRead: (nuggetId: string) => boolean;
+  clearNewAchievements: () => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -44,6 +46,7 @@ const STORAGE_KEY = 'gridwise_user';
 const ACHIEVEMENTS_KEY = 'gridwise_achievements';
 const CHAT_KEY = 'gridwise_chat';
 const REFERRALS_KEY = 'gridwise_referrals';
+const VIEWED_ACHIEVEMENTS_KEY = 'gridwise_viewed_achievements';
 
 // Generate a unique referral code
 function generateReferralCode(): string {
@@ -62,12 +65,14 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const [isOnboarded, setIsOnboarded] = useState(false);
   const [xpAnimation, setXPAnimation] = useState<XPAnimation | null>(null);
   const [levelUpEvent, setLevelUpEvent] = useState<LevelUpEvent | null>(null);
+  const [viewedAchievements, setViewedAchievements] = useState<string[]>([]);
 
   // Load from localStorage on mount
   useEffect(() => {
     const savedUser = localStorage.getItem(STORAGE_KEY);
     const savedAchievements = localStorage.getItem(ACHIEVEMENTS_KEY);
     const savedChat = localStorage.getItem(CHAT_KEY);
+    const savedViewedAchievements = localStorage.getItem(VIEWED_ACHIEVEMENTS_KEY);
 
     if (savedUser) {
       const parsed = JSON.parse(savedUser);
@@ -79,6 +84,9 @@ export function UserProvider({ children }: { children: ReactNode }) {
     }
     if (savedChat) {
       setChatMessages(JSON.parse(savedChat));
+    }
+    if (savedViewedAchievements) {
+      setViewedAchievements(JSON.parse(savedViewedAchievements));
     }
   }, []);
 
@@ -143,6 +151,11 @@ export function UserProvider({ children }: { children: ReactNode }) {
     };
     setUserState(newUser);
     setIsOnboarded(true);
+
+    // Unlock welcome achievement
+    setTimeout(() => {
+      unlockAchievement('welcome');
+    }, 500);
 
     // Trigger welcome XP animation after a short delay
     setTimeout(() => {
@@ -317,13 +330,26 @@ export function UserProvider({ children }: { children: ReactNode }) {
     return user?.readNuggets?.includes(nuggetId) || false;
   }, [user]);
 
+  // Calculate new (unviewed) achievements
+  const newAchievementCount = achievements.filter(
+    a => a.unlocked && !viewedAchievements.includes(a.id)
+  ).length;
+
+  const clearNewAchievements = useCallback(() => {
+    const unlockedIds = achievements.filter(a => a.unlocked).map(a => a.id);
+    setViewedAchievements(unlockedIds);
+    localStorage.setItem(VIEWED_ACHIEVEMENTS_KEY, JSON.stringify(unlockedIds));
+  }, [achievements]);
+
   const resetApp = () => {
     localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem(ACHIEVEMENTS_KEY);
     localStorage.removeItem(CHAT_KEY);
+    localStorage.removeItem(VIEWED_ACHIEVEMENTS_KEY);
     setUserState(null);
     setAchievements(achievementData);
     setChatMessages([]);
+    setViewedAchievements([]);
     setIsOnboarded(false);
   };
 
@@ -336,6 +362,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         chatMessages,
         xpAnimation,
         levelUpEvent,
+        newAchievementCount,
         setUser,
         updateUser,
         startOnboarding,
@@ -348,6 +375,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
         addChatMessage,
         clearChat,
         resetApp,
+        clearNewAchievements,
         processReferral,
         clearXPAnimation,
         clearLevelUpEvent,
