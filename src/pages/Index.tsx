@@ -1,13 +1,60 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
+import { UserProvider, useUser } from '@/context/UserContext';
+import { OnboardingFlow } from '@/components/onboarding/OnboardingFlow';
+import { LearningHome } from '@/components/home/LearningHome';
+import { QuizMode } from '@/components/quiz/QuizMode';
+import { Leaderboard } from '@/components/leaderboard/Leaderboard';
+import { Achievements } from '@/components/achievements/Achievements';
+import { AgentChat } from '@/components/chat/AgentChat';
+import { BottomNav } from '@/components/navigation/BottomNav';
+
+type View = 'home' | 'quiz' | 'leaderboard' | 'achievements' | 'chat';
+
+function AppContent() {
+  const { isOnboarded } = useUser();
+  const [currentView, setCurrentView] = useState<View>('home');
+
+  if (!isOnboarded) {
+    return <OnboardingFlow />;
+  }
+
+  return (
+    <div className="min-h-screen bg-background">
+      <AnimatePresence mode="wait">
+        {currentView === 'home' && (
+          <LearningHome
+            key="home"
+            onStartQuiz={() => setCurrentView('quiz')}
+            onOpenChat={() => setCurrentView('chat')}
+            onOpenLeaderboard={() => setCurrentView('leaderboard')}
+            onOpenAchievements={() => setCurrentView('achievements')}
+          />
+        )}
+        {currentView === 'quiz' && (
+          <QuizMode key="quiz" onClose={() => setCurrentView('home')} />
+        )}
+        {currentView === 'leaderboard' && (
+          <Leaderboard key="leaderboard" onClose={() => setCurrentView('home')} />
+        )}
+        {currentView === 'achievements' && (
+          <Achievements key="achievements" onClose={() => setCurrentView('home')} />
+        )}
+        {currentView === 'chat' && (
+          <AgentChat key="chat" onClose={() => setCurrentView('home')} />
+        )}
+      </AnimatePresence>
+
+      <BottomNav activeTab={currentView} onTabChange={setCurrentView} />
+    </div>
+  );
+}
 
 const Index = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <UserProvider>
+      <AppContent />
+    </UserProvider>
   );
 };
 
