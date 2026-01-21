@@ -34,6 +34,8 @@ interface UserContextType {
   processReferral: (referralCode: string) => void;
   clearXPAnimation: () => void;
   clearLevelUpEvent: () => void;
+  markNuggetAsRead: (nuggetId: string) => void;
+  isNuggetRead: (nuggetId: string) => boolean;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -137,6 +139,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
       invitesSent: 0,
       invitesAccepted: 0,
       referredBy: referralCode || undefined,
+      readNuggets: [],
     };
     setUserState(newUser);
     setIsOnboarded(true);
@@ -301,6 +304,19 @@ export function UserProvider({ children }: { children: ReactNode }) {
     setChatMessages([]);
   };
 
+  const markNuggetAsRead = useCallback((nuggetId: string) => {
+    if (user && !user.readNuggets?.includes(nuggetId)) {
+      setUserState({
+        ...user,
+        readNuggets: [...(user.readNuggets || []), nuggetId],
+      });
+    }
+  }, [user]);
+
+  const isNuggetRead = useCallback((nuggetId: string): boolean => {
+    return user?.readNuggets?.includes(nuggetId) || false;
+  }, [user]);
+
   const resetApp = () => {
     localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem(ACHIEVEMENTS_KEY);
@@ -335,6 +351,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
         processReferral,
         clearXPAnimation,
         clearLevelUpEvent,
+        markNuggetAsRead,
+        isNuggetRead,
       }}
     >
       {children}

@@ -5,7 +5,7 @@ import { dailyNuggets } from '@/data/content';
 import { DailyNugget } from '@/types';
 import { 
   Flame, Zap, BookOpen, MessageCircle, Trophy, 
-  ChevronRight, Sparkles, Target, Swords, ChevronDown
+  ChevronRight, Sparkles, Target, Swords, ChevronDown, CheckCircle2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -26,7 +26,7 @@ export function LearningHome({
   onOpenLeaderboard, 
   onOpenAchievements 
 }: LearningHomeProps) {
-  const { user, incrementStreak } = useUser();
+  const { user, incrementStreak, markNuggetAsRead, isNuggetRead, addXP } = useUser();
   const [dailyNugget, setDailyNugget] = useState<DailyNugget | null>(null);
   const [showLearnMore, setShowLearnMore] = useState(false);
 
@@ -167,11 +167,21 @@ export function LearningHome({
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-gradient-to-br from-primary/10 via-primary/5 to-transparent rounded-2xl p-5 border border-primary/20 shadow-sm"
+            className={`bg-gradient-to-br from-primary/10 via-primary/5 to-transparent rounded-2xl p-5 border shadow-sm ${
+              isNuggetRead(dailyNugget.id) ? 'border-success/30' : 'border-primary/20'
+            }`}
           >
-            <div className="flex items-center gap-2 mb-3">
-              <Sparkles className="w-5 h-5 text-primary" />
-              <span className="font-semibold text-primary">{t.dailyNugget[language]}</span>
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-primary" />
+                <span className="font-semibold text-primary">{t.dailyNugget[language]}</span>
+              </div>
+              {isNuggetRead(dailyNugget.id) && (
+                <span className="flex items-center gap-1 text-xs text-success font-medium">
+                  <CheckCircle2 className="w-4 h-4" />
+                  {language === 'en' ? 'Read' : 'Gelesen'}
+                </span>
+              )}
             </div>
             <h3 className="text-lg font-bold mb-2">{dailyNugget.title[language]}</h3>
             <p className="text-muted-foreground text-sm leading-relaxed">
@@ -210,6 +220,28 @@ export function LearningHome({
                 </motion.div>
               )}
             </AnimatePresence>
+
+            {/* Mark as Read Button */}
+            {!isNuggetRead(dailyNugget.id) && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="mt-4"
+              >
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    markNuggetAsRead(dailyNugget.id);
+                    addXP(5); // Small XP reward for reading
+                  }}
+                  className="w-full border-success/50 text-success hover:bg-success/10 hover:text-success"
+                >
+                  <CheckCircle2 className="w-4 h-4 mr-2" />
+                  {language === 'en' ? 'Mark as Read (+5 XP)' : 'Als gelesen markieren (+5 XP)'}
+                </Button>
+              </motion.div>
+            )}
           </motion.div>
         )}
 
