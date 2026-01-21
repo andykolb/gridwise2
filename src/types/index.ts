@@ -50,6 +50,10 @@ export interface DailyNugget {
     en: string;
     de: string;
   };
+  learnMore: {
+    en: string;
+    de: string;
+  };
   topic: Topic;
 }
 
