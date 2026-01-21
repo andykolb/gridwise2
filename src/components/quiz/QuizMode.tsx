@@ -5,7 +5,7 @@ import { quizQuestions } from '@/data/content';
 import { QuizQuestion } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { CheckCircle2, XCircle, ChevronRight, Trophy, Share2, X } from 'lucide-react';
+import { CheckCircle2, XCircle, ChevronRight, Trophy, Share2, X, BookOpen, ChevronDown } from 'lucide-react';
 
 interface QuizModeProps {
   onClose: () => void;
@@ -19,6 +19,7 @@ export function QuizMode({ onClose }: QuizModeProps) {
   const [correctCount, setCorrectCount] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
   const [earnedXP, setEarnedXP] = useState(0);
+  const [showLearnMore, setShowLearnMore] = useState(false);
 
   // Get 5 random questions
   const [questions] = useState<QuizQuestion[]>(() => {
@@ -39,6 +40,7 @@ export function QuizMode({ onClose }: QuizModeProps) {
     incorrect: { en: 'Incorrect', de: 'Falsch' },
     next: { en: 'Next', de: 'Nächste' },
     finish: { en: 'See Results', de: 'Ergebnisse' },
+    learnMore: { en: 'Learn More', de: 'Mehr erfahren' },
     quizComplete: { en: 'Quiz Complete!', de: 'Quiz abgeschlossen!' },
     youScored: { en: 'You scored', de: 'Du hast erreicht' },
     outOf: { en: 'out of', de: 'von' },
@@ -68,6 +70,7 @@ export function QuizMode({ onClose }: QuizModeProps) {
       setCurrentIndex(prev => prev + 1);
       setSelectedAnswer(null);
       setShowResult(false);
+      setShowLearnMore(false);
     } else {
       // Quiz complete
       addXP(earnedXP);
@@ -258,6 +261,41 @@ export function QuizMode({ onClose }: QuizModeProps) {
                   <p className="text-sm text-muted-foreground">
                     {currentQuestion.explanation[language]}
                   </p>
+                  
+                  {/* Learn More button - only shows when answer is wrong */}
+                  {selectedAnswer !== currentQuestion.correctIndex && currentQuestion.learnMore && (
+                    <div className="mt-4">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setShowLearnMore(!showLearnMore)}
+                        className="w-full justify-between"
+                      >
+                        <span className="flex items-center gap-2">
+                          <BookOpen className="w-4 h-4" />
+                          {t.learnMore[language]}
+                        </span>
+                        <ChevronDown className={`w-4 h-4 transition-transform ${showLearnMore ? 'rotate-180' : ''}`} />
+                      </Button>
+                      
+                      <AnimatePresence>
+                        {showLearnMore && (
+                          <motion.div
+                            initial={{ opacity: 0, height: 0 }}
+                            animate={{ opacity: 1, height: 'auto' }}
+                            exit={{ opacity: 0, height: 0 }}
+                            className="overflow-hidden"
+                          >
+                            <div className="mt-3 p-4 rounded-lg bg-primary/5 border border-primary/20">
+                              <p className="text-sm text-foreground leading-relaxed">
+                                {currentQuestion.learnMore[language]}
+                              </p>
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  )}
                 </motion.div>
               )}
             </motion.div>

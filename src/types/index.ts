@@ -52,6 +52,10 @@ export interface QuizQuestion {
     en: string;
     de: string;
   };
+  learnMore?: {
+    en: string;
+    de: string;
+  };
   topic: Topic;
   difficulty: 'easy' | 'medium' | 'hard';
 }

@@ -117,6 +117,10 @@ export const quizQuestions: QuizQuestion[] = [
       en: 'The merit order ranks power plants by their marginal cost of production. Plants with the lowest costs are dispatched first.',
       de: 'Die Merit Order ordnet Kraftwerke nach ihren Grenzkosten der Produktion. Kraftwerke mit den niedrigsten Kosten werden zuerst eingesetzt.'
     },
+    learnMore: {
+      en: 'The merit order is fundamental to understanding electricity markets. Imagine lining up all power plants from cheapest to most expensive to operate. Renewables like wind and solar have near-zero marginal costs (no fuel needed), so they go first. Then comes nuclear, followed by coal and lignite, and finally gas plants which are typically most expensive. When demand rises, more expensive plants are activated. The last plant needed to meet demand sets the price for ALL electricity sold in that hour – this is called the "marginal pricing" principle.',
+      de: 'Die Merit Order ist fundamental für das Verständnis von Strommärkten. Stellen Sie sich vor, alle Kraftwerke werden von günstigsten zu teuersten Betriebskosten aufgereiht. Erneuerbare wie Wind und Solar haben nahezu null Grenzkosten (kein Brennstoff nötig), also kommen sie zuerst. Dann folgt Kernkraft, gefolgt von Kohle und Braunkohle, und schließlich Gaskraftwerke, die typischerweise am teuersten sind. Bei steigender Nachfrage werden teurere Kraftwerke aktiviert. Das letzte zur Deckung benötigte Kraftwerk setzt den Preis für ALLEN in dieser Stunde verkauften Strom – das ist das "Grenzpreisprinzip".'
+    },
     topic: 'energy-basics',
     difficulty: 'easy'
   },
@@ -131,6 +135,10 @@ export const quizQuestions: QuizQuestion[] = [
     explanation: {
       en: 'In a liberalized market, the price is set by the marginal cost of the most expensive plant needed to meet demand.',
       de: 'In einem liberalisierten Markt wird der Preis durch die Grenzkosten des teuersten zur Deckung der Nachfrage benötigten Kraftwerks bestimmt.'
+    },
+    learnMore: {
+      en: 'This pricing mechanism, called "marginal pricing" or "pay-as-cleared," means all generators receive the same price – the clearing price set by the most expensive accepted bid. While this may seem unfair (why should wind farms get paid the same as gas plants?), it actually incentivizes efficiency: low-cost plants earn higher profits, encouraging investment in cheaper generation. This is how exchanges like EPEX SPOT in Paris work for day-ahead and intraday markets across Europe.',
+      de: 'Dieser Preismechanismus, genannt "Grenzpreisbildung" oder "Pay-as-cleared", bedeutet, dass alle Erzeuger den gleichen Preis erhalten – den Clearingpreis, der durch das teuerste akzeptierte Gebot festgelegt wird. Obwohl dies unfair erscheinen mag (warum sollten Windparks das gleiche wie Gaskraftwerke bekommen?), fördert es tatsächlich Effizienz: Kostengünstige Anlagen erzielen höhere Gewinne, was Investitionen in günstigere Erzeugung anregt. So funktionieren Börsen wie EPEX SPOT in Paris für Day-ahead- und Intraday-Märkte in Europa.'
     },
     topic: 'energy-basics',
     difficulty: 'medium'
@@ -148,6 +156,10 @@ export const quizQuestions: QuizQuestion[] = [
       en: 'Gas-fired power plants frequently are the marginal price-setting units in European electricity markets.',
       de: 'Gaskraftwerke sind häufig die preissetzenden Grenzeinheiten in europäischen Strommärkten.'
     },
+    learnMore: {
+      en: 'The gas-electricity link became painfully clear during the 2022 energy crisis. Gas plants are flexible and can ramp up/down quickly, making them essential for balancing variable renewables. Because they often set the marginal price, when gas prices spiked from €20/MWh to over €300/MWh, electricity prices followed. This correlation is measured by the "spark spread" (electricity price minus gas cost to generate it). Understanding this link is crucial for energy trading and risk management.',
+      de: 'Die Gas-Strom-Verbindung wurde während der Energiekrise 2022 schmerzhaft deutlich. Gaskraftwerke sind flexibel und können schnell hoch-/runterfahren, was sie für den Ausgleich variabler Erneuerbarer unverzichtbar macht. Da sie oft den Grenzpreis setzen, folgten die Strompreise, als die Gaspreise von 20€/MWh auf über 300€/MWh stiegen. Diese Korrelation wird durch den "Spark Spread" gemessen (Strompreis minus Gaskosten zur Erzeugung). Das Verständnis dieser Verbindung ist entscheidend für Energiehandel und Risikomanagement.'
+    },
     topic: 'price-drivers',
     difficulty: 'easy'
   },
@@ -162,6 +174,10 @@ export const quizQuestions: QuizQuestion[] = [
     explanation: {
       en: 'High renewable generation pushes expensive plants out of merit order, lowering prices. In extreme cases, prices can go negative.',
       de: 'Hohe erneuerbare Erzeugung verdrängt teure Kraftwerke aus der Merit Order und senkt die Preise. In Extremfällen können Preise negativ werden.'
+    },
+    learnMore: {
+      en: 'Negative prices occur when there is more electricity supply than demand and storage capacity. Why would anyone sell at a loss? Some plants (nuclear, lignite) are inflexible and costly to shut down. Wind farms receiving feed-in tariffs may still profit even at negative prices. In Germany, negative price hours increased from 134 in 2019 to over 300 in 2023. For energy retailers and industrial consumers, these price patterns create opportunities for flexible consumption and storage arbitrage.',
+      de: 'Negative Preise entstehen, wenn mehr Strom angeboten wird als Nachfrage und Speicherkapazität vorhanden sind. Warum sollte jemand mit Verlust verkaufen? Einige Anlagen (Kernkraft, Braunkohle) sind unflexibel und teuer abzuschalten. Windparks mit Einspeisevergütung können selbst bei negativen Preisen profitieren. In Deutschland stiegen die Stunden mit negativen Preisen von 134 im Jahr 2019 auf über 300 im Jahr 2023. Für Energieversorger und Industriekunden schaffen diese Preismuster Chancen für flexible Nutzung und Speicherarbitrage.'
     },
     topic: 'price-drivers',
     difficulty: 'easy'
@@ -179,6 +195,10 @@ export const quizQuestions: QuizQuestion[] = [
       en: 'Renewables depend on weather, making their output variable. This requires flexibility from other sources, storage, or demand response.',
       de: 'Erneuerbare hängen vom Wetter ab, was ihre Erzeugung variabel macht. Dies erfordert Flexibilität von anderen Quellen, Speichern oder Lastmanagement.'
     },
+    learnMore: {
+      en: 'The variability challenge has three dimensions: (1) Short-term fluctuations – clouds passing over solar panels can cause output to drop by 50% in minutes; (2) Daily patterns – solar peaks at midday while demand peaks in evening; (3) Seasonal variation – wind is stronger in winter, solar in summer. Solutions include battery storage, pumped hydro, demand response (shifting industrial loads), interconnectors to other regions, and flexible gas plants. Forecasting has improved dramatically – day-ahead wind predictions are now 95%+ accurate.',
+      de: 'Die Variabilitätsherausforderung hat drei Dimensionen: (1) Kurzfristige Schwankungen – Wolken über Solarpanelen können die Leistung in Minuten um 50% senken; (2) Tagesmuster – Solar erreicht den Höhepunkt mittags, Nachfrage abends; (3) Saisonale Variation – Wind ist im Winter stärker, Solar im Sommer. Lösungen umfassen Batteriespeicher, Pumpspeicher, Lastmanagement (Verschiebung industrieller Lasten), Interkonnektoren zu anderen Regionen und flexible Gaskraftwerke. Prognosen haben sich dramatisch verbessert – Day-ahead-Windvorhersagen sind heute zu 95%+ genau.'
+    },
     topic: 'renewables',
     difficulty: 'easy'
   },
@@ -193,6 +213,10 @@ export const quizQuestions: QuizQuestion[] = [
     explanation: {
       en: 'Flexibility means being able to ramp generation up/down or shift demand to balance variable renewable output.',
       de: 'Flexibilität bedeutet, die Erzeugung hoch-/runterfahren oder Nachfrage verschieben zu können, um variable erneuerbare Erzeugung auszugleichen.'
+    },
+    learnMore: {
+      en: 'Flexibility is becoming the most valuable commodity in energy markets. Sources include: (1) Supply-side: gas peakers, hydro, batteries that can ramp in seconds to minutes; (2) Demand-side: industrial processes that can shift timing (aluminum smelters, cold storage, EV charging); (3) Storage: from batteries (minutes-hours) to pumped hydro (hours-days) to hydrogen (seasonal). Flexibility providers can earn revenue from multiple markets: spot price arbitrage, balancing services, and capacity payments. As renewable penetration grows, flexibility premiums increase.',
+      de: 'Flexibilität wird zur wertvollsten Ware in Energiemärkten. Quellen umfassen: (1) Angebotsseite: Gas-Spitzenlastkraftwerke, Hydro, Batterien, die in Sekunden bis Minuten hochfahren können; (2) Nachfrageseite: Industrieprozesse, die zeitlich verschoben werden können (Aluminiumschmelzen, Kühlhäuser, E-Auto-Laden); (3) Speicher: von Batterien (Minuten-Stunden) über Pumpspeicher (Stunden-Tage) bis Wasserstoff (saisonal). Flexibilitätsanbieter können Einnahmen aus mehreren Märkten erzielen: Spotpreis-Arbitrage, Regelleistung und Kapazitätszahlungen. Mit steigendem Erneuerbaren-Anteil steigen die Flexibilitätsprämien.'
     },
     topic: 'renewables',
     difficulty: 'medium'
@@ -210,6 +234,10 @@ export const quizQuestions: QuizQuestion[] = [
       en: 'Transmission System Operators (TSOs) manage the high-voltage grid and ensure system stability at the national/regional level.',
       de: 'Übertragungsnetzbetreiber (ÜNB) betreiben das Hochspannungsnetz und gewährleisten Systemstabilität auf nationaler/regionaler Ebene.'
     },
+    learnMore: {
+      en: 'In Germany, there are four TSOs: TenneT, 50Hertz, Amprion, and TransnetBW, each responsible for a region. TSOs have several critical responsibilities: maintaining grid frequency at 50Hz, coordinating cross-border power flows, managing balancing energy markets, planning grid expansion, and ensuring security of supply. They are regulated monopolies – their costs are passed through to consumers via grid fees. The European Network of TSOs (ENTSO-E) coordinates the interconnected grid across 35 countries.',
+      de: 'In Deutschland gibt es vier ÜNB: TenneT, 50Hertz, Amprion und TransnetBW, jeder für eine Region verantwortlich. ÜNB haben mehrere kritische Aufgaben: Netzfrequenz bei 50Hz halten, grenzüberschreitende Stromflüsse koordinieren, Regelenergiemärkte betreiben, Netzausbau planen und Versorgungssicherheit gewährleisten. Sie sind regulierte Monopole – ihre Kosten werden über Netzentgelte an Verbraucher weitergegeben. Das Europäische Netzwerk der ÜNB (ENTSO-E) koordiniert das verbundene Netz über 35 Länder.'
+    },
     topic: 'grid-dso',
     difficulty: 'easy'
   },
@@ -224,6 +252,10 @@ export const quizQuestions: QuizQuestion[] = [
     explanation: {
       en: 'Redispatch adjusts power plant output to manage congestion when grid capacity is insufficient to transport all generated power.',
       de: 'Redispatch passt die Kraftwerksleistung an, um Engpässe zu managen, wenn die Netzkapazität nicht ausreicht, um allen erzeugten Strom zu transportieren.'
+    },
+    learnMore: {
+      en: 'Redispatch is a major cost driver in Germany – over €4 billion in 2022! The process works like this: when too much wind power in the North cannot flow to demand centers in the South (due to limited transmission capacity), TSOs instruct northern wind farms to curtail output while ramping up southern gas plants. Both get compensated – curtailed plants for lost revenue, activated plants for generation costs. "Redispatch 2.0" since 2021 now includes smaller plants and renewables. Grid expansion (like SuedLink) aims to reduce these costs.',
+      de: 'Redispatch ist ein großer Kostentreiber in Deutschland – über 4 Milliarden Euro in 2022! Der Prozess funktioniert so: Wenn zu viel Windstrom im Norden nicht zu Verbrauchszentren im Süden fließen kann (wegen begrenzter Übertragungskapazität), weisen ÜNB nördliche Windparks an, ihre Leistung zu drosseln, während südliche Gaskraftwerke hochfahren. Beide werden entschädigt – gedrosselte Anlagen für entgangene Einnahmen, aktivierte für Erzeugungskosten. "Redispatch 2.0" seit 2021 umfasst jetzt auch kleinere Anlagen und Erneuerbare. Der Netzausbau (wie SuedLink) soll diese Kosten reduzieren.'
     },
     topic: 'grid-dso',
     difficulty: 'medium'
@@ -240,6 +272,10 @@ export const quizQuestions: QuizQuestion[] = [
       en: 'The European grid operates at 50 Hz. Deviations indicate imbalance between supply and demand.',
       de: 'Das europäische Netz arbeitet mit 50 Hz. Abweichungen zeigen ein Ungleichgewicht zwischen Angebot und Nachfrage an.'
     },
+    learnMore: {
+      en: 'Grid frequency is the heartbeat of the electricity system. When demand exceeds supply, generators slow down and frequency drops below 50 Hz. When supply exceeds demand, frequency rises. Deviations of just ±0.2 Hz trigger automatic responses: primary reserve activates within seconds, secondary reserve within minutes, and tertiary reserve within 15 minutes. A major frequency deviation (like during the 2021 split of the European grid) can cause blackouts. Fun fact: some older clocks use grid frequency for timekeeping – they gained/lost minutes during the 2018 Kosovo-Serbia grid dispute!',
+      de: 'Die Netzfrequenz ist der Herzschlag des Stromsystems. Wenn Nachfrage das Angebot übersteigt, verlangsamen sich Generatoren und die Frequenz fällt unter 50 Hz. Wenn Angebot die Nachfrage übersteigt, steigt die Frequenz. Abweichungen von nur ±0,2 Hz lösen automatische Reaktionen aus: Primärreserve aktiviert in Sekunden, Sekundärreserve in Minuten, Tertiärreserve in 15 Minuten. Eine große Frequenzabweichung (wie bei der Netzaufspaltung 2021) kann Stromausfälle verursachen. Fun Fact: Manche älteren Uhren nutzen die Netzfrequenz zur Zeitmessung – sie gingen während des Kosovo-Serbien-Netzstreits 2018 vor/nach!'
+    },
     topic: 'grid-dso',
     difficulty: 'easy'
   },
@@ -255,6 +291,10 @@ export const quizQuestions: QuizQuestion[] = [
     explanation: {
       en: 'The EU Emissions Trading System is a cap-and-trade system that puts a price on carbon emissions from power plants and industry.',
       de: 'Das EU-Emissionshandelssystem ist ein Cap-and-Trade-System, das CO2-Emissionen von Kraftwerken und Industrie bepreist.'
+    },
+    learnMore: {
+      en: 'The EU ETS is the world\'s largest carbon market, covering about 40% of EU emissions. Here\'s how it works: the EU sets a cap on total emissions, then issues allowances (each worth 1 tonne CO2). Companies must surrender allowances for their emissions – if they have too few, they must buy more on the market. The cap decreases annually, making allowances scarcer and more expensive. Prices rose from €5 in 2017 to over €100 in 2023. ETS Phase 4 (2021-2030) includes faster cap reduction and carbon border adjustment (CBAM) to prevent carbon leakage.',
+      de: 'Das EU-ETS ist der größte Kohlenstoffmarkt der Welt und deckt etwa 40% der EU-Emissionen ab. So funktioniert es: Die EU setzt eine Obergrenze für Gesamtemissionen und gibt Zertifikate aus (jedes für 1 Tonne CO2). Unternehmen müssen Zertifikate für ihre Emissionen abgeben – haben sie zu wenige, müssen sie am Markt zukaufen. Die Obergrenze sinkt jährlich, was Zertifikate knapper und teurer macht. Die Preise stiegen von 5€ in 2017 auf über 100€ in 2023. ETS Phase 4 (2021-2030) beinhaltet schnellere Cap-Reduktion und CO2-Grenzausgleich (CBAM) gegen Carbon Leakage.'
     },
     topic: 'regulation',
     difficulty: 'easy'
