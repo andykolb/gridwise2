@@ -5,7 +5,7 @@ import { dailyNuggets } from '@/data/content';
 import { DailyNugget } from '@/types';
 import { 
   Flame, Zap, BookOpen, MessageCircle, Trophy, 
-  ChevronRight, Sparkles, Target
+  ChevronRight, Sparkles, Target, Swords
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
@@ -13,13 +13,15 @@ import { InviteCard } from '@/components/invite/InviteCard';
 
 interface LearningHomeProps {
   onStartQuiz: () => void;
+  onStartDuel: () => void;
   onOpenChat: () => void;
   onOpenLeaderboard: () => void;
   onOpenAchievements: () => void;
 }
 
 export function LearningHome({ 
-  onStartQuiz, 
+  onStartQuiz,
+  onStartDuel,
   onOpenChat, 
   onOpenLeaderboard, 
   onOpenAchievements 
@@ -63,6 +65,10 @@ export function LearningHome({
     startQuiz: {
       en: 'Start Quiz',
       de: 'Quiz starten',
+    },
+    quizDuel: {
+      en: 'Quiz Duel',
+      de: 'Quiz-Duell',
     },
     askAgent: {
       en: 'Ask the Agent',
@@ -187,10 +193,27 @@ export function LearningHome({
           </Button>
 
           <Button
+            variant="outline"
+            size="lg"
+            onClick={onStartDuel}
+            className="h-auto py-4 flex-col gap-2 border-2 border-primary/50 hover:bg-primary/10"
+          >
+            <Swords className="w-6 h-6 text-primary" />
+            <span className="text-primary font-semibold">{t.quizDuel[language]}</span>
+          </Button>
+        </motion.div>
+
+        {/* Ask Agent Button */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.45 }}
+        >
+          <Button
             variant="secondary"
             size="lg"
             onClick={onOpenChat}
-            className="h-auto py-4 flex-col gap-2"
+            className="w-full h-auto py-4 flex-row gap-3"
           >
             <MessageCircle className="w-6 h-6" />
             <span>{t.askAgent[language]}</span>

@@ -26,6 +26,7 @@ export interface User {
   invitesSent: number;
   invitesAccepted: number;
   referredBy?: string;
+  avatar?: string;
 }
 
 export interface Invite {

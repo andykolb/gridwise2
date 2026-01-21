@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { useUser } from '@/context/UserContext';
 import { Home, BookOpen, Trophy, Award, MessageCircle } from 'lucide-react';
 
-type TabId = 'home' | 'quiz' | 'leaderboard' | 'achievements' | 'chat';
+type TabId = 'home' | 'quiz' | 'duel' | 'leaderboard' | 'achievements' | 'chat';
 
 interface BottomNavProps {
   activeTab: TabId;
