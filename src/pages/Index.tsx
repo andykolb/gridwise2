@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { UserProvider, useUser } from '@/context/UserContext';
 import { OnboardingFlow } from '@/components/onboarding/OnboardingFlow';
@@ -10,12 +10,27 @@ import { Leaderboard } from '@/components/leaderboard/Leaderboard';
 import { Achievements } from '@/components/achievements/Achievements';
 import { AgentChat } from '@/components/chat/AgentChat';
 import { BottomNav } from '@/components/navigation/BottomNav';
+import { XPToast } from '@/components/effects/XPToast';
+import { LevelUpCelebration } from '@/components/effects/LevelUpCelebration';
 
 type View = 'home' | 'quiz-hub' | 'quiz' | 'duel' | 'leaderboard' | 'achievements' | 'chat';
 
 function AppContent() {
-  const { isOnboarded } = useUser();
+  const { user, isOnboarded, xpAnimation, levelUpEvent, clearXPAnimation, clearLevelUpEvent } = useUser();
   const [currentView, setCurrentView] = useState<View>('home');
+  const [showXPToast, setShowXPToast] = useState(false);
+
+  // Handle XP animation
+  useEffect(() => {
+    if (xpAnimation) {
+      setShowXPToast(true);
+      const timer = setTimeout(() => {
+        setShowXPToast(false);
+        setTimeout(clearXPAnimation, 300);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [xpAnimation, clearXPAnimation]);
 
   if (!isOnboarded) {
     return <OnboardingFlow />;
@@ -59,6 +74,25 @@ function AppContent() {
       </AnimatePresence>
 
       <BottomNav activeTab={currentView === 'quiz-hub' || currentView === 'quiz' ? 'quiz-hub' : currentView} onTabChange={setCurrentView} />
+
+      {/* XP Toast Animation */}
+      {xpAnimation && (
+        <XPToast
+          amount={xpAnimation.amount}
+          isVisible={showXPToast}
+          onComplete={() => {}}
+        />
+      )}
+
+      {/* Level Up Celebration */}
+      {levelUpEvent && user && (
+        <LevelUpCelebration
+          isVisible={!!levelUpEvent}
+          newLevel={levelUpEvent.newLevel}
+          language={user.language}
+          onClose={clearLevelUpEvent}
+        />
+      )}
     </div>
   );
 }
