@@ -648,7 +648,7 @@ export const mockLeaderboard: LeaderboardUser[] = [
   { rank: 1, name: 'Leo Birnbaum', xp: 4850, level: 'expert', avatar: '👨‍💼', streak: 45 },
   { rank: 2, name: 'Victoria Ossadnik', xp: 4320, level: 'expert', avatar: '👩‍💻', streak: 32 },
   { rank: 3, name: 'Thomas König', xp: 3890, level: 'advanced', avatar: '👨‍🔬', streak: 28 },
-  { rank: 4, name: 'Sabine Trundle', xp: 3450, level: 'advanced', avatar: '👩‍🏫', streak: 21 },
+  { rank: 4, name: 'Sabine Tröndle', xp: 3450, level: 'advanced', avatar: '👩‍🏫', streak: 21 },
   { rank: 5, name: 'Chris D\'arcy', xp: 3120, level: 'advanced', avatar: '👨‍⚕️', streak: 19 },
   { rank: 6, name: 'Michael Braun', xp: 2780, level: 'intermediate', avatar: '👨‍🔧', streak: 15 },
   { rank: 7, name: 'Julia Wagner', xp: 2340, level: 'intermediate', avatar: '👩‍🎓', streak: 12 },
