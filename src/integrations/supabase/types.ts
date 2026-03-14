@@ -14,7 +14,75 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          achievements: string[] | null
+          avatar_url: string | null
+          completed_quizzes: number | null
+          created_at: string
+          display_name: string | null
+          id: string
+          interests: string[] | null
+          invites_accepted: number | null
+          invites_sent: number | null
+          language: string | null
+          last_active_date: string | null
+          level: string | null
+          questions_asked: number | null
+          read_nuggets: string[] | null
+          referral_code: string | null
+          referred_by: string | null
+          streak: number | null
+          updated_at: string
+          user_id: string
+          xp: number | null
+        }
+        Insert: {
+          achievements?: string[] | null
+          avatar_url?: string | null
+          completed_quizzes?: number | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          interests?: string[] | null
+          invites_accepted?: number | null
+          invites_sent?: number | null
+          language?: string | null
+          last_active_date?: string | null
+          level?: string | null
+          questions_asked?: number | null
+          read_nuggets?: string[] | null
+          referral_code?: string | null
+          referred_by?: string | null
+          streak?: number | null
+          updated_at?: string
+          user_id: string
+          xp?: number | null
+        }
+        Update: {
+          achievements?: string[] | null
+          avatar_url?: string | null
+          completed_quizzes?: number | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          interests?: string[] | null
+          invites_accepted?: number | null
+          invites_sent?: number | null
+          language?: string | null
+          last_active_date?: string | null
+          level?: string | null
+          questions_asked?: number | null
+          read_nuggets?: string[] | null
+          referral_code?: string | null
+          referred_by?: string | null
+          streak?: number | null
+          updated_at?: string
+          user_id?: string
+          xp?: number | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
