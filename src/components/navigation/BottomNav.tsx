@@ -1,38 +1,42 @@
 import { motion } from 'framer-motion';
 import { useUser } from '@/context/UserContext';
 import { Home, BookOpen, Trophy, Award, MessageCircle } from 'lucide-react';
-import { useNavigate, useLocation } from 'react-router-dom';
 
-const tabs = [
-  { id: 'home', path: '/', icon: Home, label: { en: 'Home', de: 'Start' } },
-  { id: 'quiz-hub', path: '/quiz', icon: BookOpen, label: { en: 'Quiz', de: 'Quiz' } },
-  { id: 'leaderboard', path: '/leaderboard', icon: Trophy, label: { en: 'Rank', de: 'Rang' } },
-  { id: 'achievements', path: '/achievements', icon: Award, label: { en: 'Badges', de: 'Erfolge' } },
-  { id: 'chat', path: '/chat', icon: MessageCircle, label: { en: 'Agent', de: 'Agent' } },
-];
+type TabId = 'home' | 'quiz-hub' | 'quiz' | 'duel' | 'leaderboard' | 'achievements' | 'chat';
 
-export function BottomNav() {
+interface BottomNavProps {
+  activeTab: TabId;
+  onTabChange: (tab: TabId) => void;
+}
+
+export function BottomNav({ activeTab, onTabChange }: BottomNavProps) {
   const { user, newAchievementCount } = useUser();
-  const navigate = useNavigate();
-  const location = useLocation();
   const language = user?.language || 'en';
+
+  const tabs = [
+    { id: 'home' as TabId, icon: Home, label: { en: 'Home', de: 'Start' } },
+    { id: 'quiz-hub' as TabId, icon: BookOpen, label: { en: 'Quiz', de: 'Quiz' } },
+    { id: 'leaderboard' as TabId, icon: Trophy, label: { en: 'Rank', de: 'Rang' } },
+    { id: 'achievements' as TabId, icon: Award, label: { en: 'Badges', de: 'Erfolge' } },
+    { id: 'chat' as TabId, icon: MessageCircle, label: { en: 'Agent', de: 'Agent' } },
+  ];
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-card border-t border-border z-40">
       <div className="max-w-2xl mx-auto flex justify-around py-2">
         {tabs.map((tab) => {
-          const isActive = location.pathname === tab.path ||
-            (tab.id === 'quiz-hub' && location.pathname.startsWith('/quiz'));
+          const isActive = activeTab === tab.id || (tab.id === 'quiz-hub' && activeTab === 'quiz');
           const Icon = tab.icon;
 
           return (
             <button
               key={tab.id}
-              onClick={() => navigate(tab.path)}
+              onClick={() => onTabChange(tab.id)}
               className="relative flex flex-col items-center px-4 py-2"
             >
               <div className={`relative ${isActive ? 'text-primary' : 'text-muted-foreground'}`}>
                 <Icon className="w-6 h-6" />
+                {/* Badge notification for achievements */}
                 {tab.id === 'achievements' && newAchievementCount > 0 && (
                   <motion.span
                     initial={{ scale: 0 }}

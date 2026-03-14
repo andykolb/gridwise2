@@ -21,6 +21,7 @@ export function QuizMode({ onClose }: QuizModeProps) {
   const [earnedXP, setEarnedXP] = useState(0);
   const [showLearnMore, setShowLearnMore] = useState(false);
 
+  // Get 5 random questions
   const [questions] = useState<QuizQuestion[]>(() => {
     const shuffled = [...quizQuestions].sort(() => Math.random() - 0.5);
     return shuffled.slice(0, 5);
@@ -71,22 +72,24 @@ export function QuizMode({ onClose }: QuizModeProps) {
       setShowResult(false);
       setShowLearnMore(false);
     } else {
+      // Quiz complete
       addXP(earnedXP);
       completeQuiz();
-
+      
+      // Check for perfect score
       if (correctCount === questions.length) {
         unlockAchievement('perfect-score');
       }
-
+      
       setIsComplete(true);
     }
   };
 
   const handleShare = () => {
     const text = language === 'en'
-      ? `I just scored ${correctCount}/${questions.length} on GridWise and earned ${earnedXP} XP! Can you beat my score?`
-      : `Ich habe gerade ${correctCount}/${questions.length} bei GridWise erreicht und ${earnedXP} XP verdient! Kannst du meinen Score schlagen?`;
-
+      ? `🎯 I just scored ${correctCount}/${questions.length} on GridWise and earned ${earnedXP} XP! Can you beat my score?`
+      : `🎯 Ich habe gerade ${correctCount}/${questions.length} bei GridWise erreicht und ${earnedXP} XP verdient! Kannst du meinen Score schlagen?`;
+    
     navigator.clipboard.writeText(text);
     alert(language === 'en' ? 'Copied to clipboard!' : 'In die Zwischenablage kopiert!');
   };
@@ -164,6 +167,7 @@ export function QuizMode({ onClose }: QuizModeProps) {
       animate={{ opacity: 1 }}
       className="fixed inset-0 bg-background z-50 flex flex-col"
     >
+      {/* Header */}
       <div className="p-4 border-b border-border">
         <div className="max-w-2xl mx-auto flex items-center justify-between">
           <button onClick={onClose} className="p-2 hover:bg-muted rounded-lg">
@@ -178,6 +182,7 @@ export function QuizMode({ onClose }: QuizModeProps) {
         </div>
       </div>
 
+      {/* Question */}
       <div className="flex-1 overflow-y-auto p-6">
         <div className="max-w-2xl mx-auto">
           <AnimatePresence mode="wait">
@@ -195,7 +200,7 @@ export function QuizMode({ onClose }: QuizModeProps) {
                 {currentQuestion.options[language].map((option, index) => {
                   const isSelected = selectedAnswer === index;
                   const isCorrect = index === currentQuestion.correctIndex;
-
+                  
                   let optionClass = 'border-border bg-card hover:border-primary/50';
                   if (showResult) {
                     if (isCorrect) {
@@ -256,7 +261,8 @@ export function QuizMode({ onClose }: QuizModeProps) {
                   <p className="text-sm text-muted-foreground">
                     {currentQuestion.explanation[language]}
                   </p>
-
+                  
+                  {/* Learn More button - only shows when answer is wrong */}
                   {selectedAnswer !== currentQuestion.correctIndex && currentQuestion.learnMore && (
                     <div className="mt-4">
                       <Button
@@ -271,7 +277,7 @@ export function QuizMode({ onClose }: QuizModeProps) {
                         </span>
                         <ChevronDown className={`w-4 h-4 transition-transform ${showLearnMore ? 'rotate-180' : ''}`} />
                       </Button>
-
+                      
                       <AnimatePresence>
                         {showLearnMore && (
                           <motion.div
@@ -297,6 +303,7 @@ export function QuizMode({ onClose }: QuizModeProps) {
         </div>
       </div>
 
+      {/* Footer */}
       {showResult && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}

@@ -5,13 +5,12 @@ import { topics, quizQuestions } from '@/data/content';
 import { Topic } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import { useNavigate } from 'react-router-dom';
-import {
-  X,
-  Trophy,
-  Target,
-  Flame,
-  Star,
+import { 
+  X, 
+  Trophy, 
+  Target, 
+  Flame, 
+  Star, 
   CheckCircle2,
   Lock,
   Play
@@ -22,7 +21,9 @@ interface QuizHubProps {
   onStartQuiz: () => void;
 }
 
+// Calculate topic mastery based on user's completed quizzes and questions
 function getTopicMastery(topic: Topic, completedQuizzes: number): number {
+  // Simulated mastery - in a real app this would come from actual quiz results per topic
   const baseMastery = Math.min((completedQuizzes * 5), 100);
   const topicVariance: Record<Topic, number> = {
     'energy-basics': 1.2,
@@ -52,6 +53,7 @@ function getMasteryLabel(mastery: number, language: 'en' | 'de'): string {
   return language === 'en' ? 'New' : 'Neu';
 }
 
+// Journey stages - Duolingo style
 const journeyStages = [
   { id: 1, label: { en: 'Basics', de: 'Grundlagen' }, requiredQuizzes: 0, icon: '🌱' },
   { id: 2, label: { en: 'Foundations', de: 'Fundament' }, requiredQuizzes: 3, icon: '🧱' },
@@ -62,19 +64,20 @@ const journeyStages = [
 
 export function QuizHub({ onClose, onStartQuiz }: QuizHubProps) {
   const { user } = useUser();
-
+  
   if (!user) return null;
 
   const language = user.language;
   const completedQuizzes = user.completedQuizzes;
-
+  
+  // Calculate current journey stage
   const currentStage = journeyStages.reduce((acc, stage) => {
     if (completedQuizzes >= stage.requiredQuizzes) return stage;
     return acc;
   }, journeyStages[0]);
-
+  
   const nextStage = journeyStages.find(s => s.requiredQuizzes > completedQuizzes);
-  const progressToNext = nextStage
+  const progressToNext = nextStage 
     ? ((completedQuizzes - currentStage.requiredQuizzes) / (nextStage.requiredQuizzes - currentStage.requiredQuizzes)) * 100
     : 100;
 
@@ -106,6 +109,7 @@ export function QuizHub({ onClose, onStartQuiz }: QuizHubProps) {
       exit={{ opacity: 0 }}
       className="fixed inset-0 bg-background z-50 flex flex-col overflow-hidden"
     >
+      {/* Header */}
       <div className="p-4 border-b border-border shrink-0">
         <div className="max-w-2xl mx-auto flex items-center justify-between">
           <button onClick={onClose} className="p-2 hover:bg-muted rounded-lg">
@@ -116,8 +120,11 @@ export function QuizHub({ onClose, onStartQuiz }: QuizHubProps) {
         </div>
       </div>
 
+      {/* Content */}
       <div className="flex-1 overflow-y-auto p-6 pb-32">
         <div className="max-w-2xl mx-auto space-y-6">
+          
+          {/* Progress Dashboard */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -127,6 +134,7 @@ export function QuizHub({ onClose, onStartQuiz }: QuizHubProps) {
               <Trophy className="w-5 h-5 text-gold" />
               {t.progress[language]}
             </h2>
+            
             <div className="grid grid-cols-3 gap-4">
               <div className="text-center p-3 bg-muted rounded-xl">
                 <div className="text-2xl font-bold text-primary">{completedQuizzes}</div>
@@ -146,6 +154,7 @@ export function QuizHub({ onClose, onStartQuiz }: QuizHubProps) {
             </div>
           </motion.div>
 
+          {/* Skill Gap Heatmap */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -156,10 +165,12 @@ export function QuizHub({ onClose, onStartQuiz }: QuizHubProps) {
               <Target className="w-5 h-5 text-primary" />
               {t.skillGap[language]}
             </h2>
+            
             <div className="space-y-3">
               {topics.map((topic) => {
                 const mastery = getTopicMastery(topic.id, completedQuizzes);
                 const questionsForTopic = quizQuestions.filter(q => q.topic === topic.id).length;
+                
                 return (
                   <div key={topic.id} className="space-y-1">
                     <div className="flex items-center justify-between text-sm">
@@ -186,6 +197,7 @@ export function QuizHub({ onClose, onStartQuiz }: QuizHubProps) {
             </div>
           </motion.div>
 
+          {/* Learning Journey - Duolingo Style */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -196,7 +208,8 @@ export function QuizHub({ onClose, onStartQuiz }: QuizHubProps) {
               <Star className="w-5 h-5 text-gold" />
               {t.journey[language]}
             </h2>
-
+            
+            {/* Current Level Info */}
             <div className="bg-gradient-to-r from-primary/10 to-gold/10 rounded-xl p-4 mb-6">
               <div className="flex items-center gap-3 mb-2">
                 <span className="text-3xl">{currentStage.icon}</span>
@@ -219,14 +232,16 @@ export function QuizHub({ onClose, onStartQuiz }: QuizHubProps) {
               )}
             </div>
 
+            {/* Journey Path */}
             <div className="relative">
               <div className="absolute left-6 top-6 bottom-6 w-0.5 bg-border" />
+              
               <div className="space-y-4">
                 {journeyStages.map((stage, index) => {
                   const isCompleted = completedQuizzes >= stage.requiredQuizzes;
                   const isCurrent = stage.id === currentStage.id;
                   const isLocked = !isCompleted && !isCurrent;
-
+                  
                   return (
                     <motion.div
                       key={stage.id}
@@ -252,14 +267,14 @@ export function QuizHub({ onClose, onStartQuiz }: QuizHubProps) {
                           <span className="text-xl">{stage.icon}</span>
                         )}
                       </div>
-
+                      
                       <div className="flex-1">
                         <div className="font-medium">{stage.label[language]}</div>
                         <div className="text-xs text-muted-foreground">
                           {stage.requiredQuizzes} {t.quizzesCompleted[language].toLowerCase()}
                         </div>
                       </div>
-
+                      
                       {isCurrent && (
                         <div className="shrink-0">
                           <Button size="sm" variant="gradient" onClick={onStartQuiz}>
@@ -274,9 +289,11 @@ export function QuizHub({ onClose, onStartQuiz }: QuizHubProps) {
               </div>
             </div>
           </motion.div>
+
         </div>
       </div>
 
+      {/* Fixed Bottom CTA */}
       <div className="fixed bottom-20 left-0 right-0 p-4 bg-gradient-to-t from-background via-background to-transparent">
         <div className="max-w-2xl mx-auto">
           <Button

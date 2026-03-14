@@ -1,13 +1,18 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useUser } from '@/context/UserContext';
+import { Copy, Check, Users, MessageSquare, Gift } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Copy, Check, Users, Gift } from 'lucide-react';
+import { useUser } from '@/context/UserContext';
 import { toast } from 'sonner';
 
-export function InviteCard() {
+interface InviteCardProps {
+  compact?: boolean;
+}
+
+export function InviteCard({ compact = false }: InviteCardProps) {
   const { user } = useUser();
-  const [copied, setCopied] = useState(false);
+  const [copiedLink, setCopiedLink] = useState(false);
+  const [copiedMessage, setCopiedMessage] = useState(false);
 
   if (!user) return null;
 
@@ -15,67 +20,174 @@ export function InviteCard() {
   const inviteLink = `${window.location.origin}?ref=${user.referralCode}`;
 
   const t = {
-    title: { en: 'Invite a Colleague', de: 'Kollegen einladen' },
-    subtitle: { en: '+100 XP for each invite', de: '+100 XP für jede Einladung' },
-    copyLink: { en: 'Copy Invite Link', de: 'Einladungslink kopieren' },
-    copyMessage: { en: 'Copy Message', de: 'Nachricht kopieren' },
-    copied: { en: 'Copied!', de: 'Kopiert!' },
-    invitesSent: { en: 'Invites sent', de: 'Einladungen gesendet' },
+    title: {
+      en: 'Invite a colleague',
+      de: 'Kollegen einladen',
+    },
+    subtitle: {
+      en: 'Learn together and climb the leaderboard.',
+      de: 'Lernt gemeinsam und klettert im Ranking.',
+    },
+    copyLink: {
+      en: 'Copy Invite Link',
+      de: 'Link kopieren',
+    },
+    copyMessage: {
+      en: 'Copy Message',
+      de: 'Nachricht kopieren',
+    },
+    copied: {
+      en: 'Copied!',
+      de: 'Kopiert!',
+    },
+    reward: {
+      en: '+100 XP for each invite',
+      de: '+100 XP pro Einladung',
+    },
+    invitesSent: {
+      en: 'colleagues invited',
+      de: 'Kollegen eingeladen',
+    },
+    linkCopied: {
+      en: 'Invite link copied to clipboard!',
+      de: 'Einladungslink in die Zwischenablage kopiert!',
+    },
+    messageCopied: {
+      en: 'Invite message copied to clipboard!',
+      de: 'Einladungsnachricht in die Zwischenablage kopiert!',
+    },
   };
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(inviteLink);
-    setCopied(true);
-    toast.success(t.copied[language]);
-    setTimeout(() => setCopied(false), 2000);
+  const inviteMessageEN = `Join me on GridWise 🎯
+Let's level up our energy market knowledge and compete on the leaderboard.
+Sign up here: ${inviteLink}`;
+
+  const inviteMessageDE = `Mach mit bei GridWise 🎯
+Lass uns gemeinsam unser Energiemarkt-Wissen verbessern und im Ranking messen.
+Anmeldung: ${inviteLink}`;
+
+  const inviteMessage = language === 'en' ? inviteMessageEN : inviteMessageDE;
+
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(inviteLink);
+      setCopiedLink(true);
+      toast.success(t.linkCopied[language]);
+      setTimeout(() => setCopiedLink(false), 2000);
+    } catch (err) {
+      toast.error('Failed to copy link');
+    }
   };
 
-  const handleCopyMessage = () => {
-    const message = language === 'en'
-      ? `Join me on GridWise to learn about energy markets! ${inviteLink}`
-      : `Komm zu GridWise und lerne über Energiemärkte! ${inviteLink}`;
-    navigator.clipboard.writeText(message);
-    setCopied(true);
-    toast.success(t.copied[language]);
-    setTimeout(() => setCopied(false), 2000);
+  const handleCopyMessage = async () => {
+    try {
+      await navigator.clipboard.writeText(inviteMessage);
+      setCopiedMessage(true);
+      toast.success(t.messageCopied[language]);
+      setTimeout(() => setCopiedMessage(false), 2000);
+    } catch (err) {
+      toast.error('Failed to copy message');
+    }
   };
+
+  if (compact) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-card rounded-2xl p-4 border border-border shadow-sm"
+      >
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center">
+              <Users className="w-5 h-5 text-secondary" />
+            </div>
+            <div>
+              <span className="font-semibold">{t.title[language]}</span>
+              <p className="text-xs text-muted-foreground">{t.reward[language]}</p>
+            </div>
+          </div>
+          <Button size="sm" variant="secondary" onClick={handleCopyLink}>
+            {copiedLink ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+          </Button>
+        </div>
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-gradient-to-br from-secondary/10 via-primary/5 to-transparent rounded-2xl p-5 border border-secondary/20"
+      className="bg-gradient-to-br from-secondary/10 via-primary/5 to-transparent rounded-2xl p-5 border border-secondary/20 shadow-sm"
     >
-      <div className="flex items-start justify-between mb-3">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center">
-            <Users className="w-5 h-5 text-primary-foreground" />
-          </div>
-          <div>
-            <h3 className="font-semibold">{t.title[language]}</h3>
-            <div className="flex items-center gap-1 text-xs text-gold font-medium">
-              <Gift className="w-3 h-3" />
-              {t.subtitle[language]}
-            </div>
-          </div>
+      {/* Header */}
+      <div className="flex items-start gap-3 mb-4">
+        <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center shrink-0">
+          <Users className="w-6 h-6 text-primary-foreground" />
+        </div>
+        <div>
+          <h3 className="font-bold text-lg">{t.title[language]}</h3>
+          <p className="text-sm text-muted-foreground">{t.subtitle[language]}</p>
         </div>
       </div>
 
-      {user.invitesSent > 0 && (
-        <p className="text-xs text-muted-foreground mb-3">
-          {t.invitesSent[language]}: {user.invitesSent}
-        </p>
-      )}
+      {/* Reward Badge */}
+      <div className="flex items-center gap-2 mb-4 bg-gold/10 text-gold rounded-lg px-3 py-2 w-fit">
+        <Gift className="w-4 h-4" />
+        <span className="text-sm font-medium">{t.reward[language]}</span>
+      </div>
 
-      <div className="flex gap-2">
-        <Button variant="outline" size="sm" onClick={handleCopy} className="flex-1">
-          {copied ? <Check className="w-4 h-4 mr-1" /> : <Copy className="w-4 h-4 mr-1" />}
-          {t.copyLink[language]}
+      {/* Actions */}
+      <div className="grid grid-cols-2 gap-2">
+        <Button
+          variant="gradient"
+          size="sm"
+          onClick={handleCopyLink}
+          className="gap-2"
+        >
+          {copiedLink ? (
+            <>
+              <Check className="w-4 h-4" />
+              {t.copied[language]}
+            </>
+          ) : (
+            <>
+              <Copy className="w-4 h-4" />
+              {t.copyLink[language]}
+            </>
+          )}
         </Button>
-        <Button variant="outline" size="sm" onClick={handleCopyMessage} className="flex-1">
-          {t.copyMessage[language]}
+
+        <Button
+          variant="secondary"
+          size="sm"
+          onClick={handleCopyMessage}
+          className="gap-2"
+        >
+          {copiedMessage ? (
+            <>
+              <Check className="w-4 h-4" />
+              {t.copied[language]}
+            </>
+          ) : (
+            <>
+              <MessageSquare className="w-4 h-4" />
+              {t.copyMessage[language]}
+            </>
+          )}
         </Button>
       </div>
+
+      {/* Invite Stats */}
+      {user.invitesSent > 0 && (
+        <div className="mt-4 pt-4 border-t border-border">
+          <p className="text-sm text-muted-foreground text-center">
+            <span className="font-bold text-foreground">{user.invitesSent}</span>{' '}
+            {t.invitesSent[language]}
+          </p>
+        </div>
+      )}
     </motion.div>
   );
 }

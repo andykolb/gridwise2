@@ -3,23 +3,36 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useUser } from '@/context/UserContext';
 import { dailyNuggets } from '@/data/content';
 import { DailyNugget } from '@/types';
-import {
-  Flame, Zap, BookOpen, MessageCircle, Trophy,
+import { 
+  Flame, Zap, BookOpen, MessageCircle, Trophy, 
   ChevronRight, Sparkles, Target, Swords, ChevronDown, CheckCircle2
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { InviteCard } from '@/components/invite/InviteCard';
-import { useNavigate } from 'react-router-dom';
 
-export function LearningHome() {
+interface LearningHomeProps {
+  onStartQuiz: () => void;
+  onStartDuel: () => void;
+  onOpenChat: () => void;
+  onOpenLeaderboard: () => void;
+  onOpenAchievements: () => void;
+}
+
+export function LearningHome({ 
+  onStartQuiz,
+  onStartDuel,
+  onOpenChat, 
+  onOpenLeaderboard, 
+  onOpenAchievements 
+}: LearningHomeProps) {
   const { user, incrementStreak, markNuggetAsRead, isNuggetRead, addXP } = useUser();
   const [dailyNugget, setDailyNugget] = useState<DailyNugget | null>(null);
   const [showLearnMore, setShowLearnMore] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     incrementStreak();
+    // Get random daily nugget
     const randomIndex = Math.floor(Math.random() * dailyNuggets.length);
     setDailyNugget(dailyNuggets[randomIndex]);
   }, []);
@@ -31,37 +44,76 @@ export function LearningHome() {
 
   const t = {
     greeting: {
-      en: `Welcome back, ${user.name}!`,
-      de: `Willkommen zurück, ${user.name}!`,
+      en: `Welcome back, ${user.name}! 👋`,
+      de: `Willkommen zurück, ${user.name}! 👋`,
     },
-    streak: { en: 'Day Streak', de: 'Tage in Folge' },
-    xp: { en: 'XP Points', de: 'XP Punkte' },
+    streak: {
+      en: 'Day Streak',
+      de: 'Tage in Folge',
+    },
+    xp: {
+      en: 'XP Points',
+      de: 'XP Punkte',
+    },
     level: {
       en: user.level.charAt(0).toUpperCase() + user.level.slice(1),
       de: getLevelGerman(user.level),
     },
-    dailyNugget: { en: "Today's Learning Nugget", de: 'Lern-Nugget des Tages' },
-    startQuiz: { en: 'Start Quiz', de: 'Quiz starten' },
-    quizDuel: { en: 'Quiz Duel', de: 'Quiz-Duell' },
-    askAgent: { en: 'Ask the Agent', de: 'Den Agenten fragen' },
-    leaderboard: { en: 'Leaderboard', de: 'Rangliste' },
-    achievements: { en: 'Achievements', de: 'Erfolge' },
-    toNextLevel: { en: 'to next level', de: 'zum nächsten Level' },
+    dailyNugget: {
+      en: "Today's Learning Nugget",
+      de: 'Lern-Nugget des Tages',
+    },
+    startQuiz: {
+      en: 'Start Quiz',
+      de: 'Quiz starten',
+    },
+    quizDuel: {
+      en: 'Quiz Duel',
+      de: 'Quiz-Duell',
+    },
+    askAgent: {
+      en: 'Ask the Agent',
+      de: 'Den Agenten fragen',
+    },
+    leaderboard: {
+      en: 'Leaderboard',
+      de: 'Rangliste',
+    },
+    achievements: {
+      en: 'Achievements',
+      de: 'Erfolge',
+    },
+    toNextLevel: {
+      en: 'to next level',
+      de: 'zum nächsten Level',
+    },
   };
 
   return (
     <div className="bg-gradient-to-b from-background to-muted p-4 md:p-6 pb-32 overflow-y-auto">
       <div className="max-w-2xl mx-auto space-y-6">
         {/* Header */}
-        <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center">
-          <h1 className="text-2xl md:text-3xl font-bold mb-1">{t.greeting[language]}</h1>
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center"
+        >
+          <h1 className="text-2xl md:text-3xl font-bold mb-1">
+            {t.greeting[language]}
+          </h1>
           <p className="text-muted-foreground">
             {language === 'en' ? 'Keep up the great learning!' : 'Weiter so mit dem Lernen!'}
           </p>
         </motion.div>
 
         {/* Stats Row */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="grid grid-cols-3 gap-3">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="grid grid-cols-3 gap-3"
+        >
+          {/* Streak */}
           <div className="bg-card rounded-2xl p-4 border border-border shadow-sm text-center">
             <div className="w-12 h-12 rounded-xl bg-warning/10 flex items-center justify-center mx-auto mb-2">
               <Flame className="w-6 h-6 text-warning" />
@@ -70,6 +122,7 @@ export function LearningHome() {
             <p className="text-xs text-muted-foreground">{t.streak[language]}</p>
           </div>
 
+          {/* XP */}
           <div className="bg-card rounded-2xl p-4 border border-border shadow-sm text-center">
             <div className="w-12 h-12 rounded-xl bg-gold/10 flex items-center justify-center mx-auto mb-2">
               <Zap className="w-6 h-6 text-gold" />
@@ -78,6 +131,7 @@ export function LearningHome() {
             <p className="text-xs text-muted-foreground">{t.xp[language]}</p>
           </div>
 
+          {/* Level */}
           <div className="bg-card rounded-2xl p-4 border border-border shadow-sm text-center">
             <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-2">
               <Target className="w-6 h-6 text-primary" />
@@ -88,10 +142,17 @@ export function LearningHome() {
         </motion.div>
 
         {/* Level Progress */}
-        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="bg-card rounded-2xl p-4 border border-border shadow-sm">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="bg-card rounded-2xl p-4 border border-border shadow-sm"
+        >
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm font-medium">{t.level[language]}</span>
-            <span className="text-xs text-muted-foreground">{levelProgress.remaining} XP {t.toNextLevel[language]}</span>
+            <span className="text-xs text-muted-foreground">
+              {levelProgress.remaining} XP {t.toNextLevel[language]}
+            </span>
           </div>
           <Progress value={levelProgress.percent} className="h-3" />
           <div className="flex justify-between items-center mt-2 text-xs text-muted-foreground">
@@ -102,10 +163,14 @@ export function LearningHome() {
 
         {/* Daily Nugget */}
         {dailyNugget && (
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
             className={`bg-gradient-to-br from-primary/10 via-primary/5 to-transparent rounded-2xl p-5 border shadow-sm ${
               isNuggetRead(dailyNugget.id) ? 'border-success/30' : 'border-primary/20'
-            }`}>
+            }`}
+          >
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-primary" />
@@ -119,31 +184,59 @@ export function LearningHome() {
               )}
             </div>
             <h3 className="text-lg font-bold mb-2">{dailyNugget.title[language]}</h3>
-            <p className="text-muted-foreground text-sm leading-relaxed">{dailyNugget.content[language]}</p>
-
-            <Button variant="ghost" size="sm" onClick={() => setShowLearnMore(!showLearnMore)}
-              className="mt-4 w-full justify-between text-primary hover:text-primary hover:bg-primary/10">
+            <p className="text-muted-foreground text-sm leading-relaxed">
+              {dailyNugget.content[language]}
+            </p>
+            
+            {/* Learn More Button */}
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowLearnMore(!showLearnMore)}
+              className="mt-4 w-full justify-between text-primary hover:text-primary hover:bg-primary/10"
+            >
               <span className="flex items-center gap-2">
                 <BookOpen className="w-4 h-4" />
                 {language === 'en' ? 'Learn More' : 'Mehr erfahren'}
               </span>
               <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${showLearnMore ? 'rotate-180' : ''}`} />
             </Button>
-
+            
+            {/* Learn More Content */}
             <AnimatePresence>
               {showLearnMore && (
-                <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden">
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
                   <div className="mt-4 p-4 rounded-xl bg-background/50 border border-primary/10">
-                    <p className="text-sm text-foreground leading-relaxed">{dailyNugget.learnMore[language]}</p>
+                    <p className="text-sm text-foreground leading-relaxed">
+                      {dailyNugget.learnMore[language]}
+                    </p>
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
 
+            {/* Mark as Read Button */}
             {!isNuggetRead(dailyNugget.id) && (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-4">
-                <Button variant="outline" size="sm" onClick={() => { markNuggetAsRead(dailyNugget.id); addXP(5); }}
-                  className="w-full border-success/50 text-success hover:bg-success/10 hover:text-success">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="mt-4"
+              >
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    markNuggetAsRead(dailyNugget.id);
+                    addXP(5); // Small XP reward for reading
+                  }}
+                  className="w-full border-success/50 text-success hover:bg-success/10 hover:text-success"
+                >
                   <CheckCircle2 className="w-4 h-4 mr-2" />
                   {language === 'en' ? 'Mark as Read (+5 XP)' : 'Als gelesen markieren (+5 XP)'}
                 </Button>
@@ -153,34 +246,70 @@ export function LearningHome() {
         )}
 
         {/* Quick Actions */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }} className="grid grid-cols-2 gap-3">
-          <Button variant="gradient" size="lg" onClick={() => navigate('/quiz')} className="h-auto py-4 flex-col gap-2">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="grid grid-cols-2 gap-3"
+        >
+          <Button
+            variant="gradient"
+            size="lg"
+            onClick={onStartQuiz}
+            className="h-auto py-4 flex-col gap-2"
+          >
             <BookOpen className="w-6 h-6" />
             <span>{t.startQuiz[language]}</span>
           </Button>
-          <Button variant="outline" size="lg" onClick={() => navigate('/duel')} className="h-auto py-4 flex-col gap-2 border-2 border-primary/50 hover:bg-primary/10">
+
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={onStartDuel}
+            className="h-auto py-4 flex-col gap-2 border-2 border-primary/50 hover:bg-primary/10"
+          >
             <Swords className="w-6 h-6 text-primary" />
             <span className="text-primary font-semibold">{t.quizDuel[language]}</span>
           </Button>
         </motion.div>
 
         {/* Ask Agent Button */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }}>
-          <Button variant="secondary" size="lg" onClick={() => navigate('/chat')} className="w-full h-auto py-4 flex-row gap-3">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.45 }}
+        >
+          <Button
+            variant="secondary"
+            size="lg"
+            onClick={onOpenChat}
+            className="w-full h-auto py-4 flex-row gap-3"
+          >
             <MessageCircle className="w-6 h-6" />
             <span>{t.askAgent[language]}</span>
           </Button>
         </motion.div>
 
         {/* Invite Colleague Card */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+        >
           <InviteCard />
         </motion.div>
 
         {/* Leaderboard & Achievements */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.6 }} className="space-y-3">
-          <button onClick={() => navigate('/leaderboard')}
-            className="w-full bg-card rounded-2xl p-4 border border-border shadow-sm flex items-center justify-between hover:border-primary/50 transition-colors">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="space-y-3"
+        >
+          <button
+            onClick={onOpenLeaderboard}
+            className="w-full bg-card rounded-2xl p-4 border border-border shadow-sm flex items-center justify-between hover:border-primary/50 transition-colors"
+          >
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl gradient-gold flex items-center justify-center">
                 <Trophy className="w-5 h-5 text-gold-foreground" />
@@ -190,8 +319,10 @@ export function LearningHome() {
             <ChevronRight className="w-5 h-5 text-muted-foreground" />
           </button>
 
-          <button onClick={() => navigate('/achievements')}
-            className="w-full bg-card rounded-2xl p-4 border border-border shadow-sm flex items-center justify-between hover:border-primary/50 transition-colors">
+          <button
+            onClick={onOpenAchievements}
+            className="w-full bg-card rounded-2xl p-4 border border-border shadow-sm flex items-center justify-between hover:border-primary/50 transition-colors"
+          >
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-xl gradient-success flex items-center justify-center">
                 <span className="text-lg">🏅</span>

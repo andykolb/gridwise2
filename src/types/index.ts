@@ -2,7 +2,7 @@ export type Language = 'en' | 'de';
 
 export type UserLevel = 'beginner' | 'intermediate' | 'advanced' | 'expert';
 
-export type Topic =
+export type Topic = 
   | 'energy-basics'
   | 'price-drivers'
   | 'renewables'
@@ -27,7 +27,7 @@ export interface User {
   invitesAccepted: number;
   referredBy?: string;
   avatar?: string;
-  readNuggets: string[];
+  readNuggets: string[]; // IDs of read daily nuggets
 }
 
 export interface Invite {

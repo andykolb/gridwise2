@@ -1,7 +1,6 @@
-import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useUser } from '@/context/UserContext';
-import { leaderboardUsers } from '@/data/content';
+import { mockLeaderboard } from '@/data/content';
 import { LeaderboardUser } from '@/types';
 import { X, Trophy, Flame, Medal } from 'lucide-react';
 
@@ -18,106 +17,112 @@ export function Leaderboard({ onClose }: LeaderboardProps) {
 
   const t = {
     title: { en: 'Leaderboard', de: 'Rangliste' },
+    subtitle: { en: 'Top learners this week', de: 'Top-Lerner diese Woche' },
     you: { en: '(You)', de: '(Du)' },
     streak: { en: 'day streak', de: 'Tage Serie' },
   };
 
-  const allUsers = useMemo(() => {
-    const currentUser: LeaderboardUser = {
-      rank: 0,
-      name: user.name,
-      xp: user.xp,
-      level: user.level,
-      avatar: user.avatar || '👤',
-      streak: user.streak,
-    };
+  // Insert current user into leaderboard
+  const userEntry: LeaderboardUser = {
+    rank: 0,
+    name: user.name,
+    xp: user.xp,
+    level: user.level,
+    avatar: '🧑‍💻',
+    streak: user.streak,
+  };
 
-    const merged = [...leaderboardUsers, currentUser]
-      .sort((a, b) => b.xp - a.xp)
-      .map((u, i) => ({ ...u, rank: i + 1 }));
+  // Create combined leaderboard
+  const allUsers = [...mockLeaderboard, userEntry].sort((a, b) => b.xp - a.xp);
+  const rankedUsers = allUsers.map((u, i) => ({ ...u, rank: i + 1 }));
+  const currentUserRank = rankedUsers.find(u => u.name === user.name)?.rank || 11;
 
-    const top10 = merged.slice(0, 10);
-    const userEntry = merged.find(u => u.name === user.name);
+  // Show top 10 + current user if not in top 10
+  let displayUsers = rankedUsers.slice(0, 10);
+  if (currentUserRank > 10) {
+    displayUsers = [...displayUsers.slice(0, 9), rankedUsers.find(u => u.name === user.name)!];
+  }
 
-    if (userEntry && userEntry.rank > 10) {
-      return [...merged.slice(0, 9), userEntry];
-    }
-
-    return top10;
-  }, [user]);
+  const getRankStyle = (rank: number) => {
+    if (rank === 1) return 'gradient-gold text-gold-foreground';
+    if (rank === 2) return 'bg-gray-300 text-gray-700';
+    if (rank === 3) return 'bg-amber-600 text-white';
+    return 'bg-muted text-muted-foreground';
+  };
 
   const getRankIcon = (rank: number) => {
-    if (rank === 1) return <Trophy className="w-5 h-5 text-yellow-500" />;
-    if (rank === 2) return <Medal className="w-5 h-5 text-gray-400" />;
-    if (rank === 3) return <Medal className="w-5 h-5 text-amber-600" />;
-    return <span className="text-sm font-bold text-muted-foreground">{rank}</span>;
+    if (rank === 1) return <Trophy className="w-4 h-4" />;
+    if (rank === 2) return <Medal className="w-4 h-4" />;
+    if (rank === 3) return <Medal className="w-4 h-4" />;
+    return rank;
   };
 
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-background z-50 flex flex-col overflow-hidden"
+      className="fixed inset-0 bg-background z-50 flex flex-col"
     >
-      <div className="p-4 border-b border-border shrink-0">
+      {/* Header */}
+      <div className="p-4 border-b border-border">
         <div className="max-w-2xl mx-auto flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold">{t.title[language]}</h1>
+            <p className="text-sm text-muted-foreground">{t.subtitle[language]}</p>
+          </div>
           <button onClick={onClose} className="p-2 hover:bg-muted rounded-lg">
             <X className="w-6 h-6" />
           </button>
-          <h1 className="text-xl font-bold">{t.title[language]}</h1>
-          <div className="w-10" />
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4 pb-32">
-        <div className="max-w-2xl mx-auto space-y-3">
-          {allUsers.map((entry, index) => {
-            const isCurrentUser = entry.name === user.name;
-
+      {/* Leaderboard */}
+      <div className="flex-1 overflow-y-auto p-4">
+        <div className="max-w-2xl mx-auto space-y-2">
+          {displayUsers.map((leaderUser, index) => {
+            const isCurrentUser = leaderUser.name === user.name;
+            
             return (
               <motion.div
-                key={`${entry.name}-${entry.rank}`}
+                key={`${leaderUser.name}-${leaderUser.rank}`}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.05 }}
-                className={`flex items-center gap-4 p-4 rounded-2xl border transition-all ${
+                className={`flex items-center gap-4 p-4 rounded-2xl border-2 transition-all ${
                   isCurrentUser
-                    ? 'border-primary bg-primary/5'
-                    : entry.rank <= 3
-                    ? 'border-gold/30 bg-gold/5'
+                    ? 'border-primary bg-primary/5 shadow-lg'
                     : 'border-border bg-card'
                 }`}
               >
-                <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center shrink-0">
-                  {getRankIcon(entry.rank)}
+                {/* Rank */}
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm ${getRankStyle(leaderUser.rank)}`}>
+                  {getRankIcon(leaderUser.rank)}
                 </div>
 
-                <div className="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center text-lg shrink-0">
-                  {entry.avatar}
-                </div>
+                {/* Avatar */}
+                <div className="text-3xl">{leaderUser.avatar}</div>
 
+                {/* Info */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <span className="font-semibold truncate">{entry.name}</span>
+                    <span className="font-semibold truncate">{leaderUser.name}</span>
                     {isCurrentUser && (
                       <span className="text-xs text-primary font-medium">{t.you[language]}</span>
                     )}
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <span className="capitalize">{entry.level}</span>
-                    {entry.streak > 0 && (
-                      <span className="flex items-center gap-1">
-                        <Flame className="w-3 h-3 text-warning" />
-                        {entry.streak} {t.streak[language]}
-                      </span>
-                    )}
+                  <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                    <span className="capitalize">{leaderUser.level}</span>
+                    <span className="flex items-center gap-1">
+                      <Flame className="w-3 h-3 text-warning" />
+                      {leaderUser.streak} {t.streak[language]}
+                    </span>
                   </div>
                 </div>
 
-                <div className="text-right shrink-0">
-                  <span className="text-lg font-bold text-gold">{entry.xp}</span>
-                  <span className="text-xs text-muted-foreground ml-1">XP</span>
+                {/* XP */}
+                <div className="text-right">
+                  <div className="font-bold text-lg">{leaderUser.xp.toLocaleString()}</div>
+                  <div className="text-xs text-muted-foreground">XP</div>
                 </div>
               </motion.div>
             );

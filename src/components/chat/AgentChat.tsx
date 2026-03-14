@@ -39,14 +39,14 @@ export function AgentChat({ onClose }: AgentChatProps) {
     medium: { en: 'Medium', de: 'Mittel' },
     low: { en: 'Low', de: 'Niedrig' },
     welcomeMessage: {
-      en: "Hello! I'm your AI energy market assistant. Ask me anything about power prices, renewables, trading, grid operations, or energy policy!",
-      de: "Hallo! Ich bin dein KI-Energiemarkt-Assistent. Frag mich alles über Strompreise, Erneuerbare, Handel, Netzbetrieb oder Energiepolitik!"
+      en: "Hello! 👋 I'm your AI energy market assistant. Ask me anything about power prices, renewables, trading, grid operations, or energy policy!",
+      de: "Hallo! 👋 Ich bin dein KI-Energiemarkt-Assistent. Frag mich alles über Strompreise, Erneuerbare, Handel, Netzbetrieb oder Energiepolitik!"
     },
   };
 
   const getMockResponse = (query: string): { content: string; sources: { title: string; url: string }[]; confidence: 'low' | 'medium' | 'high' } => {
     const lowerQuery = query.toLowerCase();
-
+    
     let responseKey = 'default';
     if (lowerQuery.includes('price') || lowerQuery.includes('preis') || lowerQuery.includes('cost') || lowerQuery.includes('kosten')) {
       responseKey = 'price';
@@ -76,7 +76,7 @@ export function AgentChat({ onClose }: AgentChatProps) {
 
     const userMessage = input.trim();
     setInput('');
-
+    
     addChatMessage({
       role: 'user',
       content: userMessage,
@@ -85,10 +85,11 @@ export function AgentChat({ onClose }: AgentChatProps) {
     setIsTyping(true);
     askQuestion();
 
+    // Simulate AI thinking
     await new Promise(resolve => setTimeout(resolve, 1500 + Math.random() * 1000));
 
     const response = getMockResponse(userMessage);
-
+    
     addChatMessage({
       role: 'assistant',
       content: response.content,
@@ -118,6 +119,7 @@ export function AgentChat({ onClose }: AgentChatProps) {
       animate={{ opacity: 1 }}
       className="fixed inset-0 bg-background z-50 flex flex-col"
     >
+      {/* Header */}
       <div className="p-4 border-b border-border">
         <div className="max-w-2xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -135,8 +137,10 @@ export function AgentChat({ onClose }: AgentChatProps) {
         </div>
       </div>
 
+      {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4">
         <div className="max-w-2xl mx-auto space-y-4">
+          {/* Welcome message */}
           {chatMessages.length === 0 && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
@@ -152,6 +156,7 @@ export function AgentChat({ onClose }: AgentChatProps) {
             </motion.div>
           )}
 
+          {/* Chat messages */}
           <AnimatePresence>
             {chatMessages.map((message, index) => (
               <motion.div
@@ -170,14 +175,14 @@ export function AgentChat({ onClose }: AgentChatProps) {
                     <Bot className="w-4 h-4 text-primary-foreground" />
                   )}
                 </div>
-
+                
                 <div className={`max-w-[80%] ${
-                  message.role === 'user'
-                    ? 'bg-primary text-primary-foreground rounded-2xl rounded-tr-sm'
+                  message.role === 'user' 
+                    ? 'bg-primary text-primary-foreground rounded-2xl rounded-tr-sm' 
                     : 'bg-card rounded-2xl rounded-tl-sm border border-border shadow-sm'
                 } p-4`}>
                   <p className="whitespace-pre-wrap">{message.content}</p>
-
+                  
                   {message.sources && message.sources.length > 0 && (
                     <div className="mt-4 pt-3 border-t border-border">
                       <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground mb-2">
@@ -214,6 +219,7 @@ export function AgentChat({ onClose }: AgentChatProps) {
             ))}
           </AnimatePresence>
 
+          {/* Typing indicator */}
           {isTyping && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
@@ -249,6 +255,7 @@ export function AgentChat({ onClose }: AgentChatProps) {
         </div>
       </div>
 
+      {/* Input */}
       <div className="p-4 border-t border-border">
         <div className="max-w-2xl mx-auto flex gap-3">
           <Input

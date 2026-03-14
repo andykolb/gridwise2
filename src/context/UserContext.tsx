@@ -48,33 +48,7 @@ const CHAT_KEY = 'gridwise_chat';
 const REFERRALS_KEY = 'gridwise_referrals';
 const VIEWED_ACHIEVEMENTS_KEY = 'gridwise_viewed_achievements';
 
-/**
- * Safely read and parse JSON from localStorage.
- * Returns `fallback` on any error (missing key, corrupted data, etc.).
- */
-function safeReadStorage<T>(key: string, fallback: T): T {
-  try {
-    const raw = localStorage.getItem(key);
-    if (raw === null) return fallback;
-    return JSON.parse(raw) as T;
-  } catch (err) {
-    console.warn(`Failed to read localStorage key "${key}":`, err);
-    return fallback;
-  }
-}
-
-/**
- * Safely write JSON to localStorage.
- * Silently logs on failure (e.g. quota exceeded).
- */
-function safeWriteStorage(key: string, value: unknown): void {
-  try {
-    localStorage.setItem(key, JSON.stringify(value));
-  } catch (err) {
-    console.warn(`Failed to write localStorage key "${key}":`, err);
-  }
-}
-
+// Generate a unique referral code
 function generateReferralCode(): string {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   let code = '';
@@ -93,84 +67,77 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const [levelUpEvent, setLevelUpEvent] = useState<LevelUpEvent | null>(null);
   const [viewedAchievements, setViewedAchievements] = useState<string[]>([]);
 
-  // Load persisted state on mount — with safe parsing
+  // Load from localStorage on mount
   useEffect(() => {
-    const savedUser = safeReadStorage<User | null>(STORAGE_KEY, null);
-    const savedAchievements = safeReadStorage<Achievement[] | null>(ACHIEVEMENTS_KEY, null);
-    const savedChat = safeReadStorage<ChatMessage[] | null>(CHAT_KEY, null);
-    const savedViewedAchievements = safeReadStorage<string[] | null>(VIEWED_ACHIEVEMENTS_KEY, null);
+    const savedUser = localStorage.getItem(STORAGE_KEY);
+    const savedAchievements = localStorage.getItem(ACHIEVEMENTS_KEY);
+    const savedChat = localStorage.getItem(CHAT_KEY);
+    const savedViewedAchievements = localStorage.getItem(VIEWED_ACHIEVEMENTS_KEY);
 
     if (savedUser) {
-      setUserState(savedUser);
+      const parsed = JSON.parse(savedUser);
+      setUserState(parsed);
       setIsOnboarded(true);
     }
     if (savedAchievements) {
-      setAchievements(savedAchievements);
+      setAchievements(JSON.parse(savedAchievements));
     }
     if (savedChat) {
-      setChatMessages(savedChat);
+      setChatMessages(JSON.parse(savedChat));
     }
     if (savedViewedAchievements) {
-      setViewedAchievements(savedViewedAchievements);
+      setViewedAchievements(JSON.parse(savedViewedAchievements));
     }
   }, []);
 
-  // Persist state changes — with safe writes
+  // Save to localStorage on changes
   useEffect(() => {
     if (user) {
-      safeWriteStorage(STORAGE_KEY, user);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
     }
   }, [user]);
 
   useEffect(() => {
-    safeWriteStorage(ACHIEVEMENTS_KEY, achievements);
+    localStorage.setItem(ACHIEVEMENTS_KEY, JSON.stringify(achievements));
   }, [achievements]);
 
   useEffect(() => {
-    safeWriteStorage(CHAT_KEY, chatMessages);
+    localStorage.setItem(CHAT_KEY, JSON.stringify(chatMessages));
   }, [chatMessages]);
 
-  const setUser = useCallback((newUser: User | null) => {
+  const setUser = (newUser: User | null) => {
     setUserState(newUser);
     if (newUser) {
       setIsOnboarded(true);
     }
-  }, []);
+  };
 
-  const updateUser = useCallback((updates: Partial<User>) => {
-    setUserState(prev => prev ? { ...prev, ...updates } : prev);
-  }, []);
+  const updateUser = (updates: Partial<User>) => {
+    if (user) {
+      setUserState({ ...user, ...updates });
+    }
+  };
 
-  const startOnboarding = useCallback(() => {
+  const startOnboarding = () => {
     setIsOnboarded(false);
-  }, []);
+  };
 
-  const unlockAchievement = useCallback((id: string) => {
-    setAchievements(prev =>
-      prev.map(a =>
-        a.id === id ? { ...a, unlocked: true } : a
-      )
-    );
-    setUserState(prev => {
-      if (!prev || prev.achievements.includes(id)) return prev;
-      return { ...prev, achievements: [...prev.achievements, id] };
-    });
-  }, []);
-
-  const completeOnboarding = useCallback((userData: Partial<User>) => {
+  const completeOnboarding = (userData: Partial<User>) => {
+    // Check for referral code in URL
     const urlParams = new URLSearchParams(window.location.search);
     const referralCode = urlParams.get('ref');
-
+    
+    // Welcome bonus: 25 XP for new users, +25 extra if referred (50 total)
     const welcomeBonus = 25;
     const referralBonus = referralCode ? 25 : 0;
     const totalWelcomeXP = welcomeBonus + referralBonus;
-
+    
     const newUser: User = {
       name: userData.name || 'Learner',
       language: userData.language || 'en',
       interests: userData.interests || [],
       level: userData.level || 'beginner',
-      xp: 0,
+      xp: 0, // Start at 0, we'll add XP with animation
       streak: 1,
       lastActiveDate: new Date().toISOString().split('T')[0],
       completedQuizzes: 0,
@@ -185,66 +152,81 @@ export function UserProvider({ children }: { children: ReactNode }) {
     setUserState(newUser);
     setIsOnboarded(true);
 
+    // Unlock welcome achievement
     setTimeout(() => {
       unlockAchievement('welcome');
     }, 500);
 
+    // Trigger welcome XP animation after a short delay
     setTimeout(() => {
+      // Directly set XP animation state and update user XP
       setXPAnimation({ amount: totalWelcomeXP, id: Date.now() });
       setUserState(prev => prev ? { ...prev, xp: totalWelcomeXP } : prev);
     }, 800);
 
+    // Process referral if exists
     if (referralCode) {
       processReferral(referralCode);
+      // Clean URL
       window.history.replaceState({}, '', window.location.pathname);
     }
-  }, [unlockAchievement]);
+  };
 
-  const processReferral = useCallback((referralCode: string) => {
-    const referrals = safeReadStorage<Record<string, string[]>>(REFERRALS_KEY, {});
-
+  const processReferral = (referralCode: string) => {
+    // In a real app, this would call an API to validate and process the referral
+    // For now, we store it locally and grant rewards
+    const storedReferrals = localStorage.getItem(REFERRALS_KEY);
+    const referrals: Record<string, string[]> = storedReferrals ? JSON.parse(storedReferrals) : {};
+    
+    // Store this referral (inviter code -> list of invitee IDs)
     if (!referrals[referralCode]) {
       referrals[referralCode] = [];
     }
-
+    
+    // Add current user's referral code as invitee identifier
     const inviteeId = Date.now().toString();
     referrals[referralCode].push(inviteeId);
-    safeWriteStorage(REFERRALS_KEY, referrals);
-  }, []);
+    localStorage.setItem(REFERRALS_KEY, JSON.stringify(referrals));
+    
+    console.log(`Referral processed: ${referralCode} -> ${inviteeId}`);
+  };
 
-  // FIX: Use functional state updater to avoid stale closure over `user`
   const addXP = useCallback((amount: number) => {
-    setUserState(prev => {
-      if (!prev) return prev;
-      const newXP = prev.xp + amount;
-      let newLevel = prev.level;
+    if (user) {
+      const newXP = user.xp + amount;
+      let newLevel = user.level;
       let didLevelUp = false;
-
-      if (newXP >= 3000 && prev.level !== 'expert') {
+      
+      // Level thresholds
+      if (newXP >= 3000 && user.level !== 'expert') {
         newLevel = 'expert';
         didLevelUp = true;
-      } else if (newXP >= 1500 && prev.level !== 'advanced' && prev.level !== 'expert') {
+        unlockAchievement('level-up');
+      } else if (newXP >= 1500 && user.level !== 'advanced' && user.level !== 'expert') {
         newLevel = 'advanced';
         didLevelUp = true;
-      } else if (newXP >= 500 && prev.level === 'beginner') {
+      } else if (newXP >= 500 && user.level === 'beginner') {
         newLevel = 'intermediate';
         didLevelUp = true;
       }
 
+      // Trigger XP animation
       setXPAnimation({ amount, id: Date.now() });
 
+      // Trigger level up celebration after a delay (so XP animation shows first)
       if (didLevelUp) {
-        if (newLevel === 'expert') {
-          unlockAchievement('level-up');
-        }
         setTimeout(() => {
           setLevelUpEvent({ newLevel, id: Date.now() });
         }, 1500);
       }
 
-      return { ...prev, xp: newXP, level: newLevel };
-    });
-  }, [unlockAchievement]);
+      setUserState({
+        ...user,
+        xp: newXP,
+        level: newLevel,
+      });
+    }
+  }, [user]);
 
   const clearXPAnimation = useCallback(() => {
     setXPAnimation(null);
@@ -254,95 +236,101 @@ export function UserProvider({ children }: { children: ReactNode }) {
     setLevelUpEvent(null);
   }, []);
 
-  // FIX: Use functional state updater to avoid stale closure
-  const incrementStreak = useCallback(() => {
-    setUserState(prev => {
-      if (!prev) return prev;
-
+  const incrementStreak = () => {
+    if (user) {
       const today = new Date().toISOString().split('T')[0];
-      const lastActive = prev.lastActiveDate;
-
+      const lastActive = user.lastActiveDate;
+      
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
       const yesterdayStr = yesterday.toISOString().split('T')[0];
 
-      let newStreak = prev.streak;
-
+      let newStreak = user.streak;
+      
       if (lastActive === yesterdayStr) {
-        newStreak = prev.streak + 1;
+        newStreak = user.streak + 1;
       } else if (lastActive !== today) {
         newStreak = 1;
       }
 
-      // Trigger streak achievements via setTimeout to avoid nested state updates
-      if (newStreak >= 3) {
-        setTimeout(() => unlockAchievement('streak-3'), 0);
-      }
-      if (newStreak >= 7) {
-        setTimeout(() => unlockAchievement('streak-7'), 0);
-      }
+      // Check streak achievements
+      if (newStreak >= 3) unlockAchievement('streak-3');
+      if (newStreak >= 7) unlockAchievement('streak-7');
 
-      return { ...prev, streak: newStreak, lastActiveDate: today };
-    });
-  }, [unlockAchievement]);
+      setUserState({
+        ...user,
+        streak: newStreak,
+        lastActiveDate: today,
+      });
+    }
+  };
 
-  // FIX: Use functional state updater to avoid stale closure
-  const completeQuiz = useCallback(() => {
-    setUserState(prev => {
-      if (!prev) return prev;
-      const newCount = prev.completedQuizzes + 1;
+  const completeQuiz = () => {
+    if (user) {
+      const newCount = user.completedQuizzes + 1;
+      setUserState({
+        ...user,
+        completedQuizzes: newCount,
+      });
 
-      if (newCount === 1) {
-        setTimeout(() => unlockAchievement('first-quiz'), 0);
-      }
-      if (newCount >= 10) {
-        setTimeout(() => unlockAchievement('quiz-champion'), 0);
-      }
+      if (newCount === 1) unlockAchievement('first-quiz');
+      if (newCount >= 10) unlockAchievement('quiz-champion');
+    }
+  };
 
-      return { ...prev, completedQuizzes: newCount };
-    });
-  }, [unlockAchievement]);
+  const askQuestion = () => {
+    if (user) {
+      const newCount = user.questionsAsked + 1;
+      setUserState({
+        ...user,
+        questionsAsked: newCount,
+      });
 
-  // FIX: Use functional state updater to avoid stale closure
-  const askQuestion = useCallback(() => {
-    setUserState(prev => {
-      if (!prev) return prev;
-      const newCount = prev.questionsAsked + 1;
+      if (newCount >= 5) unlockAchievement('curious-mind');
+    }
+  };
 
-      if (newCount >= 5) {
-        setTimeout(() => unlockAchievement('curious-mind'), 0);
-      }
+  const unlockAchievement = (id: string) => {
+    setAchievements(prev =>
+      prev.map(a =>
+        a.id === id ? { ...a, unlocked: true } : a
+      )
+    );
+    if (user && !user.achievements.includes(id)) {
+      setUserState({
+        ...user,
+        achievements: [...user.achievements, id],
+      });
+    }
+  };
 
-      return { ...prev, questionsAsked: newCount };
-    });
-  }, [unlockAchievement]);
-
-  const addChatMessage = useCallback((message: Omit<ChatMessage, 'id' | 'timestamp'>) => {
+  const addChatMessage = (message: Omit<ChatMessage, 'id' | 'timestamp'>) => {
     const newMessage: ChatMessage = {
       ...message,
       id: Date.now().toString(),
       timestamp: new Date(),
     };
     setChatMessages(prev => [...prev, newMessage]);
-  }, []);
+  };
 
-  const clearChat = useCallback(() => {
+  const clearChat = () => {
     setChatMessages([]);
-  }, []);
+  };
 
   const markNuggetAsRead = useCallback((nuggetId: string) => {
-    setUserState(prev => {
-      if (!prev || prev.readNuggets?.includes(nuggetId)) return prev;
-      return { ...prev, readNuggets: [...(prev.readNuggets || []), nuggetId] };
-    });
-  }, []);
+    if (user && !user.readNuggets?.includes(nuggetId)) {
+      setUserState({
+        ...user,
+        readNuggets: [...(user.readNuggets || []), nuggetId],
+      });
+    }
+  }, [user]);
 
   const isNuggetRead = useCallback((nuggetId: string): boolean => {
-    // This reads from the current render's user value via the component closure,
-    // which is fine since it's called synchronously during render.
     return user?.readNuggets?.includes(nuggetId) || false;
   }, [user]);
 
+  // Calculate new (unviewed) achievements
   const newAchievementCount = achievements.filter(
     a => a.unlocked && !viewedAchievements.includes(a.id)
   ).length;
@@ -350,24 +338,20 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const clearNewAchievements = useCallback(() => {
     const unlockedIds = achievements.filter(a => a.unlocked).map(a => a.id);
     setViewedAchievements(unlockedIds);
-    safeWriteStorage(VIEWED_ACHIEVEMENTS_KEY, unlockedIds);
+    localStorage.setItem(VIEWED_ACHIEVEMENTS_KEY, JSON.stringify(unlockedIds));
   }, [achievements]);
 
-  const resetApp = useCallback(() => {
-    try {
-      localStorage.removeItem(STORAGE_KEY);
-      localStorage.removeItem(ACHIEVEMENTS_KEY);
-      localStorage.removeItem(CHAT_KEY);
-      localStorage.removeItem(VIEWED_ACHIEVEMENTS_KEY);
-    } catch (err) {
-      console.warn('Failed to clear localStorage:', err);
-    }
+  const resetApp = () => {
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(ACHIEVEMENTS_KEY);
+    localStorage.removeItem(CHAT_KEY);
+    localStorage.removeItem(VIEWED_ACHIEVEMENTS_KEY);
     setUserState(null);
     setAchievements(achievementData);
     setChatMessages([]);
     setViewedAchievements([]);
     setIsOnboarded(false);
-  }, []);
+  };
 
   return (
     <UserContext.Provider

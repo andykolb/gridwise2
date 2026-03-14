@@ -1,818 +1,747 @@
-import { Topic, DailyNugget, QuizQuestion, LeaderboardUser, Achievement } from '@/types';
+import { DailyNugget, QuizQuestion, LeaderboardUser, Achievement, Topic } from '@/types';
 
-interface TopicInfo {
-  id: Topic;
-  label: { en: string; de: string };
-  icon: string;
-}
-
-export const topics: TopicInfo[] = [
-  { id: 'energy-basics', label: { en: 'Energy Markets Basics', de: 'Energiemarkt-Grundlagen' }, icon: '⚡' },
-  { id: 'price-drivers', label: { en: 'Power Price Drivers', de: 'Strompreistreiber' }, icon: '📊' },
+export const topics: { id: Topic; label: { en: string; de: string }; icon: string }[] = [
+  { id: 'energy-basics', label: { en: 'Energy Markets Basics', de: 'Energiemarkt Grundlagen' }, icon: '⚡' },
+  { id: 'price-drivers', label: { en: 'Power Price Drivers', de: 'Strompreistreiber' }, icon: '📈' },
   { id: 'renewables', label: { en: 'Renewables & Flexibility', de: 'Erneuerbare & Flexibilität' }, icon: '🌱' },
   { id: 'grid-dso', label: { en: 'Grid / DSOs', de: 'Netz / Verteilnetzbetreiber' }, icon: '🔌' },
-  { id: 'regulation', label: { en: 'Regulation & Policy', de: 'Regulierung & Politik' }, icon: '📜' },
-  { id: 'trading', label: { en: 'Trading & Hedging', de: 'Handel & Absicherung' }, icon: '📈' },
+  { id: 'regulation', label: { en: 'Regulation & Policy', de: 'Regulierung & Politik' }, icon: '📋' },
+  { id: 'trading', label: { en: 'Trading & Hedging', de: 'Handel & Absicherung' }, icon: '💹' },
   { id: 'retail', label: { en: 'Customer & Retail Energy', de: 'Kunden & Energievertrieb' }, icon: '🏠' },
 ];
 
 export const dailyNuggets: DailyNugget[] = [
   {
-    id: 'nugget-1',
-    title: { en: 'Power Price Drivers', de: 'Strompreistreiber' },
+    id: '1',
+    title: { en: 'What drives power prices in Germany?', de: 'Was treibt die Strompreise in Deutschland?' },
     content: {
-      en: 'German power prices are primarily driven by fuel costs (especially gas), CO2 prices, renewable generation, and demand patterns. The interplay of these factors creates the wholesale price.',
-      de: 'Deutsche Strompreise werden hauptsächlich durch Brennstoffkosten (insbesondere Gas), CO2-Preise, erneuerbare Erzeugung und Nachfragemuster bestimmt.'
+      en: 'Power prices are primarily driven by fuel costs (especially gas), CO2 prices, renewable generation, and demand patterns. When wind and solar are high, prices drop. When gas prices spike, electricity follows.',
+      de: 'Strompreise werden hauptsächlich durch Brennstoffkosten (insbesondere Gas), CO2-Preise, erneuerbare Erzeugung und Nachfragemuster bestimmt. Bei hoher Wind- und Solarproduktion sinken die Preise. Steigen die Gaspreise, folgt der Strom.'
     },
     learnMore: {
-      en: 'The merit order principle determines which power plants set the price. Plants are stacked from cheapest to most expensive marginal cost. The last plant needed to meet demand sets the market clearing price for all generators.',
-      de: 'Das Merit-Order-Prinzip bestimmt, welche Kraftwerke den Preis setzen. Kraftwerke werden von den günstigsten zu den teuersten Grenzkosten gestapelt. Das letzte Kraftwerk, das zur Deckung der Nachfrage benötigt wird, setzt den Markträumungspreis.'
+      en: 'The German power market is one of the most complex in Europe due to its ambitious energy transition (Energiewende). Natural gas prices have become increasingly influential since the phase-out of nuclear power, as gas plants often set the marginal price during peak demand hours. The EU Emissions Trading System (ETS) adds another layer of cost, with CO2 allowances now exceeding €80 per tonne. Weather patterns directly impact supply—Germany can generate over 70% of its electricity from renewables on optimal days, but cloudy, windless periods require backup from conventional plants, driving prices up significantly.',
+      de: 'Der deutsche Strommarkt ist aufgrund der ambitionierten Energiewende einer der komplexesten in Europa. Erdgaspreise sind seit dem Atomausstieg immer einflussreicher geworden, da Gaskraftwerke oft den Grenzpreis in Spitzenlastzeiten setzen. Das EU-Emissionshandelssystem (ETS) fügt eine weitere Kostenebene hinzu, wobei CO2-Zertifikate mittlerweile über 80€ pro Tonne kosten. Wettermuster beeinflussen das Angebot direkt—Deutschland kann an optimalen Tagen über 70% seines Stroms aus Erneuerbaren erzeugen, aber wolkige, windstille Perioden erfordern konventionelle Kraftwerke als Backup, was die Preise deutlich steigen lässt.'
     },
-    topic: 'price-drivers',
+    topic: 'price-drivers'
   },
   {
-    id: 'nugget-2',
-    title: { en: 'The Merit Order', de: 'Die Merit Order' },
-    content: {
-      en: 'The merit order ranks power plants by their marginal cost of production. Renewables (near-zero marginal cost) are dispatched first, followed by nuclear, coal, and gas plants.',
-      de: 'Die Merit Order ordnet Kraftwerke nach ihren Grenzkosten der Produktion. Erneuerbare (nahezu null Grenzkosten) werden zuerst eingesetzt, gefolgt von Kernkraft, Kohle und Gaskraftwerken.'
-    },
-    learnMore: {
-      en: 'When renewable generation is high, expensive gas plants are pushed out of the merit order, lowering wholesale prices. This is called the "merit order effect" of renewables and is a key factor in the energy transition.',
-      de: 'Wenn die erneuerbare Erzeugung hoch ist, werden teure Gaskraftwerke aus der Merit Order verdrängt, was die Großhandelspreise senkt. Dies wird als "Merit-Order-Effekt" der Erneuerbaren bezeichnet.'
-    },
-    topic: 'energy-basics',
-  },
-  {
-    id: 'nugget-3',
+    id: '2',
     title: { en: 'Spot vs. Futures Markets', de: 'Spot- vs. Terminmärkte' },
     content: {
-      en: 'The day-ahead spot market (EPEX SPOT) trades power for delivery the next day. Futures markets (EEX) allow hedging months or years ahead, providing price certainty for producers and consumers.',
-      de: 'Der Day-Ahead-Spotmarkt (EPEX SPOT) handelt Strom für die Lieferung am nächsten Tag. Terminmärkte (EEX) ermöglichen Absicherung Monate oder Jahre im Voraus.'
+      en: 'Spot markets trade electricity for immediate delivery (day-ahead, intraday). Futures markets trade contracts for future delivery, helping companies hedge against price volatility.',
+      de: 'Spotmärkte handeln Strom für sofortige Lieferung (Day-ahead, Intraday). Terminmärkte handeln Verträge für zukünftige Lieferung und helfen Unternehmen, sich gegen Preisschwankungen abzusichern.'
     },
     learnMore: {
-      en: 'The intraday market allows trading up to 5 minutes before delivery, helping balance short-term forecast errors. This market has become increasingly important with growing renewable penetration.',
-      de: 'Der Intraday-Markt ermöglicht den Handel bis 5 Minuten vor Lieferung und hilft, kurzfristige Prognosefehler auszugleichen. Dieser Markt hat mit zunehmender erneuerbarer Durchdringung an Bedeutung gewonnen.'
+      en: 'The day-ahead market closes at noon for delivery the next day, with hourly products traded on EPEX SPOT. Intraday trading continues until 5 minutes before delivery, allowing market participants to balance their positions as forecasts improve. Futures contracts on the EEX cover periods from weeks to years ahead, enabling utilities and large consumers to lock in prices and manage risk. The spread between spot and futures prices reflects market expectations about future supply, demand, and fuel costs—a crucial indicator for trading strategies.',
+      de: 'Der Day-ahead-Markt schließt mittags für die Lieferung am nächsten Tag, wobei stündliche Produkte an der EPEX SPOT gehandelt werden. Der Intraday-Handel läuft bis 5 Minuten vor Lieferung weiter, sodass Marktteilnehmer ihre Positionen anpassen können, wenn sich Prognosen verbessern. Terminkontrakte an der EEX decken Zeiträume von Wochen bis Jahren ab und ermöglichen es Versorgern und Großverbrauchern, Preise zu fixieren und Risiken zu managen. Der Spread zwischen Spot- und Terminpreisen spiegelt Markterwartungen über zukünftiges Angebot, Nachfrage und Brennstoffkosten wider—ein entscheidender Indikator für Handelsstrategien.'
     },
-    topic: 'trading',
+    topic: 'trading'
   },
   {
-    id: 'nugget-4',
-    title: { en: 'Balancing Energy', de: 'Regelenergie' },
+    id: '3',
+    title: { en: 'Why balancing energy matters', de: 'Warum Regelenergie wichtig ist' },
     content: {
-      en: 'TSOs use balancing energy to maintain grid frequency at 50 Hz. Three types exist: FCR (seconds), aFRR (minutes), and mFRR (15 minutes), each progressively slower but with larger capacity.',
-      de: 'ÜNBs nutzen Regelenergie, um die Netzfrequenz bei 50 Hz zu halten. Drei Arten: FCR (Sekunden), aFRR (Minuten) und mFRR (15 Minuten).'
+      en: 'Grid frequency must stay at 50Hz. Balancing energy (primary, secondary, tertiary reserves) keeps supply and demand matched in real-time. TSOs activate these reserves when forecasts deviate.',
+      de: 'Die Netzfrequenz muss bei 50Hz bleiben. Regelenergie (Primär-, Sekundär-, Tertiärreserve) gleicht Angebot und Nachfrage in Echtzeit aus. ÜNBs aktivieren diese Reserven bei Prognoseabweichungen.'
     },
     learnMore: {
-      en: 'Germany has four TSOs: 50Hertz, Amprion, TenneT, and TransnetBW. They cooperate to procure balancing reserves through a common platform called PICASSO (aFRR) and MARI (mFRR).',
-      de: 'Deutschland hat vier ÜNBs: 50Hertz, Amprion, TenneT und TransnetBW. Sie kooperieren bei der Beschaffung von Regelreserven über die gemeinsamen Plattformen PICASSO (aFRR) und MARI (mFRR).'
+      en: 'Primary reserve (FCR) responds within seconds automatically to frequency deviations. Secondary reserve (aFRR) activates within 5 minutes to restore frequency and relieve primary reserve. Tertiary reserve (mFRR) activates within 15 minutes for longer imbalances. In Germany, four TSOs (50Hertz, Amprion, TenneT, TransnetBW) coordinate through a common balancing market. With increasing renewable penetration, balancing needs are growing, creating opportunities for flexible assets like batteries, demand response, and virtual power plants to participate in these lucrative markets.',
+      de: 'Primärreserve (FCR) reagiert innerhalb von Sekunden automatisch auf Frequenzabweichungen. Sekundärreserve (aFRR) aktiviert sich innerhalb von 5 Minuten, um die Frequenz wiederherzustellen und die Primärreserve zu entlasten. Tertiärreserve (mFRR) aktiviert sich innerhalb von 15 Minuten bei längeren Ungleichgewichten. In Deutschland koordinieren vier ÜNBs (50Hertz, Amprion, TenneT, TransnetBW) über einen gemeinsamen Regelenergiemarkt. Mit zunehmender erneuerbarer Durchdringung wächst der Regelenergiebedarf und schafft Chancen für flexible Anlagen wie Batterien, Laststeuerung und virtuelle Kraftwerke, an diesen lukrativen Märkten teilzunehmen.'
     },
-    topic: 'grid-dso',
+    topic: 'grid-dso'
   },
   {
-    id: 'nugget-5',
-    title: { en: 'DSO Operations', de: 'Verteilnetzbetrieb' },
+    id: '4',
+    title: { en: 'What DSOs do', de: 'Was Verteilnetzbetreiber tun' },
     content: {
-      en: 'Distribution System Operators (DSOs) manage the local grid (below 110 kV). In Germany, about 870 DSOs operate distribution networks, delivering power to end consumers.',
-      de: 'Verteilnetzbetreiber (VNB) verwalten das lokale Netz (unter 110 kV). In Deutschland betreiben etwa 870 VNBs Verteilnetze und liefern Strom an Endverbraucher.'
+      en: 'Distribution System Operators (DSOs) manage medium and low voltage grids. They connect customers, maintain infrastructure, and increasingly manage grid congestion from distributed renewables.',
+      de: 'Verteilnetzbetreiber (VNB) verwalten Mittel- und Niederspannungsnetze. Sie schließen Kunden an, warten die Infrastruktur und managen zunehmend Netzengpässe durch dezentrale Erneuerbare.'
     },
     learnMore: {
-      en: 'DSOs face growing challenges from distributed generation (rooftop solar, batteries) and new loads (EVs, heat pumps). Smart grid technologies and flexibility markets help manage these bidirectional power flows.',
-      de: 'VNBs stehen vor wachsenden Herausforderungen durch dezentrale Erzeugung (Dach-Solar, Batterien) und neue Lasten (EVs, Wärmepumpen). Smart-Grid-Technologien und Flexibilitätsmärkte helfen bei der Bewältigung.'
+      en: 'Germany has over 800 DSOs, ranging from large regional operators like E.ON-affiliated companies to small municipal utilities. Their role is evolving dramatically with the energy transition. As solar panels, heat pumps, and EV chargers proliferate at the distribution level, DSOs must invest in grid reinforcement, smart grid technologies, and congestion management systems. The regulatory framework (ARegV) incentivizes efficiency improvements while ensuring reliable service. Future DSOs will act more like system operators, actively managing bidirectional power flows rather than simply delivering electricity downstream.',
+      de: 'Deutschland hat über 800 VNBs, von großen regionalen Betreibern wie E.ON-verbundenen Unternehmen bis hin zu kleinen Stadtwerken. Ihre Rolle entwickelt sich mit der Energiewende dramatisch weiter. Da Solaranlagen, Wärmepumpen und E-Auto-Ladestationen auf Verteilnetzebene zunehmen, müssen VNBs in Netzverstärkung, Smart-Grid-Technologien und Engpassmanagementsysteme investieren. Der regulatorische Rahmen (ARegV) fördert Effizienzverbesserungen bei gleichzeitiger Gewährleistung zuverlässiger Versorgung. Künftige VNBs werden eher wie Systembetreiber agieren und bidirektionale Stromflüsse aktiv steuern, anstatt Strom nur nach unten zu verteilen.'
     },
-    topic: 'grid-dso',
+    topic: 'grid-dso'
   },
   {
-    id: 'nugget-6',
-    title: { en: 'Gas-to-Power Link', de: 'Gas-Strom-Verbindung' },
+    id: '5',
+    title: { en: 'Merit Order Explained', de: 'Merit Order erklärt' },
     content: {
-      en: 'Natural gas prices directly impact electricity prices because gas-fired power plants often set the marginal price in the merit order. The TTF hub in the Netherlands is the key European gas benchmark.',
-      de: 'Erdgaspreise beeinflussen direkt Strompreise, da Gaskraftwerke oft den Grenzpreis in der Merit Order setzen. Der TTF-Hub in den Niederlanden ist die wichtigste europäische Gas-Benchmark.'
+      en: 'Power plants are dispatched by marginal cost (merit order). Renewables bid at zero, then nuclear, coal, and gas. The last plant needed to meet demand sets the price for all.',
+      de: 'Kraftwerke werden nach Grenzkosten (Merit Order) eingesetzt. Erneuerbare bieten zu null, dann Kernkraft, Kohle und Gas. Das letzte zur Deckung benötigte Kraftwerk setzt den Preis für alle.'
     },
     learnMore: {
-      en: 'The 2022 energy crisis demonstrated this link dramatically: when Russian gas supplies were curtailed, TTF prices spiked to over €300/MWh, pushing power prices above €500/MWh in some hours.',
-      de: 'Die Energiekrise 2022 zeigte diesen Zusammenhang dramatisch: Als russische Gaslieferungen reduziert wurden, stiegen TTF-Preise auf über 300€/MWh und Strompreise in einigen Stunden auf über 500€/MWh.'
+      en: 'The merit order principle ensures economic efficiency by dispatching the cheapest available generation first. However, it creates the so-called "merit order effect"—when renewables flood the market, they push expensive gas plants out of the stack, lowering wholesale prices. This effect was particularly visible during the 2022 energy crisis, when high gas prices made gas plants extremely expensive, pushing electricity prices to record highs whenever they were needed. Some policymakers debate whether this marginal pricing system should be reformed, but it remains the foundation of European electricity markets.',
+      de: 'Das Merit-Order-Prinzip gewährleistet wirtschaftliche Effizienz, indem die günstigste verfügbare Erzeugung zuerst eingesetzt wird. Es erzeugt jedoch den sogenannten "Merit-Order-Effekt"—wenn Erneuerbare den Markt fluten, verdrängen sie teure Gaskraftwerke aus dem Stack und senken die Großhandelspreise. Dieser Effekt war während der Energiekrise 2022 besonders sichtbar, als hohe Gaspreise Gaskraftwerke extrem teuer machten und die Strompreise auf Rekordhöhen trieben, wann immer sie benötigt wurden. Einige Politiker diskutieren, ob dieses Grenzpreissystem reformiert werden sollte, aber es bleibt das Fundament der europäischen Strommärkte.'
     },
-    topic: 'price-drivers',
+    topic: 'energy-basics'
   },
   {
-    id: 'nugget-7',
-    title: { en: 'Redispatch', de: 'Redispatch' },
+    id: '6',
+    title: { en: 'Impact of renewables on volatility', de: 'Einfluss Erneuerbarer auf Volatilität' },
     content: {
-      en: 'When grid congestion occurs, TSOs order redispatch: increasing generation on one side of a bottleneck and decreasing it on the other. Redispatch 2.0 now includes renewable plants and costs billions annually.',
-      de: 'Bei Netzengpässen ordnen ÜNBs Redispatch an: Erhöhung der Erzeugung auf einer Seite eines Engpasses und Verringerung auf der anderen. Redispatch 2.0 umfasst jetzt auch erneuerbare Anlagen.'
+      en: 'Renewable generation is weather-dependent, creating price volatility. Sunny, windy days can push prices negative. Calm, cloudy days see price spikes. Flexibility and storage become crucial.',
+      de: 'Erneuerbare Erzeugung ist wetterabhängig und erzeugt Preisvolatilität. Sonnige, windige Tage können negative Preise verursachen. Windstille, bedeckte Tage sehen Preisspitzen. Flexibilität und Speicher werden entscheidend.'
     },
     learnMore: {
-      en: 'Redispatch costs in Germany exceeded €4 billion in 2022. The north-south congestion is a major issue, as wind power is concentrated in the north while demand centers are in the south.',
-      de: 'Redispatch-Kosten in Deutschland überstiegen 2022 4 Milliarden Euro. Die Nord-Süd-Engpässe sind ein Hauptproblem, da Windkraft im Norden konzentriert ist, während Verbrauchszentren im Süden liegen.'
+      en: 'Germany experienced over 300 hours of negative electricity prices in 2023, a record driven by renewable oversupply during low-demand periods. This volatility creates both challenges and opportunities. Industrial consumers can shift production to low-price hours, while battery storage operators arbitrage price differences. The correlation between weather forecasts and price movements has made meteorological data essential for energy trading. As renewable capacity continues to grow toward Germany\'s 80% target by 2030, managing this volatility through storage, demand flexibility, and grid expansion becomes increasingly critical.',
+      de: 'Deutschland erlebte 2023 über 300 Stunden negativer Strompreise, ein Rekord getrieben durch Überangebot Erneuerbarer in Niedriglastzeiten. Diese Volatilität schafft Herausforderungen und Chancen zugleich. Industrieverbraucher können ihre Produktion in Niedrigpreisstunden verlagern, während Batteriespeicherbetreiber Preisdifferenzen arbitrieren. Die Korrelation zwischen Wetterprognosen und Preisbewegungen hat meteorologische Daten für den Energiehandel unverzichtbar gemacht. Mit weiterem Ausbau der erneuerbaren Kapazitäten in Richtung Deutschlands 80%-Ziel bis 2030 wird das Management dieser Volatilität durch Speicher, Lastflexibilität und Netzausbau zunehmend kritisch.'
     },
-    topic: 'grid-dso',
+    topic: 'renewables'
   },
   {
-    id: 'nugget-8',
-    title: { en: 'CO2 Pricing (EU ETS)', de: 'CO2-Bepreisung (EU ETS)' },
+    id: '7',
+    title: { en: 'Gas-to-power link', de: 'Gas-Strom-Verbindung' },
     content: {
-      en: 'The EU Emissions Trading System caps total emissions from power and industrial sectors. Companies must buy EU Allowances (EUAs) for each tonne of CO2 emitted, currently priced around €60-80/tonne.',
-      de: 'Das EU-Emissionshandelssystem begrenzt die Gesamtemissionen aus Energie- und Industriesektoren. Unternehmen müssen EU-Zertifikate (EUAs) für jede Tonne CO2 kaufen, aktuell ca. 60-80€/Tonne.'
+      en: 'Gas plants often set the marginal price in Europe. When gas prices rise (like during the 2022 crisis), electricity prices follow. This "gas-to-power spread" is a key market indicator.',
+      de: 'Gaskraftwerke setzen oft den Grenzpreis in Europa. Steigen Gaspreise (wie in der Krise 2022), folgen Strompreise. Dieser "Gas-Strom-Spread" ist ein wichtiger Marktindikator.'
     },
     learnMore: {
-      en: 'Higher CO2 prices make coal plants more expensive to run relative to gas plants, accelerating the coal-to-gas switching. The Market Stability Reserve (MSR) removes surplus allowances to maintain price signals.',
-      de: 'Höhere CO2-Preise machen Kohlekraftwerke relativ zu Gaskraftwerken teurer, was den Umstieg von Kohle auf Gas beschleunigt. Die Marktstabilitätsreserve (MSR) entfernt überschüssige Zertifikate.'
+      en: 'The gas-to-power spread (also called spark spread) measures the profit margin for gas-fired power generation. It\'s calculated as the electricity price minus gas costs (adjusted for plant efficiency) and CO2 costs. A positive spark spread means gas plants are profitable to run. During the 2022 crisis, TTF gas prices spiked to €340/MWh, driving German baseload electricity to over €500/MWh. Understanding this linkage is crucial for forecasting electricity prices, as gas typically sets the marginal price during 40-60% of hours in Germany, depending on renewable output.',
+      de: 'Der Gas-Strom-Spread (auch Spark Spread genannt) misst die Gewinnmarge für gasbefeuerte Stromerzeugung. Er wird als Strompreis minus Gaskosten (angepasst an Anlageneffizienz) und CO2-Kosten berechnet. Ein positiver Spark Spread bedeutet, dass Gaskraftwerke profitabel laufen. Während der Krise 2022 stiegen TTF-Gaspreise auf €340/MWh und trieben deutschen Baseload-Strom auf über €500/MWh. Das Verständnis dieser Verknüpfung ist entscheidend für die Strompreisprognose, da Gas typischerweise in 40-60% der Stunden in Deutschland den Grenzpreis setzt, abhängig von der erneuerbaren Erzeugung.'
     },
-    topic: 'regulation',
+    topic: 'price-drivers'
   },
   {
-    id: 'nugget-9',
-    title: { en: 'Retail Electricity Pricing', de: 'Strompreise für Endkunden' },
+    id: '8',
+    title: { en: 'What is Redispatch?', de: 'Was ist Redispatch?' },
     content: {
-      en: 'Only about 25-30% of a German household electricity bill reflects the actual wholesale energy cost. The rest consists of network charges, taxes, levies, and the retail margin.',
-      de: 'Nur etwa 25-30% einer deutschen Haushaltsstromrechnung spiegelt die tatsächlichen Großhandels-Energiekosten wider. Der Rest besteht aus Netzentgelten, Steuern, Umlagen und der Vertriebsmarge.'
+      en: 'Redispatch adjusts power plant output to relieve grid congestion. Plants behind the bottleneck reduce output; plants on the other side increase. Costs are socialized through grid fees.',
+      de: 'Redispatch passt die Kraftwerksleistung an, um Netzengpässe zu entlasten. Anlagen hinter dem Engpass reduzieren; Anlagen auf der anderen Seite erhöhen. Kosten werden über Netzentgelte sozialisiert.'
     },
     learnMore: {
-      en: 'Key components include: network charges (~25%), electricity tax, concession levy, offshore network levy, and the retail margin (~5%). The EEG surcharge, which funded renewable expansion, was abolished in mid-2022.',
-      de: 'Hauptkomponenten sind: Netzentgelte (~25%), Stromsteuer, Konzessionsabgabe, Offshore-Netzumlage und die Vertriebsmarge (~5%). Die EEG-Umlage, die den Ausbau der Erneuerbaren finanzierte, wurde Mitte 2022 abgeschafft.'
+      en: 'Redispatch costs in Germany exceeded €4 billion in 2022, highlighting the urgency of grid expansion. The main bottleneck runs north-south, as wind power generated in the North Sea and Baltic regions struggles to reach industrial consumers in Bavaria and Baden-Württemberg. Redispatch 2.0, introduced in 2021, expanded the system to include smaller renewable plants and storage systems. The participating assets receive compensation for curtailment or increased generation. New HVDC transmission lines (SuedLink, SuedOstLink) are under construction to reduce these costly interventions by 2030.',
+      de: 'Redispatch-Kosten in Deutschland überstiegen 2022 €4 Milliarden und unterstreichen die Dringlichkeit des Netzausbaus. Der Hauptengpass verläuft Nord-Süd, da Windstrom aus der Nord- und Ostsee Schwierigkeiten hat, Industrieverbraucher in Bayern und Baden-Württemberg zu erreichen. Redispatch 2.0, eingeführt 2021, erweiterte das System um kleinere Erneuerbare-Anlagen und Speichersysteme. Teilnehmende Anlagen erhalten Vergütung für Abregelung oder erhöhte Erzeugung. Neue HGÜ-Leitungen (SuedLink, SuedOstLink) sind im Bau, um diese kostspieligen Eingriffe bis 2030 zu reduzieren.'
     },
-    topic: 'retail',
+    topic: 'grid-dso'
   },
   {
-    id: 'nugget-10',
-    title: { en: 'Wind & Solar Complementarity', de: 'Wind- & Solar-Komplementarität' },
+    id: '9',
+    title: { en: 'CO2 Pricing Explained', de: 'CO2-Bepreisung erklärt' },
     content: {
-      en: 'Wind and solar generation patterns complement each other: solar peaks in summer at midday, while wind generation is often stronger in winter and at night, providing better overall coverage.',
-      de: 'Wind- und Solarerzeugungsmuster ergänzen sich: Solar erreicht seinen Höhepunkt im Sommer mittags, während Windenergie oft im Winter und nachts stärker ist.'
+      en: 'The EU ETS puts a price on carbon emissions. Companies buy allowances to emit CO2. Higher CO2 prices make fossil fuels more expensive and renewables more competitive.',
+      de: 'Das EU-ETS bepreist CO2-Emissionen. Unternehmen kaufen Zertifikate für CO2-Ausstoß. Höhere CO2-Preise machen fossile Brennstoffe teurer und Erneuerbare wettbewerbsfähiger.'
     },
     learnMore: {
-      en: 'Germany targets 80% renewable electricity by 2030, up from about 50% in 2023. Achieving this requires massive expansion: 215 GW solar and 115 GW onshore wind by 2030, plus storage and demand-side flexibility.',
-      de: 'Deutschland strebt 80% erneuerbaren Strom bis 2030 an, gegenüber etwa 50% im Jahr 2023. Dies erfordert massiven Ausbau: 215 GW Solar und 115 GW Onshore-Wind bis 2030, plus Speicher und Nachfrageflexibilität.'
+      en: 'The EU Emissions Trading System is the world\'s largest carbon market, covering power generation, heavy industry, and aviation. The "Fit for 55" reforms tightened the cap on allowances, driving prices from under €30 in 2020 to over €80 by 2023. For power generation, each MWh from a coal plant requires about 0.9 allowances, while gas plants need about 0.4. This cost difference accelerates the coal-to-gas switch and improves renewable economics. Germany also has a national CO2 price for heating and transport fuels, starting at €25 in 2021 and rising annually.',
+      de: 'Das EU-Emissionshandelssystem ist der weltweit größte Kohlenstoffmarkt und deckt Stromerzeugung, Schwerindustrie und Luftfahrt ab. Die "Fit for 55"-Reformen verschärften die Obergrenze für Zertifikate und trieben die Preise von unter €30 in 2020 auf über €80 bis 2023. Für die Stromerzeugung benötigt jede MWh aus einem Kohlekraftwerk etwa 0,9 Zertifikate, während Gaskraftwerke etwa 0,4 brauchen. Dieser Kostenunterschied beschleunigt den Wechsel von Kohle zu Gas und verbessert die Wirtschaftlichkeit Erneuerbarer. Deutschland hat auch einen nationalen CO2-Preis für Heiz- und Kraftstoffe, der 2021 bei €25 startete und jährlich steigt.'
     },
-    topic: 'renewables',
+    topic: 'regulation'
+  },
+  {
+    id: '10',
+    title: { en: 'Energy Retail Margins', de: 'Energievertriebsmargen' },
+    content: {
+      en: 'Retail energy margins are thin (1-3%). Suppliers manage procurement, balance supply/demand, and handle customer service. Differentiation comes from pricing models, green products, and digital services.',
+      de: 'Energievertriebsmargen sind dünn (1-3%). Lieferanten managen Beschaffung, gleichen Angebot/Nachfrage aus und bieten Kundenservice. Differenzierung durch Preismodelle, grüne Produkte und digitale Services.'
+    },
+    learnMore: {
+      en: 'The German retail electricity market is highly competitive with over 1,000 suppliers. The typical residential bill breaks down roughly as: wholesale costs (25-35%), grid fees (20-25%), taxes and levies (25-30%), and supplier margin (3-5%). The 2022 price crisis forced many suppliers into insolvency as wholesale costs exceeded their fixed-price contracts. Successful retailers increasingly focus on value-added services: smart home integration, solar+storage bundles, EV charging solutions, and dynamic tariffs that pass wholesale price signals to consumers. E.ON and other major players are investing heavily in digital customer platforms.',
+      de: 'Der deutsche Stromeinzelhandelsmarkt ist mit über 1.000 Anbietern hochkompetitiv. Die typische Haushaltsrechnung gliedert sich grob in: Großhandelskosten (25-35%), Netzentgelte (20-25%), Steuern und Abgaben (25-30%) und Lieferantenmarge (3-5%). Die Preiskrise 2022 zwang viele Anbieter in die Insolvenz, als Großhandelskosten ihre Festpreisverträge überstiegen. Erfolgreiche Einzelhändler konzentrieren sich zunehmend auf Mehrwertdienste: Smart-Home-Integration, Solar+Speicher-Bundles, E-Auto-Ladelösungen und dynamische Tarife, die Großhandelspreissignale an Verbraucher weitergeben. E.ON und andere große Player investieren stark in digitale Kundenplattformen.'
+    },
+    topic: 'retail'
   },
 ];
 
 export const quizQuestions: QuizQuestion[] = [
-  // ENERGY BASICS - Easy
+  // Energy Basics
   {
     id: 'q1',
-    question: {
-      en: 'What is the standard frequency of the European electricity grid?',
-      de: 'Was ist die Standardfrequenz des europäischen Stromnetzes?'
-    },
+    question: { en: 'What is the merit order?', de: 'Was ist die Merit Order?' },
     options: {
-      en: ['60 Hz', '50 Hz', '40 Hz', '55 Hz'],
-      de: ['60 Hz', '50 Hz', '40 Hz', '55 Hz']
+      en: ['A ranking of power plants by efficiency', 'A ranking of power plants by marginal cost', 'A list of renewable energy sources', 'A grid balancing mechanism'],
+      de: ['Eine Rangfolge von Kraftwerken nach Effizienz', 'Eine Rangfolge von Kraftwerken nach Grenzkosten', 'Eine Liste erneuerbarer Energiequellen', 'Ein Netzausgleichsmechanismus']
     },
     correctIndex: 1,
     explanation: {
-      en: 'The European grid operates at 50 Hz. Deviations indicate supply-demand imbalance.',
-      de: 'Das europäische Netz arbeitet mit 50 Hz. Abweichungen zeigen ein Angebot-Nachfrage-Ungleichgewicht an.'
+      en: 'The merit order ranks power plants by their marginal cost of production. Plants with the lowest costs are dispatched first.',
+      de: 'Die Merit Order ordnet Kraftwerke nach ihren Grenzkosten der Produktion. Kraftwerke mit den niedrigsten Kosten werden zuerst eingesetzt.'
+    },
+    learnMore: {
+      en: 'The merit order is fundamental to understanding electricity markets. Imagine lining up all power plants from cheapest to most expensive to operate. Renewables like wind and solar have near-zero marginal costs (no fuel needed), so they go first. Then comes nuclear, followed by coal and lignite, and finally gas plants which are typically most expensive. When demand rises, more expensive plants are activated. The last plant needed to meet demand sets the price for ALL electricity sold in that hour – this is called the "marginal pricing" principle.',
+      de: 'Die Merit Order ist fundamental für das Verständnis von Strommärkten. Stellen Sie sich vor, alle Kraftwerke werden von günstigsten zu teuersten Betriebskosten aufgereiht. Erneuerbare wie Wind und Solar haben nahezu null Grenzkosten (kein Brennstoff nötig), also kommen sie zuerst. Dann folgt Kernkraft, gefolgt von Kohle und Braunkohle, und schließlich Gaskraftwerke, die typischerweise am teuersten sind. Bei steigender Nachfrage werden teurere Kraftwerke aktiviert. Das letzte zur Deckung benötigte Kraftwerk setzt den Preis für ALLEN in dieser Stunde verkauften Strom – das ist das "Grenzpreisprinzip".'
     },
     topic: 'energy-basics',
-    difficulty: 'easy',
+    difficulty: 'easy'
   },
   {
     id: 'q2',
-    question: {
-      en: 'What does "baseload" refer to in power markets?',
-      de: 'Was bedeutet "Grundlast" im Strommarkt?'
-    },
+    question: { en: 'What determines the spot market price for electricity?', de: 'Was bestimmt den Spotmarktpreis für Strom?' },
     options: {
-      en: ['Peak demand hours', 'Minimum continuous demand level', 'Maximum grid capacity', 'Emergency power supply'],
-      de: ['Spitzenlaststunden', 'Minimales kontinuierliches Nachfrageniveau', 'Maximale Netzkapazität', 'Notstromversorgung']
+      en: ['The average cost of all running plants', 'The marginal cost of the last plant needed', 'Government regulations', 'Consumer demand only'],
+      de: ['Die durchschnittlichen Kosten aller laufenden Anlagen', 'Die Grenzkosten des zuletzt benötigten Kraftwerks', 'Staatliche Regulierung', 'Nur die Verbrauchernachfrage']
     },
     correctIndex: 1,
     explanation: {
-      en: 'Baseload is the minimum level of demand on a power grid over a 24-hour period.',
-      de: 'Grundlast ist das minimale Nachfrageniveau im Stromnetz über einen 24-Stunden-Zeitraum.'
+      en: 'In a liberalized market, the price is set by the marginal cost of the most expensive plant needed to meet demand.',
+      de: 'In einem liberalisierten Markt wird der Preis durch die Grenzkosten des teuersten zur Deckung der Nachfrage benötigten Kraftwerks bestimmt.'
+    },
+    learnMore: {
+      en: 'This pricing mechanism, called "marginal pricing" or "pay-as-cleared," means all generators receive the same price – the clearing price set by the most expensive accepted bid. While this may seem unfair (why should wind farms get paid the same as gas plants?), it actually incentivizes efficiency: low-cost plants earn higher profits, encouraging investment in cheaper generation. This is how exchanges like EPEX SPOT in Paris work for day-ahead and intraday markets across Europe.',
+      de: 'Dieser Preismechanismus, genannt "Grenzpreisbildung" oder "Pay-as-cleared", bedeutet, dass alle Erzeuger den gleichen Preis erhalten – den Clearingpreis, der durch das teuerste akzeptierte Gebot festgelegt wird. Obwohl dies unfair erscheinen mag (warum sollten Windparks das gleiche wie Gaskraftwerke bekommen?), fördert es tatsächlich Effizienz: Kostengünstige Anlagen erzielen höhere Gewinne, was Investitionen in günstigere Erzeugung anregt. So funktionieren Börsen wie EPEX SPOT in Paris für Day-ahead- und Intraday-Märkte in Europa.'
     },
     topic: 'energy-basics',
-    difficulty: 'easy',
+    difficulty: 'medium'
   },
+  // Price Drivers
   {
     id: 'q3',
-    question: {
-      en: 'Which unit is commonly used for wholesale electricity prices in Europe?',
-      de: 'Welche Einheit wird für Großhandelsstrompreise in Europa verwendet?'
-    },
+    question: { en: 'Why do gas prices affect electricity prices?', de: 'Warum beeinflussen Gaspreise die Strompreise?' },
     options: {
-      en: ['$/kWh', '€/MWh', '€/GJ', '£/kW'],
-      de: ['$/kWh', '€/MWh', '€/GJ', '£/kW']
+      en: ['Gas is the only fuel for power plants', 'Gas plants often set the marginal price', 'Gas and electricity are the same commodity', 'Government policy links them'],
+      de: ['Gas ist der einzige Brennstoff für Kraftwerke', 'Gaskraftwerke setzen oft den Grenzpreis', 'Gas und Strom sind dieselbe Ware', 'Staatliche Politik verbindet sie']
     },
     correctIndex: 1,
     explanation: {
-      en: 'European wholesale power prices are quoted in euros per megawatt-hour (€/MWh).',
-      de: 'Europäische Großhandelspreise werden in Euro pro Megawattstunde (€/MWh) angegeben.'
+      en: 'Gas-fired power plants frequently are the marginal price-setting units in European electricity markets.',
+      de: 'Gaskraftwerke sind häufig die preissetzenden Grenzeinheiten in europäischen Strommärkten.'
     },
-    topic: 'energy-basics',
-    difficulty: 'easy',
+    learnMore: {
+      en: 'The gas-electricity link became painfully clear during the 2022 energy crisis. Gas plants are flexible and can ramp up/down quickly, making them essential for balancing variable renewables. Because they often set the marginal price, when gas prices spiked from €20/MWh to over €300/MWh, electricity prices followed. This correlation is measured by the "spark spread" (electricity price minus gas cost to generate it). Understanding this link is crucial for energy trading and risk management.',
+      de: 'Die Gas-Strom-Verbindung wurde während der Energiekrise 2022 schmerzhaft deutlich. Gaskraftwerke sind flexibel und können schnell hoch-/runterfahren, was sie für den Ausgleich variabler Erneuerbarer unverzichtbar macht. Da sie oft den Grenzpreis setzen, folgten die Strompreise, als die Gaspreise von 20€/MWh auf über 300€/MWh stiegen. Diese Korrelation wird durch den "Spark Spread" gemessen (Strompreis minus Gaskosten zur Erzeugung). Das Verständnis dieser Verbindung ist entscheidend für Energiehandel und Risikomanagement.'
+    },
+    topic: 'price-drivers',
+    difficulty: 'easy'
   },
   {
     id: 'q4',
-    question: {
-      en: 'What is 1 MWh equivalent to?',
-      de: 'Wem entspricht 1 MWh?'
-    },
+    question: { en: 'What happens to electricity prices when wind generation is very high?', de: 'Was passiert mit Strompreisen bei sehr hoher Windeinspeisung?' },
     options: {
-      en: ['100 kWh', '1,000 kWh', '10,000 kWh', '1,000,000 kWh'],
-      de: ['100 kWh', '1.000 kWh', '10.000 kWh', '1.000.000 kWh']
+      en: ['Prices increase', 'Prices decrease or go negative', 'Prices stay stable', 'The market closes'],
+      de: ['Preise steigen', 'Preise sinken oder werden negativ', 'Preise bleiben stabil', 'Der Markt schließt']
     },
     correctIndex: 1,
     explanation: {
-      en: '1 Megawatt-hour = 1,000 kilowatt-hours. An average German household uses about 3,500 kWh per year.',
-      de: '1 Megawattstunde = 1.000 Kilowattstunden. Ein durchschnittlicher deutscher Haushalt verbraucht ca. 3.500 kWh pro Jahr.'
+      en: 'High renewable generation pushes expensive plants out of merit order, lowering prices. In extreme cases, prices can go negative.',
+      de: 'Hohe erneuerbare Erzeugung verdrängt teure Kraftwerke aus der Merit Order und senkt die Preise. In Extremfällen können Preise negativ werden.'
     },
-    topic: 'energy-basics',
-    difficulty: 'easy',
-  },
-  // PRICE DRIVERS - Easy
-  {
-    id: 'q5',
-    question: {
-      en: 'What is the merit order in electricity markets?',
-      de: 'Was ist die Merit Order im Strommarkt?'
-    },
-    options: {
-      en: ['A ranking of consumers by demand', 'A ranking of power plants by marginal cost', 'A list of grid operators by size', 'A schedule of maintenance outages'],
-      de: ['Eine Rangliste der Verbraucher nach Bedarf', 'Eine Rangliste der Kraftwerke nach Grenzkosten', 'Eine Liste der Netzbetreiber nach Größe', 'Ein Wartungsplan']
-    },
-    correctIndex: 1,
-    explanation: {
-      en: 'The merit order ranks power plants from lowest to highest marginal production cost. The most expensive plant needed to meet demand sets the market price.',
-      de: 'Die Merit Order ordnet Kraftwerke von den niedrigsten zu den höchsten Grenzproduktionskosten. Das teuerste benötigte Kraftwerk setzt den Marktpreis.'
+    learnMore: {
+      en: 'Negative prices occur when there is more electricity supply than demand and storage capacity. Why would anyone sell at a loss? Some plants (nuclear, lignite) are inflexible and costly to shut down. Wind farms receiving feed-in tariffs may still profit even at negative prices. In Germany, negative price hours increased from 134 in 2019 to over 300 in 2023. For energy retailers and industrial consumers, these price patterns create opportunities for flexible consumption and storage arbitrage.',
+      de: 'Negative Preise entstehen, wenn mehr Strom angeboten wird als Nachfrage und Speicherkapazität vorhanden sind. Warum sollte jemand mit Verlust verkaufen? Einige Anlagen (Kernkraft, Braunkohle) sind unflexibel und teuer abzuschalten. Windparks mit Einspeisevergütung können selbst bei negativen Preisen profitieren. In Deutschland stiegen die Stunden mit negativen Preisen von 134 im Jahr 2019 auf über 300 im Jahr 2023. Für Energieversorger und Industriekunden schaffen diese Preismuster Chancen für flexible Nutzung und Speicherarbitrage.'
     },
     topic: 'price-drivers',
-    difficulty: 'easy',
+    difficulty: 'easy'
+  },
+  // Renewables
+  {
+    id: 'q5',
+    question: { en: 'What is the main challenge with integrating renewables?', de: 'Was ist die Hauptherausforderung bei der Integration von Erneuerbaren?' },
+    options: {
+      en: ['They are too expensive', 'They have zero marginal cost', 'Their output is variable and hard to predict', 'They cannot connect to the grid'],
+      de: ['Sie sind zu teuer', 'Sie haben null Grenzkosten', 'Ihre Erzeugung ist variabel und schwer vorhersagbar', 'Sie können nicht ans Netz angeschlossen werden']
+    },
+    correctIndex: 2,
+    explanation: {
+      en: 'Renewables depend on weather, making their output variable. This requires flexibility from other sources, storage, or demand response.',
+      de: 'Erneuerbare hängen vom Wetter ab, was ihre Erzeugung variabel macht. Dies erfordert Flexibilität von anderen Quellen, Speichern oder Lastmanagement.'
+    },
+    learnMore: {
+      en: 'The variability challenge has three dimensions: (1) Short-term fluctuations – clouds passing over solar panels can cause output to drop by 50% in minutes; (2) Daily patterns – solar peaks at midday while demand peaks in evening; (3) Seasonal variation – wind is stronger in winter, solar in summer. Solutions include battery storage, pumped hydro, demand response (shifting industrial loads), interconnectors to other regions, and flexible gas plants. Forecasting has improved dramatically – day-ahead wind predictions are now 95%+ accurate.',
+      de: 'Die Variabilitätsherausforderung hat drei Dimensionen: (1) Kurzfristige Schwankungen – Wolken über Solarpanelen können die Leistung in Minuten um 50% senken; (2) Tagesmuster – Solar erreicht den Höhepunkt mittags, Nachfrage abends; (3) Saisonale Variation – Wind ist im Winter stärker, Solar im Sommer. Lösungen umfassen Batteriespeicher, Pumpspeicher, Lastmanagement (Verschiebung industrieller Lasten), Interkonnektoren zu anderen Regionen und flexible Gaskraftwerke. Prognosen haben sich dramatisch verbessert – Day-ahead-Windvorhersagen sind heute zu 95%+ genau.'
+    },
+    topic: 'renewables',
+    difficulty: 'easy'
   },
   {
     id: 'q6',
-    question: {
-      en: 'Which fuel most commonly sets the marginal price in the German merit order?',
-      de: 'Welcher Brennstoff setzt am häufigsten den Grenzpreis in der deutschen Merit Order?'
-    },
+    question: { en: 'What is "flexibility" in energy markets?', de: 'Was ist "Flexibilität" in Energiemärkten?' },
     options: {
-      en: ['Coal', 'Natural gas', 'Nuclear', 'Wind'],
-      de: ['Kohle', 'Erdgas', 'Kernkraft', 'Wind']
+      en: ['The ability to change contracts', 'The ability to adjust supply or demand quickly', 'Price negotiation capabilities', 'Customer switching options'],
+      de: ['Die Möglichkeit, Verträge zu ändern', 'Die Fähigkeit, Angebot oder Nachfrage schnell anzupassen', 'Preisverhandlungsmöglichkeiten', 'Kundenwechseloptionen']
     },
     correctIndex: 1,
     explanation: {
-      en: 'Natural gas plants often set the marginal price because they have higher fuel costs but are needed for flexibility.',
-      de: 'Gaskraftwerke setzen oft den Grenzpreis, da sie höhere Brennstoffkosten haben, aber für Flexibilität benötigt werden.'
-    },
-    topic: 'price-drivers',
-    difficulty: 'easy',
-  },
-  // PRICE DRIVERS - Medium
-  {
-    id: 'q7',
-    question: {
-      en: 'What is the "spark spread"?',
-      de: 'Was ist der "Spark Spread"?'
-    },
-    options: {
-      en: ['Difference between peak and off-peak prices', 'Profit margin of gas-fired power plants', 'Voltage difference in the grid', 'Price spread between exchanges'],
-      de: ['Differenz zwischen Spitzen- und Schwachlastpreisen', 'Gewinnmarge von Gaskraftwerken', 'Spannungsdifferenz im Netz', 'Preisdifferenz zwischen Börsen']
-    },
-    correctIndex: 1,
-    explanation: {
-      en: 'The spark spread is the theoretical profit margin of a gas-fired power plant: power price minus gas cost and CO2 cost.',
-      de: 'Der Spark Spread ist die theoretische Gewinnmarge eines Gaskraftwerks: Strompreis minus Gaskosten und CO2-Kosten.'
+      en: 'Flexibility means being able to ramp generation up/down or shift demand to balance variable renewable output.',
+      de: 'Flexibilität bedeutet, die Erzeugung hoch-/runterfahren oder Nachfrage verschieben zu können, um variable erneuerbare Erzeugung auszugleichen.'
     },
     learnMore: {
-      en: 'A clean spark spread also accounts for CO2 costs. When the clean spark spread is negative, gas plants lose money generating power and may shut down.',
-      de: 'Ein Clean Spark Spread berücksichtigt auch CO2-Kosten. Wenn der Clean Spark Spread negativ ist, verlieren Gaskraftwerke Geld bei der Stromerzeugung.'
+      en: 'Flexibility is becoming the most valuable commodity in energy markets. Sources include: (1) Supply-side: gas peakers, hydro, batteries that can ramp in seconds to minutes; (2) Demand-side: industrial processes that can shift timing (aluminum smelters, cold storage, EV charging); (3) Storage: from batteries (minutes-hours) to pumped hydro (hours-days) to hydrogen (seasonal). Flexibility providers can earn revenue from multiple markets: spot price arbitrage, balancing services, and capacity payments. As renewable penetration grows, flexibility premiums increase.',
+      de: 'Flexibilität wird zur wertvollsten Ware in Energiemärkten. Quellen umfassen: (1) Angebotsseite: Gas-Spitzenlastkraftwerke, Hydro, Batterien, die in Sekunden bis Minuten hochfahren können; (2) Nachfrageseite: Industrieprozesse, die zeitlich verschoben werden können (Aluminiumschmelzen, Kühlhäuser, E-Auto-Laden); (3) Speicher: von Batterien (Minuten-Stunden) über Pumpspeicher (Stunden-Tage) bis Wasserstoff (saisonal). Flexibilitätsanbieter können Einnahmen aus mehreren Märkten erzielen: Spotpreis-Arbitrage, Regelleistung und Kapazitätszahlungen. Mit steigendem Erneuerbaren-Anteil steigen die Flexibilitätsprämien.'
     },
-    topic: 'price-drivers',
-    difficulty: 'medium',
+    topic: 'renewables',
+    difficulty: 'medium'
+  },
+  // Grid/DSO
+  {
+    id: 'q7',
+    question: { en: 'What is the main role of a TSO?', de: 'Was ist die Hauptaufgabe eines ÜNB?' },
+    options: {
+      en: ['Sell electricity to consumers', 'Operate the high-voltage transmission grid', 'Set electricity prices', 'Build renewable plants'],
+      de: ['Strom an Verbraucher verkaufen', 'Das Hochspannungsübertragungsnetz betreiben', 'Strompreise festlegen', 'Erneuerbare Anlagen bauen']
+    },
+    correctIndex: 1,
+    explanation: {
+      en: 'Transmission System Operators (TSOs) manage the high-voltage grid and ensure system stability at the national/regional level.',
+      de: 'Übertragungsnetzbetreiber (ÜNB) betreiben das Hochspannungsnetz und gewährleisten Systemstabilität auf nationaler/regionaler Ebene.'
+    },
+    learnMore: {
+      en: 'In Germany, there are four TSOs: TenneT, 50Hertz, Amprion, and TransnetBW, each responsible for a region. TSOs have several critical responsibilities: maintaining grid frequency at 50Hz, coordinating cross-border power flows, managing balancing energy markets, planning grid expansion, and ensuring security of supply. They are regulated monopolies – their costs are passed through to consumers via grid fees. The European Network of TSOs (ENTSO-E) coordinates the interconnected grid across 35 countries.',
+      de: 'In Deutschland gibt es vier ÜNB: TenneT, 50Hertz, Amprion und TransnetBW, jeder für eine Region verantwortlich. ÜNB haben mehrere kritische Aufgaben: Netzfrequenz bei 50Hz halten, grenzüberschreitende Stromflüsse koordinieren, Regelenergiemärkte betreiben, Netzausbau planen und Versorgungssicherheit gewährleisten. Sie sind regulierte Monopole – ihre Kosten werden über Netzentgelte an Verbraucher weitergegeben. Das Europäische Netzwerk der ÜNB (ENTSO-E) koordiniert das verbundene Netz über 35 Länder.'
+    },
+    topic: 'grid-dso',
+    difficulty: 'easy'
   },
   {
     id: 'q8',
-    question: {
-      en: 'What typically happens to wholesale power prices on a sunny, windy day?',
-      de: 'Was passiert typischerweise mit Großhandelsstrompreisen an einem sonnigen, windigen Tag?'
-    },
+    question: { en: 'What is redispatch used for?', de: 'Wofür wird Redispatch verwendet?' },
     options: {
-      en: ['Prices increase', 'Prices decrease or go negative', 'Prices stay the same', 'Trading is suspended'],
-      de: ['Preise steigen', 'Preise sinken oder werden negativ', 'Preise bleiben gleich', 'Handel wird ausgesetzt']
+      en: ['Increasing renewable generation', 'Relieving grid congestion', 'Setting market prices', 'Customer billing'],
+      de: ['Erhöhung erneuerbarer Erzeugung', 'Entlastung von Netzengpässen', 'Marktpreisbildung', 'Kundenabrechnung']
     },
     correctIndex: 1,
     explanation: {
-      en: 'High renewable generation pushes expensive fossil plants out of the merit order, lowering wholesale prices. In extreme cases, prices can become negative.',
-      de: 'Hohe erneuerbare Erzeugung verdrängt teure fossile Kraftwerke aus der Merit Order und senkt die Großhandelspreise. In extremen Fällen können Preise negativ werden.'
+      en: 'Redispatch adjusts power plant output to manage congestion when grid capacity is insufficient to transport all generated power.',
+      de: 'Redispatch passt die Kraftwerksleistung an, um Engpässe zu managen, wenn die Netzkapazität nicht ausreicht, um allen erzeugten Strom zu transportieren.'
     },
-    topic: 'price-drivers',
-    difficulty: 'medium',
-  },
-  // RENEWABLES - Easy
-  {
-    id: 'q9',
-    question: {
-      en: 'What does the capacity factor of a wind farm measure?',
-      de: 'Was misst der Kapazitätsfaktor eines Windparks?'
-    },
-    options: {
-      en: ['Maximum output in MW', 'Actual output vs. maximum possible output', 'Number of turbines', 'Grid connection capacity'],
-      de: ['Maximale Leistung in MW', 'Tatsächliche vs. maximal mögliche Erzeugung', 'Anzahl der Turbinen', 'Netzanschlusskapazität']
-    },
-    correctIndex: 1,
-    explanation: {
-      en: 'Capacity factor is the ratio of actual electricity produced to what would be produced if the plant ran at full capacity 24/7. Onshore wind in Germany averages about 20-25%.',
-      de: 'Der Kapazitätsfaktor ist das Verhältnis der tatsächlichen Stromerzeugung zur maximal möglichen. Onshore-Wind in Deutschland liegt bei durchschnittlich ca. 20-25%.'
-    },
-    topic: 'renewables',
-    difficulty: 'easy',
-  },
-  {
-    id: 'q10',
-    question: {
-      en: 'What is "curtailment" in the context of renewable energy?',
-      de: 'Was bedeutet "Abregelung" im Kontext erneuerbarer Energien?'
-    },
-    options: {
-      en: ['Building new renewable plants', 'Deliberately reducing output when supply exceeds demand or grid capacity', 'Shutting down fossil plants', 'Importing power from abroad'],
-      de: ['Bau neuer Erneuerbare-Anlagen', 'Bewusste Reduktion der Erzeugung bei Überangebot oder Netzengpässen', 'Abschaltung fossiler Kraftwerke', 'Import von Strom aus dem Ausland']
-    },
-    correctIndex: 1,
-    explanation: {
-      en: 'Curtailment means intentionally reducing renewable output, usually due to grid congestion or oversupply. Germany curtailed about 8 TWh of renewables in 2022.',
-      de: 'Abregelung bedeutet die absichtliche Reduktion erneuerbarer Erzeugung, meist aufgrund von Netzengpässen oder Überangebot.'
-    },
-    topic: 'renewables',
-    difficulty: 'easy',
-  },
-  // RENEWABLES - Medium
-  {
-    id: 'q11',
-    question: {
-      en: 'What is a Power Purchase Agreement (PPA)?',
-      de: 'Was ist ein Power Purchase Agreement (PPA)?'
-    },
-    options: {
-      en: ['A government subsidy for renewables', 'A long-term contract to buy electricity directly from a generator', 'A grid connection permit', 'A consumer tariff plan'],
-      de: ['Eine staatliche Subvention für Erneuerbare', 'Ein langfristiger Vertrag zum direkten Strombezug von einem Erzeuger', 'Eine Netzanschlussgenehmigung', 'Ein Verbrauchertarifplan']
-    },
-    correctIndex: 1,
-    explanation: {
-      en: 'PPAs are long-term contracts (typically 10-20 years) where a buyer agrees to purchase electricity at a fixed or indexed price directly from a renewable energy project.',
-      de: 'PPAs sind langfristige Verträge (typischerweise 10-20 Jahre), bei denen ein Käufer Strom zu einem festen oder indexierten Preis direkt von einem erneuerbaren Energieprojekt bezieht.'
-    },
-    topic: 'renewables',
-    difficulty: 'medium',
-  },
-  {
-    id: 'q12',
-    question: {
-      en: 'What role do battery storage systems play in the energy transition?',
-      de: 'Welche Rolle spielen Batteriespeichersysteme in der Energiewende?'
-    },
-    options: {
-      en: ['They generate electricity', 'They store excess renewable energy for later use', 'They transmit power over long distances', 'They reduce CO2 emissions directly'],
-      de: ['Sie erzeugen Strom', 'Sie speichern überschüssige erneuerbare Energie für späteren Verbrauch', 'Sie übertragen Strom über lange Strecken', 'Sie reduzieren CO2-Emissionen direkt']
-    },
-    correctIndex: 1,
-    explanation: {
-      en: 'Battery storage absorbs excess renewable generation and releases it when needed, providing flexibility and helping balance supply and demand.',
-      de: 'Batteriespeicher nehmen überschüssige erneuerbare Erzeugung auf und geben sie bei Bedarf ab, um Angebot und Nachfrage auszugleichen.'
-    },
-    topic: 'renewables',
-    difficulty: 'medium',
-  },
-  // GRID/DSO - Easy
-  {
-    id: 'q13',
-    question: {
-      en: 'How many Transmission System Operators (TSOs) does Germany have?',
-      de: 'Wie viele Übertragungsnetzbetreiber (ÜNBs) hat Deutschland?'
-    },
-    options: {
-      en: ['1', '2', '4', '16'],
-      de: ['1', '2', '4', '16']
-    },
-    correctIndex: 2,
-    explanation: {
-      en: 'Germany has four TSOs: 50Hertz, Amprion, TenneT, and TransnetBW, each managing a control area.',
-      de: 'Deutschland hat vier ÜNBs: 50Hertz, Amprion, TenneT und TransnetBW, die jeweils eine Regelzone verwalten.'
+    learnMore: {
+      en: 'Redispatch is a major cost driver in Germany – over €4 billion in 2022! The process works like this: when too much wind power in the North cannot flow to demand centers in the South (due to limited transmission capacity), TSOs instruct northern wind farms to curtail output while ramping up southern gas plants. Both get compensated – curtailed plants for lost revenue, activated plants for generation costs. "Redispatch 2.0" since 2021 now includes smaller plants and renewables. Grid expansion (like SuedLink) aims to reduce these costs.',
+      de: 'Redispatch ist ein großer Kostentreiber in Deutschland – über 4 Milliarden Euro in 2022! Der Prozess funktioniert so: Wenn zu viel Windstrom im Norden nicht zu Verbrauchszentren im Süden fließen kann (wegen begrenzter Übertragungskapazität), weisen ÜNB nördliche Windparks an, ihre Leistung zu drosseln, während südliche Gaskraftwerke hochfahren. Beide werden entschädigt – gedrosselte Anlagen für entgangene Einnahmen, aktivierte für Erzeugungskosten. "Redispatch 2.0" seit 2021 umfasst jetzt auch kleinere Anlagen und Erneuerbare. Der Netzausbau (wie SuedLink) soll diese Kosten reduzieren.'
     },
     topic: 'grid-dso',
-    difficulty: 'easy',
+    difficulty: 'medium'
+  },
+  {
+    id: 'q9',
+    question: { en: 'What frequency does the European grid operate at?', de: 'Mit welcher Frequenz arbeitet das europäische Netz?' },
+    options: {
+      en: ['60 Hz', '50 Hz', '100 Hz', '220 Hz'],
+      de: ['60 Hz', '50 Hz', '100 Hz', '220 Hz']
+    },
+    correctIndex: 1,
+    explanation: {
+      en: 'The European grid operates at 50 Hz. Deviations indicate imbalance between supply and demand.',
+      de: 'Das europäische Netz arbeitet mit 50 Hz. Abweichungen zeigen ein Ungleichgewicht zwischen Angebot und Nachfrage an.'
+    },
+    learnMore: {
+      en: 'Grid frequency is the heartbeat of the electricity system. When demand exceeds supply, generators slow down and frequency drops below 50 Hz. When supply exceeds demand, frequency rises. Deviations of just ±0.2 Hz trigger automatic responses: primary reserve activates within seconds, secondary reserve within minutes, and tertiary reserve within 15 minutes. A major frequency deviation (like during the 2021 split of the European grid) can cause blackouts. Fun fact: some older clocks use grid frequency for timekeeping – they gained/lost minutes during the 2018 Kosovo-Serbia grid dispute!',
+      de: 'Die Netzfrequenz ist der Herzschlag des Stromsystems. Wenn Nachfrage das Angebot übersteigt, verlangsamen sich Generatoren und die Frequenz fällt unter 50 Hz. Wenn Angebot die Nachfrage übersteigt, steigt die Frequenz. Abweichungen von nur ±0,2 Hz lösen automatische Reaktionen aus: Primärreserve aktiviert in Sekunden, Sekundärreserve in Minuten, Tertiärreserve in 15 Minuten. Eine große Frequenzabweichung (wie bei der Netzaufspaltung 2021) kann Stromausfälle verursachen. Fun Fact: Manche älteren Uhren nutzen die Netzfrequenz zur Zeitmessung – sie gingen während des Kosovo-Serbien-Netzstreits 2018 vor/nach!'
+    },
+    topic: 'grid-dso',
+    difficulty: 'easy'
+  },
+  // Regulation
+  {
+    id: 'q10',
+    question: { en: 'What is the EU ETS?', de: 'Was ist das EU-ETS?' },
+    options: {
+      en: ['European Trading System', 'Emissions Trading System', 'Energy Transmission Standard', 'Electric Transport Scheme'],
+      de: ['Europäisches Handelssystem', 'Emissionshandelssystem', 'Energieübertragungsstandard', 'Elektrotransportsystem']
+    },
+    correctIndex: 1,
+    explanation: {
+      en: 'The EU Emissions Trading System is a cap-and-trade system that puts a price on carbon emissions from power plants and industry.',
+      de: 'Das EU-Emissionshandelssystem ist ein Cap-and-Trade-System, das CO2-Emissionen von Kraftwerken und Industrie bepreist.'
+    },
+    learnMore: {
+      en: 'The EU ETS is the world\'s largest carbon market, covering about 40% of EU emissions. Here\'s how it works: the EU sets a cap on total emissions, then issues allowances (each worth 1 tonne CO2). Companies must surrender allowances for their emissions – if they have too few, they must buy more on the market. The cap decreases annually, making allowances scarcer and more expensive. Prices rose from €5 in 2017 to over €100 in 2023. ETS Phase 4 (2021-2030) includes faster cap reduction and carbon border adjustment (CBAM) to prevent carbon leakage.',
+      de: 'Das EU-ETS ist der größte Kohlenstoffmarkt der Welt und deckt etwa 40% der EU-Emissionen ab. So funktioniert es: Die EU setzt eine Obergrenze für Gesamtemissionen und gibt Zertifikate aus (jedes für 1 Tonne CO2). Unternehmen müssen Zertifikate für ihre Emissionen abgeben – haben sie zu wenige, müssen sie am Markt zukaufen. Die Obergrenze sinkt jährlich, was Zertifikate knapper und teurer macht. Die Preise stiegen von 5€ in 2017 auf über 100€ in 2023. ETS Phase 4 (2021-2030) beinhaltet schnellere Cap-Reduktion und CO2-Grenzausgleich (CBAM) gegen Carbon Leakage.'
+    },
+    topic: 'regulation',
+    difficulty: 'easy'
+  },
+  {
+    id: 'q11',
+    question: { en: 'What is the goal of unbundling in energy markets?', de: 'Was ist das Ziel der Entflechtung in Energiemärkten?' },
+    options: {
+      en: ['Reduce electricity consumption', 'Separate generation, transmission, and retail', 'Combine all energy services', 'Eliminate competition'],
+      de: ['Stromverbrauch reduzieren', 'Erzeugung, Übertragung und Vertrieb trennen', 'Alle Energiedienstleistungen kombinieren', 'Wettbewerb eliminieren']
+    },
+    correctIndex: 1,
+    explanation: {
+      en: 'Unbundling separates monopoly activities (grids) from competitive activities (generation, retail) to ensure fair market access.',
+      de: 'Entflechtung trennt Monopolaktivitäten (Netze) von wettbewerblichen Aktivitäten (Erzeugung, Vertrieb), um fairen Marktzugang zu gewährleisten.'
+    },
+    topic: 'regulation',
+    difficulty: 'medium'
+  },
+  // Trading
+  {
+    id: 'q12',
+    question: { en: 'What is the day-ahead market?', de: 'Was ist der Day-Ahead-Markt?' },
+    options: {
+      en: ['Trading for the next month', 'Trading for the next day', 'Real-time trading', 'Annual contract market'],
+      de: ['Handel für den nächsten Monat', 'Handel für den nächsten Tag', 'Echtzeithandel', 'Jahresvertragsmarkt']
+    },
+    correctIndex: 1,
+    explanation: {
+      en: 'The day-ahead market trades electricity for delivery the following day. Auctions typically close at noon for next-day delivery.',
+      de: 'Der Day-Ahead-Markt handelt Strom für die Lieferung am nächsten Tag. Auktionen schließen typischerweise mittags für die Lieferung am Folgetag.'
+    },
+    topic: 'trading',
+    difficulty: 'easy'
+  },
+  {
+    id: 'q13',
+    question: { en: 'Why do companies use futures contracts?', de: 'Warum nutzen Unternehmen Terminverträge?' },
+    options: {
+      en: ['To speculate on prices', 'To hedge against price volatility', 'To avoid paying taxes', 'To increase consumption'],
+      de: ['Um auf Preise zu spekulieren', 'Um sich gegen Preisvolatilität abzusichern', 'Um Steuern zu vermeiden', 'Um den Verbrauch zu erhöhen']
+    },
+    correctIndex: 1,
+    explanation: {
+      en: 'Futures contracts lock in prices for future delivery, helping companies manage price risk and budget more predictably.',
+      de: 'Terminverträge fixieren Preise für zukünftige Lieferung und helfen Unternehmen, Preisrisiken zu managen und vorhersehbarer zu budgetieren.'
+    },
+    topic: 'trading',
+    difficulty: 'medium'
   },
   {
     id: 'q14',
-    question: {
-      en: 'What voltage level do DSOs typically manage?',
-      de: 'Welche Spannungsebene verwalten Verteilnetzbetreiber typischerweise?'
-    },
+    question: { en: 'What is intraday trading?', de: 'Was ist Intraday-Handel?' },
     options: {
-      en: ['Above 380 kV', 'Above 220 kV', 'Below 110 kV', 'Exactly 50 kV'],
-      de: ['Über 380 kV', 'Über 220 kV', 'Unter 110 kV', 'Genau 50 kV']
-    },
-    correctIndex: 2,
-    explanation: {
-      en: 'DSOs manage the distribution network at voltages below 110 kV (medium and low voltage), delivering power to homes and businesses.',
-      de: 'VNBs verwalten das Verteilnetz bei Spannungen unter 110 kV (Mittel- und Niederspannung) und liefern Strom an Haushalte und Unternehmen.'
-    },
-    topic: 'grid-dso',
-    difficulty: 'easy',
-  },
-  // GRID/DSO - Medium
-  {
-    id: 'q15',
-    question: {
-      en: 'What is "Redispatch 2.0"?',
-      de: 'Was ist "Redispatch 2.0"?'
-    },
-    options: {
-      en: ['A new trading platform', 'An extended congestion management system including renewables', 'A grid expansion program', 'A consumer switching service'],
-      de: ['Eine neue Handelsplattform', 'Ein erweitertes Engpassmanagement-System inklusive Erneuerbarer', 'Ein Netzausbau-Programm', 'Ein Anbieterwechsel-Service']
-    },
-    correctIndex: 1,
-    explanation: {
-      en: 'Redispatch 2.0 extended congestion management to include renewable and CHP plants above 100 kW, requiring them to reduce output when grid congestion occurs.',
-      de: 'Redispatch 2.0 erweiterte das Engpassmanagement um erneuerbare und KWK-Anlagen über 100 kW, die bei Netzengpässen ihre Erzeugung reduzieren müssen.'
-    },
-    topic: 'grid-dso',
-    difficulty: 'medium',
-  },
-  // REGULATION - Easy
-  {
-    id: 'q16',
-    question: {
-      en: 'What does the EU ETS stand for?',
-      de: 'Wofür steht EU ETS?'
-    },
-    options: {
-      en: ['European Union Energy Trading System', 'European Union Emissions Trading System', 'European Utility Electricity Tariff Schedule', 'EU Energy Transition Strategy'],
-      de: ['Europäisches Energiehandelssystem', 'Europäisches Emissionshandelssystem', 'Europäischer Stromtarifplan', 'EU Energietransitionsstrategie']
-    },
-    correctIndex: 1,
-    explanation: {
-      en: 'The EU Emissions Trading System is a cap-and-trade system that limits greenhouse gas emissions from power plants and industrial installations.',
-      de: 'Das EU-Emissionshandelssystem ist ein Cap-and-Trade-System, das Treibhausgasemissionen von Kraftwerken und Industrieanlagen begrenzt.'
-    },
-    topic: 'regulation',
-    difficulty: 'easy',
-  },
-  {
-    id: 'q17',
-    question: {
-      en: 'What is the German "Energiewende"?',
-      de: 'Was ist die deutsche "Energiewende"?'
-    },
-    options: {
-      en: ['A power trading platform', 'Germany\'s transition to renewable energy', 'A type of power plant', 'An electricity tariff'],
-      de: ['Eine Stromhandelsplattform', 'Deutschlands Übergang zu erneuerbarer Energie', 'Ein Kraftwerkstyp', 'Ein Stromtarif']
-    },
-    correctIndex: 1,
-    explanation: {
-      en: 'The Energiewende is Germany\'s long-term strategy to transition from fossil fuels and nuclear to renewable energy sources while maintaining energy security.',
-      de: 'Die Energiewende ist Deutschlands langfristige Strategie für den Übergang von fossilen und nuklearen zu erneuerbaren Energiequellen bei gleichzeitiger Versorgungssicherheit.'
-    },
-    topic: 'regulation',
-    difficulty: 'easy',
-  },
-  // REGULATION - Medium
-  {
-    id: 'q18',
-    question: {
-      en: 'What is the role of the Bundesnetzagentur?',
-      de: 'Was ist die Rolle der Bundesnetzagentur?'
-    },
-    options: {
-      en: ['Generating electricity', 'Regulating energy networks, telecom, and postal services', 'Trading electricity on exchanges', 'Building power plants'],
-      de: ['Stromerzeugung', 'Regulierung von Energienetzen, Telekommunikation und Post', 'Stromhandel an Börsen', 'Bau von Kraftwerken']
-    },
-    correctIndex: 1,
-    explanation: {
-      en: 'The Bundesnetzagentur (BNetzA) is Germany\'s federal network agency, responsible for regulating electricity, gas, telecom, post, and railway markets.',
-      de: 'Die Bundesnetzagentur (BNetzA) ist die deutsche Regulierungsbehörde für Strom-, Gas-, Telekommunikations-, Post- und Eisenbahnmärkte.'
-    },
-    topic: 'regulation',
-    difficulty: 'medium',
-  },
-  // REGULATION - Hard
-  {
-    id: 'q19',
-    question: {
-      en: 'What is the Market Stability Reserve (MSR) in the EU ETS?',
-      de: 'Was ist die Marktstabilitätsreserve (MSR) im EU ETS?'
-    },
-    options: {
-      en: ['A financial reserve for market crashes', 'A mechanism to adjust the supply of emission allowances', 'An emergency power reserve', 'A carbon tax on imports'],
-      de: ['Eine Finanzreserve für Markteinbrüche', 'Ein Mechanismus zur Anpassung des Angebots an Emissionszertifikaten', 'Eine Notstromreserve', 'Eine CO2-Steuer auf Importe']
-    },
-    correctIndex: 1,
-    explanation: {
-      en: 'The MSR automatically adjusts the supply of EU emission allowances by absorbing surplus or releasing permits when needed, supporting the carbon price signal.',
-      de: 'Die MSR passt das Angebot an EU-Emissionszertifikaten automatisch an, indem sie Überschüsse absorbiert oder Zertifikate bei Bedarf freigibt.'
-    },
-    topic: 'regulation',
-    difficulty: 'hard',
-  },
-  // TRADING - Easy
-  {
-    id: 'q20',
-    question: {
-      en: 'Where is the main European day-ahead power market?',
-      de: 'Wo ist der wichtigste europäische Day-Ahead-Strommarkt?'
-    },
-    options: {
-      en: ['NYSE', 'EPEX SPOT', 'NASDAQ', 'London Stock Exchange'],
-      de: ['NYSE', 'EPEX SPOT', 'NASDAQ', 'Londoner Börse']
-    },
-    correctIndex: 1,
-    explanation: {
-      en: 'EPEX SPOT operates the day-ahead and intraday power markets for Germany, France, Austria, Belgium, Netherlands, and other European countries.',
-      de: 'EPEX SPOT betreibt die Day-Ahead- und Intraday-Strommärkte für Deutschland, Frankreich, Österreich, Belgien, Niederlande und andere europäische Länder.'
-    },
-    topic: 'trading',
-    difficulty: 'easy',
-  },
-  {
-    id: 'q21',
-    question: {
-      en: 'What is "hedging" in energy trading?',
-      de: 'Was ist "Hedging" im Energiehandel?'
-    },
-    options: {
-      en: ['Speculating on price increases', 'Reducing price risk through forward contracts', 'Physical delivery of electricity', 'Grid balancing operations'],
-      de: ['Spekulation auf Preissteigerungen', 'Reduzierung des Preisrisikos durch Termingeschäfte', 'Physische Lieferung von Strom', 'Netzbilanzierung']
-    },
-    correctIndex: 1,
-    explanation: {
-      en: 'Hedging means using forward or futures contracts to lock in future prices, reducing exposure to volatile spot market prices.',
-      de: 'Hedging bedeutet die Nutzung von Termin- oder Futures-Kontrakten zur Fixierung zukünftiger Preise, um die Exposition gegenüber volatilen Spotmarktpreisen zu reduzieren.'
-    },
-    topic: 'trading',
-    difficulty: 'easy',
-  },
-  // TRADING - Medium
-  {
-    id: 'q22',
-    question: {
-      en: 'What is the difference between the day-ahead and intraday market?',
-      de: 'Was ist der Unterschied zwischen Day-Ahead- und Intraday-Markt?'
-    },
-    options: {
-      en: ['Day-ahead trades monthly, intraday trades yearly', 'Day-ahead closes the day before delivery, intraday trades up to delivery', 'There is no difference', 'Day-ahead is for gas, intraday is for power'],
-      de: ['Day-Ahead handelt monatlich, Intraday handelt jährlich', 'Day-Ahead schließt am Tag vor der Lieferung, Intraday handelt bis zur Lieferung', 'Es gibt keinen Unterschied', 'Day-Ahead ist für Gas, Intraday für Strom']
-    },
-    correctIndex: 1,
-    explanation: {
-      en: 'The day-ahead market sets hourly prices for the next day via auction. The intraday market allows continuous trading up to 5 minutes before delivery to adjust positions.',
-      de: 'Der Day-Ahead-Markt setzt stündliche Preise für den nächsten Tag per Auktion. Der Intraday-Markt ermöglicht kontinuierlichen Handel bis 5 Minuten vor Lieferung.'
-    },
-    topic: 'trading',
-    difficulty: 'medium',
-  },
-  // TRADING - Hard
-  {
-    id: 'q23',
-    question: {
-      en: 'What is the "Phelix" baseload index?',
-      de: 'Was ist der "Phelix" Grundlast-Index?'
-    },
-    options: {
-      en: ['A renewable energy index', 'The Physical Electricity Index for German/Austrian baseload power', 'A grid frequency metric', 'A consumer price index'],
-      de: ['Ein Erneuerbare-Energien-Index', 'Der Physical Electricity Index für deutsche/österreichische Grundlaststrom', 'Eine Netzfrequenz-Metrik', 'Ein Verbraucherpreisindex']
-    },
-    correctIndex: 1,
-    explanation: {
-      en: 'Phelix (Physical Electricity Index) is the average day-ahead price for baseload (all hours) power in Germany. It serves as the key reference for power derivatives.',
-      de: 'Phelix (Physical Electricity Index) ist der durchschnittliche Day-Ahead-Preis für Grundlaststrom in Deutschland und dient als Referenz für Stromderivate.'
-    },
-    topic: 'trading',
-    difficulty: 'hard',
-  },
-  // RETAIL - Easy
-  {
-    id: 'q24',
-    question: {
-      en: 'What percentage of a German household electricity bill is the actual energy cost?',
-      de: 'Welcher Anteil einer deutschen Haushaltsstromrechnung sind die tatsächlichen Energiekosten?'
-    },
-    options: {
-      en: ['About 80%', 'About 50%', 'About 25-30%', 'About 10%'],
-      de: ['Etwa 80%', 'Etwa 50%', 'Etwa 25-30%', 'Etwa 10%']
-    },
-    correctIndex: 2,
-    explanation: {
-      en: 'Only about 25-30% of a German household bill reflects wholesale energy costs. The rest is grid fees, taxes, and levies.',
-      de: 'Nur etwa 25-30% einer deutschen Haushaltsrechnung spiegeln die Großhandels-Energiekosten wider. Der Rest sind Netzentgelte, Steuern und Umlagen.'
-    },
-    topic: 'retail',
-    difficulty: 'easy',
-  },
-  {
-    id: 'q25',
-    question: {
-      en: 'What is "Anbieterwechsel" in the German energy market?',
-      de: 'Was ist ein "Anbieterwechsel" im deutschen Energiemarkt?'
-    },
-    options: {
-      en: ['Building a new power plant', 'Switching electricity supplier', 'Installing solar panels', 'Connecting to the grid'],
-      de: ['Bau eines neuen Kraftwerks', 'Wechsel des Stromanbieters', 'Installation von Solaranlagen', 'Anschluss ans Netz']
-    },
-    correctIndex: 1,
-    explanation: {
-      en: 'German consumers can freely switch their electricity supplier. The process typically takes a few weeks and the DSO ensures uninterrupted supply during the switch.',
-      de: 'Deutsche Verbraucher können ihren Stromanbieter frei wechseln. Der Prozess dauert typischerweise einige Wochen, und der VNB stellt eine unterbrechungsfreie Versorgung sicher.'
-    },
-    topic: 'retail',
-    difficulty: 'easy',
-  },
-  // RETAIL - Medium
-  {
-    id: 'q26',
-    question: {
-      en: 'What are "Netzentgelte" (network charges)?',
-      de: 'Was sind "Netzentgelte"?'
-    },
-    options: {
-      en: ['Fees paid to use the electricity grid', 'Costs for building new power lines', 'Taxes on electricity consumption', 'Charges for smart meters'],
-      de: ['Gebühren für die Nutzung des Stromnetzes', 'Kosten für den Bau neuer Stromleitungen', 'Steuern auf den Stromverbrauch', 'Gebühren für Smart Meter']
+      en: ['Trading within the same day', 'Trading for the next week', 'International trading', 'Index trading'],
+      de: ['Handel innerhalb desselben Tages', 'Handel für die nächste Woche', 'Internationaler Handel', 'Indexhandel']
     },
     correctIndex: 0,
     explanation: {
-      en: 'Netzentgelte are regulated fees paid to grid operators (TSOs and DSOs) for transporting electricity through their networks. They make up about 25% of the total electricity bill.',
-      de: 'Netzentgelte sind regulierte Gebühren an Netzbetreiber (ÜNBs und VNBs) für den Transport von Strom. Sie machen etwa 25% der gesamten Stromrechnung aus.'
+      en: 'Intraday trading allows market participants to adjust positions close to real-time, correcting for forecast errors.',
+      de: 'Intraday-Handel ermöglicht Marktteilnehmern, Positionen nahe Echtzeit anzupassen und Prognosefehler zu korrigieren.'
+    },
+    topic: 'trading',
+    difficulty: 'easy'
+  },
+  // Retail
+  {
+    id: 'q15',
+    question: { en: 'What is a power purchase agreement (PPA)?', de: 'Was ist ein Power Purchase Agreement (PPA)?' },
+    options: {
+      en: ['A government subsidy', 'A long-term contract to buy electricity', 'A grid connection fee', 'A retail pricing model'],
+      de: ['Eine staatliche Subvention', 'Ein langfristiger Stromkaufvertrag', 'Eine Netzanschlussgebühr', 'Ein Preismodell im Vertrieb']
+    },
+    correctIndex: 1,
+    explanation: {
+      en: 'PPAs are long-term contracts between generators and buyers, providing price certainty for both parties, often used for renewables.',
+      de: 'PPAs sind langfristige Verträge zwischen Erzeugern und Käufern, die beiden Parteien Preissicherheit bieten, oft für Erneuerbare genutzt.'
     },
     topic: 'retail',
-    difficulty: 'medium',
+    difficulty: 'medium'
   },
-  // ENERGY BASICS - Medium
+  // More questions for variety
   {
-    id: 'q27',
-    question: {
-      en: 'What is the difference between energy (kWh) and power (kW)?',
-      de: 'Was ist der Unterschied zwischen Energie (kWh) und Leistung (kW)?'
-    },
+    id: 'q16',
+    question: { en: 'What is baseload power?', de: 'Was ist Grundlaststrom?' },
     options: {
-      en: ['They are the same thing', 'Power is the rate of energy use; energy is power over time', 'Energy is measured in watts, power in joules', 'Power is only used for renewables'],
-      de: ['Sie sind dasselbe', 'Leistung ist die Rate des Energieverbrauchs; Energie ist Leistung über Zeit', 'Energie wird in Watt gemessen, Leistung in Joule', 'Leistung wird nur für Erneuerbare verwendet']
+      en: ['Power at peak demand', 'Minimum constant power demand', 'Emergency backup power', 'Renewable power only'],
+      de: ['Strom bei Spitzenlast', 'Minimaler konstanter Strombedarf', 'Notfall-Reservestrom', 'Nur erneuerbarer Strom']
     },
     correctIndex: 1,
     explanation: {
-      en: 'Power (kW) is the instantaneous rate of energy transfer. Energy (kWh) is power multiplied by time. A 100 W light bulb running for 10 hours uses 1 kWh.',
-      de: 'Leistung (kW) ist die momentane Rate der Energieübertragung. Energie (kWh) ist Leistung multipliziert mit Zeit.'
+      en: 'Baseload is the minimum level of demand over 24 hours. Plants with low marginal costs (nuclear, coal) traditionally covered baseload.',
+      de: 'Grundlast ist das Mindestniveau der Nachfrage über 24 Stunden. Kraftwerke mit niedrigen Grenzkosten (Kernkraft, Kohle) deckten traditionell die Grundlast.'
     },
     topic: 'energy-basics',
-    difficulty: 'medium',
+    difficulty: 'medium'
   },
-  // RENEWABLES - Hard
   {
-    id: 'q28',
-    question: {
-      en: 'What is the "duck curve" in power systems?',
-      de: 'Was ist die "Enten-Kurve" in Stromsystemen?'
-    },
+    id: 'q17',
+    question: { en: 'What is peak demand?', de: 'Was ist Spitzenlast?' },
     options: {
-      en: ['A waterfowl migration pattern', 'The net load shape showing midday dip from solar and evening ramp', 'A type of wind turbine', 'A gas pipeline route'],
-      de: ['Ein Wasservogel-Migrationsmuster', 'Die Nettolastkurve mit Mittagstal durch Solar und Abendanstieg', 'Ein Windturbinentyp', 'Eine Gaspipeline-Route']
+      en: ['The highest electricity demand period', 'The lowest price period', 'When renewables produce most', 'Nighttime consumption'],
+      de: ['Die Zeit der höchsten Stromnachfrage', 'Die Zeit der niedrigsten Preise', 'Wenn Erneuerbare am meisten produzieren', 'Nachtverbrauch']
+    },
+    correctIndex: 0,
+    explanation: {
+      en: 'Peak demand typically occurs during morning and evening hours. Peak prices are usually higher due to more expensive plants being dispatched.',
+      de: 'Spitzenlast tritt typischerweise morgens und abends auf. Spitzenpreise sind meist höher, da teurere Kraftwerke eingesetzt werden.'
+    },
+    topic: 'energy-basics',
+    difficulty: 'easy'
+  },
+  {
+    id: 'q18',
+    question: { en: 'What is a capacity market?', de: 'Was ist ein Kapazitätsmarkt?' },
+    options: {
+      en: ['A market for electricity storage', 'A market that pays for available generation capacity', 'A consumer switching platform', 'A renewable energy auction'],
+      de: ['Ein Markt für Stromspeicher', 'Ein Markt, der für verfügbare Erzeugungskapazität bezahlt', 'Eine Verbraucher-Wechselplattform', 'Eine Erneuerbare-Energien-Auktion']
     },
     correctIndex: 1,
     explanation: {
-      en: 'The duck curve shows how high solar generation creates a midday dip in net load (demand minus renewables), followed by a steep evening ramp as solar drops and demand peaks.',
-      de: 'Die Enten-Kurve zeigt, wie hohe Solarerzeugung ein Mittagstal in der Nettolast erzeugt, gefolgt von einem steilen Abendanstieg, wenn Solar nachlässt und die Nachfrage steigt.'
+      en: 'Capacity markets pay generators to keep capacity available, ensuring enough generation exists to meet peak demand.',
+      de: 'Kapazitätsmärkte bezahlen Erzeuger, um Kapazität verfügbar zu halten und sicherzustellen, dass genügend Erzeugung für Spitzenlast existiert.'
     },
-    topic: 'renewables',
-    difficulty: 'hard',
+    topic: 'regulation',
+    difficulty: 'hard'
   },
-  // GRID - Hard
   {
-    id: 'q29',
-    question: {
-      en: 'What is "sector coupling" in the energy transition?',
-      de: 'Was ist "Sektorenkopplung" in der Energiewende?'
-    },
+    id: 'q19',
+    question: { en: 'What is the spark spread?', de: 'Was ist der Spark Spread?' },
     options: {
-      en: ['Merging utility companies', 'Linking electricity, heat, transport, and industry sectors', 'Connecting national grids', 'Combining solar and wind farms'],
-      de: ['Fusion von Energieunternehmen', 'Verknüpfung von Strom-, Wärme-, Verkehrs- und Industriesektoren', 'Verbindung nationaler Netze', 'Kombination von Solar- und Windparks']
+      en: ['The difference between gas and electricity prices', 'The efficiency of solar panels', 'The voltage difference in grids', 'A type of energy contract'],
+      de: ['Die Differenz zwischen Gas- und Strompreisen', 'Die Effizienz von Solarmodulen', 'Die Spannungsdifferenz in Netzen', 'Eine Art Energievertrag']
+    },
+    correctIndex: 0,
+    explanation: {
+      en: 'The spark spread is the gross margin for a gas-fired plant: electricity price minus gas cost. A positive spread means profitable generation.',
+      de: 'Der Spark Spread ist die Bruttomarge eines Gaskraftwerks: Strompreis minus Gaskosten. Ein positiver Spread bedeutet profitable Erzeugung.'
+    },
+    topic: 'trading',
+    difficulty: 'hard'
+  },
+  {
+    id: 'q20',
+    question: { en: 'What are ancillary services?', de: 'Was sind Systemdienstleistungen?' },
+    options: {
+      en: ['Customer support services', 'Services to maintain grid stability', 'Energy efficiency consulting', 'Billing and metering'],
+      de: ['Kundendienstleistungen', 'Dienste zur Aufrechterhaltung der Netzstabilität', 'Energieeffizienzberatung', 'Abrechnung und Messung']
     },
     correctIndex: 1,
     explanation: {
-      en: 'Sector coupling integrates electricity with heating (heat pumps), transport (EVs), and industry (green hydrogen) to decarbonize all sectors using renewable electricity.',
-      de: 'Sektorenkopplung integriert Strom mit Wärme (Wärmepumpen), Verkehr (E-Autos) und Industrie (grüner Wasserstoff) zur Dekarbonisierung aller Sektoren.'
+      en: 'Ancillary services include frequency control, voltage support, and black start capability—essential for reliable grid operation.',
+      de: 'Systemdienstleistungen umfassen Frequenzregelung, Spannungsstützung und Schwarzstartfähigkeit—essentiell für zuverlässigen Netzbetrieb.'
     },
     topic: 'grid-dso',
-    difficulty: 'hard',
+    difficulty: 'medium'
   },
-  // PRICE DRIVERS - Hard
   {
-    id: 'q30',
-    question: {
-      en: 'What are "negative prices" in electricity markets?',
-      de: 'Was sind "negative Preise" in Strommärkten?'
-    },
+    id: 'q21',
+    question: { en: 'What is demand response?', de: 'Was ist Lastmanagement?' },
     options: {
-      en: ['Prices below the regulated minimum', 'When generators pay consumers to take their electricity', 'Accounting errors', 'Prices during grid failures'],
-      de: ['Preise unter dem regulierten Minimum', 'Wenn Erzeuger Verbraucher für Stromabnahme bezahlen', 'Buchungsfehler', 'Preise bei Netzausfällen']
+      en: ['Reducing generation during low demand', 'Adjusting consumption based on price signals', 'Increasing grid capacity', 'Building more power plants'],
+      de: ['Reduktion der Erzeugung bei niedriger Nachfrage', 'Anpassung des Verbrauchs basierend auf Preissignalen', 'Erhöhung der Netzkapazität', 'Bau weiterer Kraftwerke']
     },
     correctIndex: 1,
     explanation: {
-      en: 'Negative prices occur when supply exceeds demand and inflexible generators (nuclear, must-run renewables) pay to keep running rather than incur costly shutdowns.',
-      de: 'Negative Preise treten auf, wenn das Angebot die Nachfrage übersteigt und inflexible Erzeuger für den Weiterbetrieb zahlen, statt kostspielige Abschaltungen in Kauf zu nehmen.'
+      en: 'Demand response programs incentivize consumers to shift or reduce consumption during peak periods, helping balance the grid.',
+      de: 'Lastmanagement-Programme motivieren Verbraucher, den Verbrauch in Spitzenzeiten zu verschieben oder zu reduzieren und helfen, das Netz auszugleichen.'
     },
-    topic: 'price-drivers',
-    difficulty: 'hard',
+    topic: 'renewables',
+    difficulty: 'medium'
+  },
+  {
+    id: 'q22',
+    question: { en: 'What is a prosumer?', de: 'Was ist ein Prosumer?' },
+    options: {
+      en: ['A professional consumer', 'Someone who both produces and consumes energy', 'A large industrial customer', 'An energy trader'],
+      de: ['Ein professioneller Verbraucher', 'Jemand, der Energie sowohl produziert als auch verbraucht', 'Ein großer Industriekunde', 'Ein Energiehändler']
+    },
+    correctIndex: 1,
+    explanation: {
+      en: 'Prosumers have their own generation (often rooftop solar) and can feed excess power back to the grid while also consuming grid electricity.',
+      de: 'Prosumer haben eigene Erzeugung (oft Dach-Solar) und können überschüssigen Strom ins Netz einspeisen, während sie auch Netzstrom verbrauchen.'
+    },
+    topic: 'retail',
+    difficulty: 'easy'
+  },
+  {
+    id: 'q23',
+    question: { en: 'What is power-to-X?', de: 'Was ist Power-to-X?' },
+    options: {
+      en: ['Converting electricity to other energy forms', 'Exporting electricity', 'Power quality standards', 'Extra power capacity'],
+      de: ['Umwandlung von Strom in andere Energieformen', 'Stromexport', 'Stromqualitätsstandards', 'Zusätzliche Stromkapazität']
+    },
+    correctIndex: 0,
+    explanation: {
+      en: 'Power-to-X converts electricity to hydrogen, heat, or synthetic fuels, enabling storage and sector coupling.',
+      de: 'Power-to-X wandelt Strom in Wasserstoff, Wärme oder synthetische Kraftstoffe um und ermöglicht Speicherung und Sektorkopplung.'
+    },
+    topic: 'renewables',
+    difficulty: 'medium'
+  },
+  {
+    id: 'q24',
+    question: { en: 'What is the Clean Energy Package?', de: 'Was ist das Clean Energy Package?' },
+    options: {
+      en: ['An EU policy framework for energy transition', 'A type of green electricity tariff', 'Nuclear power regulations', 'Grid modernization funding'],
+      de: ['Ein EU-Politikrahmen für die Energiewende', 'Ein grüner Stromtarif', 'Kernkraftregulierung', 'Förderung der Netzmodernisierung']
+    },
+    correctIndex: 0,
+    explanation: {
+      en: 'The Clean Energy Package is comprehensive EU legislation updating energy market rules, renewable targets, and consumer rights.',
+      de: 'Das Clean Energy Package ist eine umfassende EU-Gesetzgebung zur Aktualisierung von Energiemarktregeln, Erneuerbaren-Zielen und Verbraucherrechten.'
+    },
+    topic: 'regulation',
+    difficulty: 'hard'
+  },
+  {
+    id: 'q25',
+    question: { en: 'What is green hydrogen?', de: 'Was ist grüner Wasserstoff?' },
+    options: {
+      en: ['Hydrogen from natural gas', 'Hydrogen produced using renewable electricity', 'Any hydrogen used for power', 'Hydrogen from nuclear power'],
+      de: ['Wasserstoff aus Erdgas', 'Wasserstoff produziert mit erneuerbarem Strom', 'Jeder für Strom genutzte Wasserstoff', 'Wasserstoff aus Kernkraft']
+    },
+    correctIndex: 1,
+    explanation: {
+      en: 'Green hydrogen is produced by electrolysis using renewable electricity, making it a zero-carbon energy carrier.',
+      de: 'Grüner Wasserstoff wird durch Elektrolyse mit erneuerbarem Strom produziert und ist damit ein CO2-freier Energieträger.'
+    },
+    topic: 'renewables',
+    difficulty: 'easy'
+  },
+  {
+    id: 'q26',
+    question: { en: 'What is curtailment?', de: 'Was ist Abregelung?' },
+    options: {
+      en: ['Building new power lines', 'Reducing renewable output due to grid constraints', 'Increasing plant efficiency', 'A pricing mechanism'],
+      de: ['Bau neuer Stromleitungen', 'Reduzierung erneuerbarer Erzeugung wegen Netzengpässen', 'Erhöhung der Anlageneffizienz', 'Ein Preismechanismus']
+    },
+    correctIndex: 1,
+    explanation: {
+      en: 'Curtailment occurs when renewable generation is reduced because the grid cannot transport or absorb all the power produced.',
+      de: 'Abregelung tritt auf, wenn erneuerbare Erzeugung reduziert wird, weil das Netz nicht die gesamte produzierte Leistung transportieren oder aufnehmen kann.'
+    },
+    topic: 'renewables',
+    difficulty: 'medium'
+  },
+  {
+    id: 'q27',
+    question: { en: 'What is the role of battery storage in energy markets?', de: 'Welche Rolle spielen Batteriespeicher in Energiemärkten?' },
+    options: {
+      en: ['Replace all power plants', 'Provide flexibility and arbitrage opportunities', 'Only for emergency backup', 'Increase base load'],
+      de: ['Alle Kraftwerke ersetzen', 'Flexibilität und Arbitragemöglichkeiten bieten', 'Nur für Notfallreserve', 'Grundlast erhöhen']
+    },
+    correctIndex: 1,
+    explanation: {
+      en: 'Batteries provide flexibility by storing cheap energy and discharging when prices are high. They also provide fast frequency response.',
+      de: 'Batterien bieten Flexibilität durch Speicherung günstiger Energie und Entladung bei hohen Preisen. Sie liefern auch schnelle Frequenzregelung.'
+    },
+    topic: 'renewables',
+    difficulty: 'medium'
+  },
+  {
+    id: 'q28',
+    question: { en: 'What are Guarantees of Origin (GoO)?', de: 'Was sind Herkunftsnachweise (HKN)?' },
+    options: {
+      en: ['Certificates proving electricity source', 'Grid reliability standards', 'Consumer protection laws', 'Import licenses'],
+      de: ['Zertifikate, die die Stromquelle belegen', 'Netzzuverlässigkeitsstandards', 'Verbraucherschutzgesetze', 'Importlizenzen']
+    },
+    correctIndex: 0,
+    explanation: {
+      en: 'GoOs are tradeable certificates proving that electricity was generated from a specific source, enabling green electricity products.',
+      de: 'HKN sind handelbare Zertifikate, die belegen, dass Strom aus einer bestimmten Quelle erzeugt wurde, und ermöglichen grüne Stromprodukte.'
+    },
+    topic: 'retail',
+    difficulty: 'medium'
+  },
+  {
+    id: 'q29',
+    question: { en: 'What is market coupling?', de: 'Was ist Marktkopplung?' },
+    options: {
+      en: ['Connecting isolated markets for efficient pricing', 'Merging energy companies', 'Linking electricity and gas', 'Consumer choice programs'],
+      de: ['Verbindung isolierter Märkte für effiziente Preisbildung', 'Fusion von Energieunternehmen', 'Verknüpfung von Strom und Gas', 'Verbraucherwahlprogramme']
+    },
+    correctIndex: 0,
+    explanation: {
+      en: 'Market coupling integrates electricity markets across borders, optimizing cross-border flows and converging prices when capacity allows.',
+      de: 'Marktkopplung integriert Strommärkte grenzüberschreitend, optimiert grenzüberschreitende Flüsse und führt zu Preiskonvergenz bei verfügbarer Kapazität.'
+    },
+    topic: 'trading',
+    difficulty: 'hard'
+  },
+  {
+    id: 'q30',
+    question: { en: 'What is sector coupling?', de: 'Was ist Sektorkopplung?' },
+    options: {
+      en: ['Merging utility companies', 'Linking electricity, heat, and transport sectors', 'Connecting different voltage levels', 'Coupling spot and futures markets'],
+      de: ['Fusion von Versorgungsunternehmen', 'Verknüpfung von Strom-, Wärme- und Verkehrssektoren', 'Verbindung verschiedener Spannungsebenen', 'Kopplung von Spot- und Terminmärkten']
+    },
+    correctIndex: 1,
+    explanation: {
+      en: 'Sector coupling uses renewable electricity in heating and transport (EVs, heat pumps), increasing flexibility and decarbonizing other sectors.',
+      de: 'Sektorkopplung nutzt erneuerbaren Strom in Wärme und Verkehr (E-Autos, Wärmepumpen), erhöht Flexibilität und dekarbonisiert andere Sektoren.'
+    },
+    topic: 'renewables',
+    difficulty: 'medium'
   },
 ];
 
-export const leaderboardUsers: LeaderboardUser[] = [
-  { rank: 1, name: 'Maximilian W.', xp: 4850, level: 'expert', avatar: '🧑‍💼', streak: 21 },
-  { rank: 2, name: 'Sophie M.', xp: 4200, level: 'expert', avatar: '👩‍🔬', streak: 14 },
-  { rank: 3, name: 'Lukas B.', xp: 3750, level: 'expert', avatar: '👨‍💻', streak: 10 },
-  { rank: 4, name: 'Anna K.', xp: 2900, level: 'advanced', avatar: '👩‍🏫', streak: 8 },
-  { rank: 5, name: 'Felix R.', xp: 2500, level: 'advanced', avatar: '🧑‍🔧', streak: 5 },
-  { rank: 6, name: 'Laura S.', xp: 2100, level: 'advanced', avatar: '👩‍💼', streak: 4 },
-  { rank: 7, name: 'Jonas H.', xp: 1800, level: 'intermediate', avatar: '👨‍🎓', streak: 3 },
-  { rank: 8, name: 'Marie T.', xp: 1400, level: 'intermediate', avatar: '👩‍🎓', streak: 6 },
-  { rank: 9, name: 'David F.', xp: 900, level: 'intermediate', avatar: '🧑‍💼', streak: 2 },
-  { rank: 10, name: 'Clara N.', xp: 450, level: 'beginner', avatar: '👩‍🔬', streak: 1 },
+export const mockLeaderboard: LeaderboardUser[] = [
+  { rank: 1, name: 'Leo Birnbaum', xp: 4850, level: 'expert', avatar: '👨‍💼', streak: 45 },
+  { rank: 2, name: 'Victoria Ossadnik', xp: 4320, level: 'expert', avatar: '👩‍💻', streak: 32 },
+  { rank: 3, name: 'Thomas König', xp: 3890, level: 'advanced', avatar: '👨‍🔬', streak: 28 },
+  { rank: 4, name: 'Sabine Tröndle', xp: 3450, level: 'advanced', avatar: '👩‍🏫', streak: 21 },
+  { rank: 5, name: 'Chris D\'arcy', xp: 3120, level: 'advanced', avatar: '👨‍⚕️', streak: 19 },
+  { rank: 6, name: 'Michael Braun', xp: 2780, level: 'intermediate', avatar: '👨‍🔧', streak: 15 },
+  { rank: 7, name: 'Julia Wagner', xp: 2340, level: 'intermediate', avatar: '👩‍🎓', streak: 12 },
+  { rank: 8, name: 'Anna Becker', xp: 1980, level: 'intermediate', avatar: '👩‍💼', streak: 9 },
+  { rank: 9, name: 'Laura Hoffmann', xp: 1650, level: 'beginner', avatar: '👩‍🏭', streak: 7 },
+  { rank: 10, name: 'Stefan Koch', xp: 1420, level: 'beginner', avatar: '👨‍🎨', streak: 5 },
 ];
 
 export const achievements: Achievement[] = [
   {
     id: 'welcome',
     name: { en: 'Welcome!', de: 'Willkommen!' },
-    description: { en: 'Completed the onboarding', de: 'Onboarding abgeschlossen' },
-    icon: '🎉',
-    unlocked: false,
+    description: { en: 'Join the learning journey', de: 'Starte deine Lernreise' },
+    icon: '👋',
+    unlocked: false
   },
   {
     id: 'first-quiz',
     name: { en: 'First Steps', de: 'Erste Schritte' },
-    description: { en: 'Completed your first quiz', de: 'Erstes Quiz abgeschlossen' },
-    icon: '🏁',
-    unlocked: false,
+    description: { en: 'Complete your first quiz', de: 'Schließe dein erstes Quiz ab' },
+    icon: '🎯',
+    unlocked: false
   },
   {
     id: 'streak-3',
     name: { en: '3-Day Streak', de: '3-Tage-Serie' },
-    description: { en: 'Maintained a 3-day streak', de: '3-Tage-Serie gehalten' },
+    description: { en: 'Learn 3 days in a row', de: 'Lerne 3 Tage hintereinander' },
     icon: '🔥',
-    unlocked: false,
+    unlocked: false
   },
   {
-    id: 'streak-7',
-    name: { en: 'Weekly Warrior', de: 'Wochenkämpfer' },
-    description: { en: 'Maintained a 7-day streak', de: '7-Tage-Serie gehalten' },
-    icon: '⚔️',
-    unlocked: false,
+    id: 'market-basics',
+    name: { en: 'Market Basics Master', de: 'Marktgrundlagen-Meister' },
+    description: { en: 'Score 100% on basics quiz', de: 'Erreiche 100% im Grundlagen-Quiz' },
+    icon: '📊',
+    unlocked: false
   },
   {
     id: 'quiz-champion',
     name: { en: 'Quiz Champion', de: 'Quiz-Champion' },
-    description: { en: 'Completed 10 quizzes', de: '10 Quizze abgeschlossen' },
+    description: { en: 'Complete 10 quizzes', de: 'Schließe 10 Quizze ab' },
     icon: '🏆',
-    unlocked: false,
+    unlocked: false
   },
   {
     id: 'curious-mind',
-    name: { en: 'Curious Mind', de: 'Wissbegierig' },
-    description: { en: 'Asked 5 questions to the AI agent', de: '5 Fragen an den KI-Agenten gestellt' },
+    name: { en: 'Curious Mind', de: 'Wissbegieriger Geist' },
+    description: { en: 'Ask the agent 5 questions', de: 'Stelle dem Agenten 5 Fragen' },
     icon: '🧠',
-    unlocked: false,
+    unlocked: false
   },
   {
     id: 'level-up',
-    name: { en: 'Expert Level', de: 'Experten-Level' },
-    description: { en: 'Reached expert level', de: 'Experten-Level erreicht' },
-    icon: '👑',
-    unlocked: false,
+    name: { en: 'Level Up!', de: 'Level Up!' },
+    description: { en: 'Reach Intermediate level', de: 'Erreiche Fortgeschrittenen-Level' },
+    icon: '⬆️',
+    unlocked: false
+  },
+  {
+    id: 'streak-7',
+    name: { en: 'Week Warrior', de: 'Wochen-Krieger' },
+    description: { en: 'Learn 7 days in a row', de: 'Lerne 7 Tage hintereinander' },
+    icon: '💪',
+    unlocked: false
   },
   {
     id: 'perfect-score',
     name: { en: 'Perfect Score', de: 'Perfekte Punktzahl' },
-    description: { en: 'Got all questions right in a quiz', de: 'Alle Fragen in einem Quiz richtig beantwortet' },
-    icon: '💯',
-    unlocked: false,
-  },
-  {
-    id: 'social-butterfly',
-    name: { en: 'Social Butterfly', de: 'Netzwerker' },
-    description: { en: 'Invited a colleague', de: 'Einen Kollegen eingeladen' },
-    icon: '🦋',
-    unlocked: false,
+    description: { en: 'Get all questions right in a quiz', de: 'Beantworte alle Fragen in einem Quiz richtig' },
+    icon: '⭐',
+    unlocked: false
   },
 ];
 
 export const mockAIResponses: Record<string, { en: string; de: string }> = {
   default: {
-    en: "That's a great question about energy markets! The European energy landscape is complex and constantly evolving. Key factors include the merit order principle, renewable integration, grid operations, and regulatory frameworks. Could you be more specific about what aspect you'd like to explore?",
-    de: "Das ist eine großartige Frage zum Energiemarkt! Die europäische Energielandschaft ist komplex und entwickelt sich ständig weiter. Schlüsselfaktoren sind das Merit-Order-Prinzip, die Integration Erneuerbarer, Netzbetrieb und regulatorische Rahmenbedingungen. Könnten Sie genauer angeben, welchen Aspekt Sie erkunden möchten?"
+    en: "I'm here to help you understand energy markets! Feel free to ask me about power pricing, renewables, trading, or any other energy topic.",
+    de: "Ich bin hier, um Ihnen zu helfen, Energiemärkte zu verstehen! Fragen Sie mich gerne zu Strompreisen, Erneuerbaren, Handel oder anderen Energiethemen."
   },
   price: {
-    en: "German electricity prices are determined by several key factors:\n\n1. **Fuel costs**: Natural gas (TTF) and coal prices directly impact the cost of thermal generation\n2. **CO2 prices**: EU ETS allowances add to fossil fuel plant costs (~€60-80/tonne)\n3. **Renewable feed-in**: High wind/solar reduces spot prices through the merit order effect\n4. **Demand patterns**: Industrial demand, weather, and time of day affect consumption\n5. **Interconnector flows**: Cross-border trading can import cheaper power or export surpluses\n\nThe day-ahead auction at EPEX SPOT sets hourly prices, while futures on EEX allow forward hedging.",
-    de: "Deutsche Strompreise werden durch mehrere Schlüsselfaktoren bestimmt:\n\n1. **Brennstoffkosten**: Erdgas (TTF) und Kohlepreise beeinflussen die Kosten der thermischen Erzeugung\n2. **CO2-Preise**: EU-ETS-Zertifikate erhöhen die Kosten fossiler Kraftwerke (~60-80€/Tonne)\n3. **Erneuerbare Einspeisung**: Hohe Wind-/Solarleistung senkt Spotpreise durch den Merit-Order-Effekt\n4. **Nachfragemuster**: Industrienachfrage, Wetter und Tageszeit beeinflussen den Verbrauch\n5. **Interkonnektorflüsse**: Grenzüberschreitender Handel kann günstigeren Strom importieren"
+    en: "Power prices in Europe are influenced by several key factors:\n\n**1. Fuel Costs:** Gas prices are particularly important as gas-fired plants often set the marginal price.\n\n**2. Carbon Prices:** EU ETS allowances add to the cost of fossil fuel generation.\n\n**3. Renewable Output:** High wind/solar pushes prices down; low renewable generation pushes prices up.\n\n**4. Demand Patterns:** Prices typically peak during morning and evening hours.\n\n**5. Interconnector Flows:** Cross-border trading affects local prices.",
+    de: "Strompreise in Europa werden von mehreren Schlüsselfaktoren beeinflusst:\n\n**1. Brennstoffkosten:** Gaspreise sind besonders wichtig, da Gaskraftwerke oft den Grenzpreis setzen.\n\n**2. CO2-Preise:** EU-ETS-Zertifikate erhöhen die Kosten fossiler Erzeugung.\n\n**3. Erneuerbare Erzeugung:** Hohe Wind-/Solarerzeugung drückt Preise; niedrige treibt sie hoch.\n\n**4. Nachfragemuster:** Preise steigen typischerweise morgens und abends.\n\n**5. Grenzüberschreitende Flüsse:** Internationaler Handel beeinflusst lokale Preise."
   },
   renewables: {
-    en: "Germany's renewable energy landscape is one of the most ambitious in Europe:\n\n- **Wind onshore**: ~60 GW installed, targeting 115 GW by 2030\n- **Wind offshore**: ~8 GW installed, targeting 30 GW by 2030\n- **Solar PV**: ~80 GW installed, targeting 215 GW by 2030\n- **Biomass**: ~9 GW providing baseload renewable power\n\nKey challenges include grid integration, storage needs, and permitting bottlenecks. The Renewable Energy Sources Act (EEG) has been the primary support mechanism, though market-based PPAs are increasingly common.",
-    de: "Deutschlands Erneuerbare-Energien-Landschaft ist eine der ambitioniertesten in Europa:\n\n- **Wind onshore**: ~60 GW installiert, Ziel 115 GW bis 2030\n- **Wind offshore**: ~8 GW installiert, Ziel 30 GW bis 2030\n- **Solar PV**: ~80 GW installiert, Ziel 215 GW bis 2030\n- **Biomasse**: ~9 GW für erneuerbare Grundlast\n\nHerausforderungen sind Netzintegration, Speicherbedarf und Genehmigungsengpässe."
+    en: "Renewable energy integration is reshaping electricity markets:\n\n**Variable Generation:** Wind and solar output depends on weather, creating volatility.\n\n**Zero Marginal Cost:** Renewables bid at €0, displacing fossil plants in merit order.\n\n**Negative Prices:** Occur when high renewable output exceeds demand.\n\n**Flexibility Needs:** Storage, demand response, and flexible generation become crucial.\n\n**Grid Challenges:** Variable flows require grid upgrades and smart management.",
+    de: "Die Integration erneuerbarer Energien verändert Strommärkte:\n\n**Variable Erzeugung:** Wind- und Solarproduktion hängt vom Wetter ab und erzeugt Volatilität.\n\n**Null Grenzkosten:** Erneuerbare bieten zu 0€, verdrängen fossile Anlagen in der Merit Order.\n\n**Negative Preise:** Treten auf, wenn hohe erneuerbare Erzeugung die Nachfrage übersteigt.\n\n**Flexibilitätsbedarf:** Speicher, Lastmanagement und flexible Erzeugung werden entscheidend.\n\n**Netzherausforderungen:** Variable Flüsse erfordern Netzausbau und intelligentes Management."
   },
   grid: {
-    en: "The German electricity grid operates at multiple levels:\n\n**Transmission (TSOs)**: Four operators (50Hertz, Amprion, TenneT, TransnetBW) manage the 220-380 kV high-voltage grid\n\n**Distribution (DSOs)**: ~870 operators manage medium/low voltage networks below 110 kV\n\n**Key challenges**:\n- North-south congestion (wind in north, demand in south)\n- Redispatch costs exceeding €4 billion/year\n- Integration of distributed resources (solar, EVs, heat pumps)\n- Grid expansion projects like SuedLink and SuedOstLink\n\nSmart grid technologies and flexibility markets are essential for managing bidirectional power flows.",
-    de: "Das deutsche Stromnetz arbeitet auf mehreren Ebenen:\n\n**Übertragung (ÜNBs)**: Vier Betreiber (50Hertz, Amprion, TenneT, TransnetBW) verwalten das 220-380 kV Hochspannungsnetz\n\n**Verteilung (VNBs)**: ~870 Betreiber verwalten Mittel-/Niederspannungsnetze unter 110 kV\n\n**Herausforderungen**:\n- Nord-Süd-Engpässe\n- Redispatch-Kosten über 4 Mrd. €/Jahr\n- Integration dezentraler Ressourcen"
+    en: "The power grid is a complex system requiring constant balance:\n\n**TSOs vs DSOs:** TSOs manage high-voltage transmission; DSOs handle distribution.\n\n**Frequency Control:** Grid must stay at 50Hz; reserves correct deviations.\n\n**Congestion Management:** Redispatch adjusts plant output when lines are full.\n\n**Grid Fees:** Cover infrastructure costs, represent ~25% of retail prices.\n\n**Smart Grids:** Digitalization enables better forecasting and real-time control.",
+    de: "Das Stromnetz ist ein komplexes System, das ständige Balance erfordert:\n\n**ÜNB vs VNB:** ÜNB betreiben Hochspannungsübertragung; VNB die Verteilung.\n\n**Frequenzregelung:** Netz muss bei 50Hz bleiben; Reserven korrigieren Abweichungen.\n\n**Engpassmanagement:** Redispatch passt Kraftwerksleistung an, wenn Leitungen voll sind.\n\n**Netzentgelte:** Decken Infrastrukturkosten, machen ~25% der Endkundenpreise aus.\n\n**Smart Grids:** Digitalisierung ermöglicht bessere Prognosen und Echtzeitsteuerung."
   },
   trading: {
-    en: "European energy trading operates across several key venues:\n\n**Spot Markets (EPEX SPOT)**:\n- Day-ahead: Hourly auction for next-day delivery\n- Intraday: Continuous trading up to 5 min before delivery\n\n**Futures Markets (EEX)**:\n- Monthly, quarterly, yearly contracts\n- Used for hedging and portfolio management\n\n**Key products**:\n- Baseload (all hours) and peakload (Mon-Fri 8:00-20:00)\n- Calendar year forwards (most liquid)\n\n**Risk management**: Companies use forwards, futures, and options to hedge price exposure. A typical utility hedges 60-80% of its portfolio 1-3 years ahead.",
-    de: "Der europäische Energiehandel findet an mehreren wichtigen Handelsplätzen statt:\n\n**Spotmärkte (EPEX SPOT)**:\n- Day-Ahead: Stündliche Auktion für Lieferung am nächsten Tag\n- Intraday: Kontinuierlicher Handel bis 5 Min. vor Lieferung\n\n**Terminmärkte (EEX)**:\n- Monats-, Quartals-, Jahreskontrakte\n- Für Hedging und Portfoliomanagement\n\n**Risikomanagement**: Unternehmen nutzen Forwards, Futures und Optionen zur Absicherung."
-  },
+    en: "Energy trading occurs across multiple timeframes:\n\n**Futures Markets:** Trade years ahead for hedging and price discovery.\n\n**Day-Ahead Market:** Auction for next-day delivery, closes at noon.\n\n**Intraday Market:** Continuous trading until close to delivery.\n\n**Balancing Market:** TSO activates reserves for real-time balance.\n\n**Key Products:** Base (24/7), Peak (8am-8pm), and hourly products.",
+    de: "Energiehandel findet über mehrere Zeithorizonte statt:\n\n**Terminmärkte:** Handel Jahre voraus für Absicherung und Preisfindung.\n\n**Day-Ahead-Markt:** Auktion für Lieferung am nächsten Tag, schließt mittags.\n\n**Intraday-Markt:** Kontinuierlicher Handel bis kurz vor Lieferung.\n\n**Regelenergiemarkt:** ÜNB aktiviert Reserven für Echtzeitbilanz.\n\n**Schlüsselprodukte:** Base (24/7), Peak (8-20 Uhr) und Stundenprodukte."
+  }
 };

@@ -5,8 +5,8 @@ import { quizQuestions } from '@/data/content';
 import { QuizQuestion } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-import {
-  CheckCircle2, XCircle, ChevronRight, Trophy, Share2, X,
+import { 
+  CheckCircle2, XCircle, ChevronRight, Trophy, Share2, X, 
   Swords, Timer, User, Bot, Crown, Frown
 } from 'lucide-react';
 
@@ -14,10 +14,11 @@ interface QuizDuelProps {
   onClose: () => void;
 }
 
+// Bot opponent data
 const BOT_OPPONENT = {
   name: 'GridBot',
   avatar: '🤖',
-  difficulty: 0.7,
+  difficulty: 0.7, // 70% chance to answer correctly
 };
 
 export function QuizDuel({ onClose }: QuizDuelProps) {
@@ -34,6 +35,7 @@ export function QuizDuel({ onClose }: QuizDuelProps) {
   const [timerActive, setTimerActive] = useState(true);
   const [botAnswering, setBotAnswering] = useState(false);
 
+  // Get 5 random questions
   const [questions] = useState<QuizQuestion[]>(() => {
     const shuffled = [...quizQuestions].sort(() => Math.random() - 0.5);
     return shuffled.slice(0, 5);
@@ -46,11 +48,12 @@ export function QuizDuel({ onClose }: QuizDuelProps) {
     duel: { en: 'Quiz Duel', de: 'Quiz-Duell' },
     vs: { en: 'VS', de: 'VS' },
     you: { en: 'You', de: 'Du' },
+    timeUp: { en: "Time's up!", de: 'Zeit abgelaufen!' },
     correct: { en: 'Correct!', de: 'Richtig!' },
     incorrect: { en: 'Wrong', de: 'Falsch' },
     next: { en: 'Next Round', de: 'Nächste Runde' },
     finish: { en: 'See Results', de: 'Ergebnisse' },
-    victory: { en: 'Victory!', de: 'Sieg!' },
+    victory: { en: 'Victory! 🏆', de: 'Sieg! 🏆' },
     defeat: { en: 'Defeat', de: 'Niederlage' },
     draw: { en: "It's a Draw!", de: 'Unentschieden!' },
     youWon: { en: 'You beat the bot!', de: 'Du hast den Bot besiegt!' },
@@ -60,9 +63,11 @@ export function QuizDuel({ onClose }: QuizDuelProps) {
     bonusXP: { en: 'Victory Bonus', de: 'Siegbonus' },
     shareResults: { en: 'Share Results', de: 'Ergebnisse teilen' },
     backToHome: { en: 'Back to Home', de: 'Zurück' },
+    playAgain: { en: 'Play Again', de: 'Nochmal spielen' },
     waitingBot: { en: 'Bot is thinking...', de: 'Bot denkt nach...' },
   };
 
+  // Timer countdown
   useEffect(() => {
     if (!timerActive || showResult || isComplete) return;
 
@@ -79,30 +84,33 @@ export function QuizDuel({ onClose }: QuizDuelProps) {
     return () => clearInterval(timer);
   }, [timerActive, showResult, isComplete, currentIndex]);
 
+  // Simulate bot answering
   const simulateBotAnswer = useCallback(() => {
     setBotAnswering(true);
-    const thinkTime = 1000 + Math.random() * 2000;
-
+    const thinkTime = 1000 + Math.random() * 2000; // 1-3 seconds
+    
     setTimeout(() => {
       const isCorrect = Math.random() < BOT_OPPONENT.difficulty;
       let answer: number;
-
+      
       if (isCorrect) {
         answer = currentQuestion.correctIndex;
       } else {
+        // Pick a random wrong answer
         const wrongOptions = [0, 1, 2, 3].filter(i => i !== currentQuestion.correctIndex);
         answer = wrongOptions[Math.floor(Math.random() * wrongOptions.length)];
       }
-
+      
       setBotAnswer(answer);
       setBotAnswering(false);
-
+      
       if (isCorrect) {
         setBotScore(prev => prev + 1);
       }
     }, thinkTime);
   }, [currentQuestion]);
 
+  // Start bot thinking when question loads
   useEffect(() => {
     if (!showResult && !isComplete) {
       simulateBotAnswer();
@@ -111,7 +119,7 @@ export function QuizDuel({ onClose }: QuizDuelProps) {
 
   const handleTimeUp = () => {
     if (selectedAnswer === null) {
-      setSelectedAnswer(-1);
+      setSelectedAnswer(-1); // Indicates timeout
     }
     setShowResult(true);
     setTimerActive(false);
@@ -119,17 +127,18 @@ export function QuizDuel({ onClose }: QuizDuelProps) {
 
   const handleAnswer = (index: number) => {
     if (showResult || selectedAnswer !== null) return;
-
+    
     setSelectedAnswer(index);
     setTimerActive(false);
-
+    
     const isCorrect = index === currentQuestion.correctIndex;
     if (isCorrect) {
       setUserScore(prev => prev + 1);
       const xp = currentQuestion.difficulty === 'easy' ? 15 : currentQuestion.difficulty === 'medium' ? 20 : 25;
       setEarnedXP(prev => prev + xp);
     }
-
+    
+    // Wait for bot to finish answering before showing result
     setTimeout(() => {
       setShowResult(true);
     }, botAnswering ? 500 : 100);
@@ -144,18 +153,19 @@ export function QuizDuel({ onClose }: QuizDuelProps) {
       setTimeLeft(15);
       setTimerActive(true);
     } else {
+      // Duel complete - add victory bonus
       let totalXP = earnedXP;
       if (userScore > botScore) {
-        totalXP += 50;
+        totalXP += 50; // Victory bonus
         setEarnedXP(totalXP);
       }
       addXP(totalXP);
       completeQuiz();
-
+      
       if (userScore === questions.length) {
         unlockAchievement('perfect-score');
       }
-
+      
       setIsComplete(true);
     }
   };
@@ -165,15 +175,20 @@ export function QuizDuel({ onClose }: QuizDuelProps) {
     const text = language === 'en'
       ? `${result} Quiz Duel: I scored ${userScore}-${botScore} against GridBot on GridWise! Can you beat me?`
       : `${result} Quiz-Duell: Ich habe ${userScore}-${botScore} gegen GridBot bei GridWise erreicht! Kannst du mich schlagen?`;
-
+    
     navigator.clipboard.writeText(text);
     alert(language === 'en' ? 'Copied to clipboard!' : 'In die Zwischenablage kopiert!');
+  };
+
+  const handlePlayAgain = () => {
+    window.location.reload();
   };
 
   if (!user) return null;
 
   const progress = ((currentIndex + 1) / questions.length) * 100;
 
+  // Results screen
   if (isComplete) {
     const isVictory = userScore > botScore;
     const isDraw = userScore === botScore;
@@ -214,6 +229,7 @@ export function QuizDuel({ onClose }: QuizDuelProps) {
             {isVictory ? t.youWon[language] : isDraw ? t.tied[language] : t.youLost[language]}
           </p>
 
+          {/* Score comparison */}
           <div className="bg-card rounded-2xl p-6 border border-border mb-6">
             <div className="flex items-center justify-between mb-4">
               <div className="text-center flex-1">
@@ -234,24 +250,36 @@ export function QuizDuel({ onClose }: QuizDuelProps) {
                 <p className="text-3xl font-bold text-muted-foreground">{botScore}</p>
               </div>
             </div>
-
+            
             <div className="border-t border-border pt-4">
               <div className="flex items-center justify-center gap-2 text-gold">
                 <span className="text-2xl font-bold">+{earnedXP}</span>
                 <span className="text-lg">{t.xpEarned[language]}</span>
               </div>
               {isVictory && (
-                <p className="text-sm text-success mt-1">+50 {t.bonusXP[language]}</p>
+                <p className="text-sm text-success mt-1">
+                  +50 {t.bonusXP[language]}
+                </p>
               )}
             </div>
           </div>
 
           <div className="space-y-3">
-            <Button variant="outline" size="lg" onClick={handleShare} className="w-full">
+            <Button
+              variant="outline"
+              size="lg"
+              onClick={handleShare}
+              className="w-full"
+            >
               <Share2 className="w-5 h-5 mr-2" />
               {t.shareResults[language]}
             </Button>
-            <Button variant="gradient" size="lg" onClick={onClose} className="w-full">
+            <Button
+              variant="gradient"
+              size="lg"
+              onClick={onClose}
+              className="w-full"
+            >
               {t.backToHome[language]}
             </Button>
           </div>
@@ -266,13 +294,15 @@ export function QuizDuel({ onClose }: QuizDuelProps) {
       animate={{ opacity: 1 }}
       className="fixed inset-0 bg-background z-50 flex flex-col"
     >
+      {/* Header with scores */}
       <div className="p-4 border-b border-border bg-card">
         <div className="max-w-2xl mx-auto">
           <div className="flex items-center justify-between mb-3">
             <button onClick={onClose} className="p-2 hover:bg-muted rounded-lg">
               <X className="w-6 h-6" />
             </button>
-
+            
+            {/* Score display */}
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-sm">
@@ -288,7 +318,8 @@ export function QuizDuel({ onClose }: QuizDuelProps) {
                 </div>
               </div>
             </div>
-
+            
+            {/* Timer */}
             <div className={`flex items-center gap-1 px-3 py-1 rounded-full ${
               timeLeft <= 5 ? 'bg-destructive/10 text-destructive' : 'bg-muted'
             }`}>
@@ -296,11 +327,12 @@ export function QuizDuel({ onClose }: QuizDuelProps) {
               <span className="font-bold">{timeLeft}s</span>
             </div>
           </div>
-
+          
           <Progress value={progress} className="h-2" />
         </div>
       </div>
 
+      {/* Question */}
       <div className="flex-1 overflow-y-auto p-6">
         <div className="max-w-2xl mx-auto">
           <AnimatePresence mode="wait">
@@ -310,6 +342,7 @@ export function QuizDuel({ onClose }: QuizDuelProps) {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
             >
+              {/* Round indicator */}
               <div className="flex items-center justify-center gap-2 mb-4">
                 <Swords className="w-5 h-5 text-primary" />
                 <span className="font-semibold text-primary">
@@ -326,7 +359,7 @@ export function QuizDuel({ onClose }: QuizDuelProps) {
                   const isSelected = selectedAnswer === index;
                   const isBotSelected = botAnswer === index;
                   const isCorrect = index === currentQuestion.correctIndex;
-
+                  
                   let optionClass = 'border-border bg-card hover:border-primary/50';
                   if (showResult) {
                     if (isCorrect) {
@@ -351,7 +384,8 @@ export function QuizDuel({ onClose }: QuizDuelProps) {
                         {String.fromCharCode(65 + index)}
                       </span>
                       <span className="flex-1">{option}</span>
-
+                      
+                      {/* Show who selected what */}
                       <div className="flex items-center gap-1 shrink-0">
                         {showResult && isSelected && (
                           <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center text-xs">
@@ -375,6 +409,7 @@ export function QuizDuel({ onClose }: QuizDuelProps) {
                 })}
               </div>
 
+              {/* Bot thinking indicator */}
               {botAnswering && !showResult && (
                 <motion.div
                   initial={{ opacity: 0 }}
@@ -427,6 +462,7 @@ export function QuizDuel({ onClose }: QuizDuelProps) {
         </div>
       </div>
 
+      {/* Footer */}
       {showResult && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}

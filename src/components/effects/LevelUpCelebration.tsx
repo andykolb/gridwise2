@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Trophy, Star, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -25,8 +25,9 @@ const levelLabels: Record<UserLevel, { en: string; de: string }> = {
   expert: { en: 'Expert', de: 'Experte' },
 };
 
+// Confetti particle component
 function Confetti() {
-  const [particles] = useState(() =>
+  const [particles] = useState(() => 
     [...Array(50)].map((_, i) => ({
       id: i,
       x: Math.random() * 100,
@@ -43,18 +44,18 @@ function Confetti() {
       {particles.map((particle) => (
         <motion.div
           key={particle.id}
-          initial={{
-            x: `${particle.x}vw`,
+          initial={{ 
+            x: `${particle.x}vw`, 
             y: '-10vh',
             rotate: 0,
             opacity: 1
           }}
-          animate={{
+          animate={{ 
             y: '110vh',
             rotate: particle.rotation + 720,
             opacity: [1, 1, 0]
           }}
-          transition={{
+          transition={{ 
             duration: particle.duration,
             delay: particle.delay,
             ease: 'linear'
@@ -88,6 +89,8 @@ export function LevelUpCelebration({ isVisible, newLevel, language, onClose }: L
       {isVisible && (
         <>
           <Confetti />
+          
+          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -95,6 +98,8 @@ export function LevelUpCelebration({ isVisible, newLevel, language, onClose }: L
             className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[65]"
             onClick={onClose}
           />
+
+          {/* Modal */}
           <motion.div
             initial={{ opacity: 0, scale: 0.5, y: 50 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -103,6 +108,7 @@ export function LevelUpCelebration({ isVisible, newLevel, language, onClose }: L
             className="fixed inset-0 flex items-center justify-center z-[70] p-6"
           >
             <div className="bg-card rounded-3xl p-8 max-w-sm w-full text-center border border-border shadow-2xl">
+              {/* Animated stars */}
               <div className="relative">
                 <motion.div
                   animate={{ rotate: 360 }}
@@ -119,6 +125,7 @@ export function LevelUpCelebration({ isVisible, newLevel, language, onClose }: L
                   <Sparkles className="w-5 h-5 text-primary" />
                 </motion.div>
 
+                {/* Level badge */}
                 <motion.div
                   initial={{ scale: 0, rotate: -180 }}
                   animate={{ scale: 1, rotate: 0 }}
@@ -129,6 +136,7 @@ export function LevelUpCelebration({ isVisible, newLevel, language, onClose }: L
                 </motion.div>
               </div>
 
+              {/* Title */}
               <motion.h2
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -138,6 +146,7 @@ export function LevelUpCelebration({ isVisible, newLevel, language, onClose }: L
                 {t.levelUp[language]}
               </motion.h2>
 
+              {/* Level name */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -148,6 +157,7 @@ export function LevelUpCelebration({ isVisible, newLevel, language, onClose }: L
                 <p className="text-2xl font-bold">{label}</p>
               </motion.div>
 
+              {/* Trophy animation */}
               <motion.div
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -158,8 +168,8 @@ export function LevelUpCelebration({ isVisible, newLevel, language, onClose }: L
                   <motion.div
                     key={i}
                     animate={{ y: [0, -8, 0] }}
-                    transition={{
-                      delay: 0.6 + i * 0.1,
+                    transition={{ 
+                      delay: 0.6 + i * 0.1, 
                       duration: 0.5,
                       repeat: Infinity,
                       repeatDelay: 1
@@ -170,6 +180,7 @@ export function LevelUpCelebration({ isVisible, newLevel, language, onClose }: L
                 ))}
               </motion.div>
 
+              {/* Subtitle */}
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -179,6 +190,7 @@ export function LevelUpCelebration({ isVisible, newLevel, language, onClose }: L
                 {t.awesome[language]}
               </motion.p>
 
+              {/* Continue button */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
