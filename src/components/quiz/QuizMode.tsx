@@ -12,7 +12,7 @@ interface QuizModeProps {
 }
 
 export function QuizMode({ onClose }: QuizModeProps) {
-  const { user, addXP, completeQuiz, unlockAchievement } = useUser();
+  const { user, addXP, completeQuiz, unlockAchievement, recordTopicAnswer } = useUser();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
@@ -58,6 +58,7 @@ export function QuizMode({ onClose }: QuizModeProps) {
     setShowResult(true);
 
     const isCorrect = index === currentQuestion.correctIndex;
+    recordTopicAnswer(currentQuestion.topic, isCorrect);
     if (isCorrect) {
       setCorrectCount(prev => prev + 1);
       const xp = currentQuestion.difficulty === 'easy' ? 10 : currentQuestion.difficulty === 'medium' ? 15 : 20;

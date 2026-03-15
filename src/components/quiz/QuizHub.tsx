@@ -21,20 +21,11 @@ interface QuizHubProps {
   onStartQuiz: () => void;
 }
 
-// Calculate topic mastery based on user's completed quizzes and questions
-function getTopicMastery(topic: Topic, completedQuizzes: number): number {
-  // Simulated mastery - in a real app this would come from actual quiz results per topic
-  const baseMastery = Math.min((completedQuizzes * 5), 100);
-  const topicVariance: Record<Topic, number> = {
-    'energy-basics': 1.2,
-    'price-drivers': 0.9,
-    'renewables': 1.1,
-    'grid-dso': 0.7,
-    'regulation': 0.8,
-    'trading': 0.6,
-    'retail': 1.0,
-  };
-  return Math.min(Math.round(baseMastery * (topicVariance[topic] || 1)), 100);
+// Calculate topic mastery from real per-topic stats
+function getTopicMastery(topic: Topic, topicStats: Partial<Record<Topic, { correct: number; total: number }>>): number {
+  const stats = topicStats?.[topic];
+  if (!stats || stats.total === 0) return 0;
+  return Math.round((stats.correct / stats.total) * 100);
 }
 
 function getMasteryColor(mastery: number): string {
@@ -168,7 +159,7 @@ export function QuizHub({ onClose, onStartQuiz }: QuizHubProps) {
             
             <div className="space-y-3">
               {topics.map((topic) => {
-                const mastery = getTopicMastery(topic.id, completedQuizzes);
+                const mastery = getTopicMastery(topic.id, user.topicStats || {});
                 const questionsForTopic = quizQuestions.filter(q => q.topic === topic.id).length;
                 
                 return (

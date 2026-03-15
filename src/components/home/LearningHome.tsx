@@ -90,7 +90,7 @@ export function LearningHome({
   };
 
   return (
-    <div className="bg-gradient-to-b from-background to-muted p-4 md:p-6 pb-32 overflow-y-auto">
+    <div className="bg-gradient-to-b from-background to-muted p-4 md:p-6 pb-32">
       <div className="max-w-2xl mx-auto space-y-6">
         {/* Header */}
         <motion.div
