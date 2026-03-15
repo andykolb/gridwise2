@@ -22,7 +22,7 @@ const BOT_OPPONENT = {
 };
 
 export function QuizDuel({ onClose }: QuizDuelProps) {
-  const { user, addXP, completeQuiz, unlockAchievement } = useUser();
+  const { user, addXP, completeQuiz, unlockAchievement, recordTopicAnswer, recordDuelWin } = useUser();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [botAnswer, setBotAnswer] = useState<number | null>(null);
@@ -132,6 +132,7 @@ export function QuizDuel({ onClose }: QuizDuelProps) {
     setTimerActive(false);
     
     const isCorrect = index === currentQuestion.correctIndex;
+    recordTopicAnswer(currentQuestion.topic, isCorrect);
     if (isCorrect) {
       setUserScore(prev => prev + 1);
       const xp = currentQuestion.difficulty === 'easy' ? 15 : currentQuestion.difficulty === 'medium' ? 20 : 25;
@@ -158,6 +159,7 @@ export function QuizDuel({ onClose }: QuizDuelProps) {
       if (userScore > botScore) {
         totalXP += 50; // Victory bonus
         setEarnedXP(totalXP);
+        recordDuelWin();
       }
       addXP(totalXP);
       completeQuiz();

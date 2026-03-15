@@ -28,6 +28,8 @@ export interface User {
   referredBy?: string;
   avatar?: string;
   readNuggets: string[]; // IDs of read daily nuggets
+  topicStats: Partial<Record<Topic, { correct: number; total: number }>>;
+  duelWins: number;
 }
 
 export interface Invite {

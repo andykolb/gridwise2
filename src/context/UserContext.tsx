@@ -38,6 +38,8 @@ interface UserContextType {
   markNuggetAsRead: (nuggetId: string) => void;
   isNuggetRead: (nuggetId: string) => boolean;
   clearNewAchievements: () => void;
+  recordTopicAnswer: (topic: Topic, correct: boolean) => void;
+  recordDuelWin: () => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -148,6 +150,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
       invitesAccepted: 0,
       referredBy: referralCode || undefined,
       readNuggets: [],
+      topicStats: {},
+      duelWins: 0,
     };
     setUserState(newUser);
     setIsOnboarded(true);
@@ -210,6 +214,10 @@ export function UserProvider({ children }: { children: ReactNode }) {
         didLevelUp = true;
       }
 
+      // Check XP milestones
+      if (newXP >= 1000) unlockAchievement('xp-1000');
+      if (newXP >= 5000) unlockAchievement('xp-5000');
+
       // Trigger XP animation
       setXPAnimation({ amount, id: Date.now() });
 
@@ -256,6 +264,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
       // Check streak achievements
       if (newStreak >= 3) unlockAchievement('streak-3');
       if (newStreak >= 7) unlockAchievement('streak-7');
+      if (newStreak >= 14) unlockAchievement('streak-14');
+      if (newStreak >= 30) unlockAchievement('streak-30');
 
       setUserState({
         ...user,
@@ -275,6 +285,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
       if (newCount === 1) unlockAchievement('first-quiz');
       if (newCount >= 10) unlockAchievement('quiz-champion');
+      if (newCount >= 25) unlockAchievement('quiz-25');
+      if (newCount >= 50) unlockAchievement('quiz-50');
     }
   };
 
@@ -303,6 +315,35 @@ export function UserProvider({ children }: { children: ReactNode }) {
       });
     }
   };
+
+  const recordTopicAnswer = useCallback((topic: Topic, correct: boolean) => {
+    if (user) {
+      const prev = user.topicStats?.[topic] || { correct: 0, total: 0 };
+      const updated = {
+        correct: prev.correct + (correct ? 1 : 0),
+        total: prev.total + 1,
+      };
+      const newTopicStats = { ...user.topicStats, [topic]: updated };
+      setUserState({ ...user, topicStats: newTopicStats });
+
+      // Check topic master achievement: 90%+ accuracy on 10+ questions in any topic
+      if (updated.total >= 10 && (updated.correct / updated.total) >= 0.9) {
+        unlockAchievement('topic-master');
+      }
+      // Check market basics master: 100% accuracy on 5+ energy-basics questions
+      if (topic === 'energy-basics' && updated.total >= 5 && updated.correct === updated.total) {
+        unlockAchievement('market-basics');
+      }
+    }
+  }, [user]);
+
+  const recordDuelWin = useCallback(() => {
+    if (user) {
+      const newWins = (user.duelWins || 0) + 1;
+      setUserState({ ...user, duelWins: newWins });
+      unlockAchievement('duel-win');
+    }
+  }, [user]);
 
   const addChatMessage = (message: Omit<ChatMessage, 'id' | 'timestamp'>) => {
     const newMessage: ChatMessage = {
@@ -381,6 +422,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
         clearLevelUpEvent,
         markNuggetAsRead,
         isNuggetRead,
+        recordTopicAnswer,
+        recordDuelWin,
       }}
     >
       {children}
