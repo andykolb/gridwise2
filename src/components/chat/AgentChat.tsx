@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useUser } from '@/context/UserContext';
-import { mockAIResponses } from '@/data/content';
 import { ChatMessage } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -42,33 +41,10 @@ export function AgentChat({ onClose }: AgentChatProps) {
       en: "Hello! 👋 I'm your AI energy market assistant. Ask me anything about power prices, renewables, trading, grid operations, or energy policy!",
       de: "Hallo! 👋 Ich bin dein KI-Energiemarkt-Assistent. Frag mich alles über Strompreise, Erneuerbare, Handel, Netzbetrieb oder Energiepolitik!"
     },
-  };
-
-  const getMockResponse = (query: string): { content: string; sources: { title: string; url: string }[]; confidence: 'low' | 'medium' | 'high' } => {
-    const lowerQuery = query.toLowerCase();
-    
-    let responseKey = 'default';
-    if (lowerQuery.includes('price') || lowerQuery.includes('preis') || lowerQuery.includes('cost') || lowerQuery.includes('kosten')) {
-      responseKey = 'price';
-    } else if (lowerQuery.includes('renewable') || lowerQuery.includes('erneuerbar') || lowerQuery.includes('wind') || lowerQuery.includes('solar')) {
-      responseKey = 'renewables';
-    } else if (lowerQuery.includes('grid') || lowerQuery.includes('netz') || lowerQuery.includes('tso') || lowerQuery.includes('dso')) {
-      responseKey = 'grid';
-    } else if (lowerQuery.includes('trading') || lowerQuery.includes('handel') || lowerQuery.includes('market') || lowerQuery.includes('markt')) {
-      responseKey = 'trading';
-    }
-
-    const mockSources = [
-      { title: 'European Energy Exchange (EEX)', url: 'https://www.eex.com' },
-      { title: 'ENTSO-E Transparency Platform', url: 'https://transparency.entsoe.eu' },
-      { title: 'Bundesnetzagentur SMARD', url: 'https://www.smard.de' },
-    ];
-
-    return {
-      content: mockAIResponses[responseKey]?.[language] || mockAIResponses.default[language],
-      sources: mockSources.slice(0, 2),
-      confidence: responseKey === 'default' ? 'medium' : 'high',
-    };
+    comingSoon: {
+      en: "Thanks for your question! The AI assistant is being connected to a live backend. For now, explore our quizzes and daily nuggets to learn about energy markets.",
+      de: "Danke für deine Frage! Der KI-Assistent wird gerade mit einem Live-Backend verbunden. Erkunde in der Zwischenzeit unsere Quizze und täglichen Nuggets, um über Energiemärkte zu lernen."
+    },
   };
 
   const handleSend = async () => {
@@ -76,7 +52,7 @@ export function AgentChat({ onClose }: AgentChatProps) {
 
     const userMessage = input.trim();
     setInput('');
-    
+
     addChatMessage({
       role: 'user',
       content: userMessage,
@@ -85,16 +61,12 @@ export function AgentChat({ onClose }: AgentChatProps) {
     setIsTyping(true);
     askQuestion();
 
-    // Simulate AI thinking
-    await new Promise(resolve => setTimeout(resolve, 1500 + Math.random() * 1000));
+    // Simulate brief delay before response
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-    const response = getMockResponse(userMessage);
-    
     addChatMessage({
       role: 'assistant',
-      content: response.content,
-      sources: response.sources,
-      confidence: response.confidence,
+      content: t.comingSoon[language],
     });
 
     setIsTyping(false);
@@ -175,14 +147,14 @@ export function AgentChat({ onClose }: AgentChatProps) {
                     <Bot className="w-4 h-4 text-primary-foreground" />
                   )}
                 </div>
-                
+
                 <div className={`max-w-[80%] ${
-                  message.role === 'user' 
-                    ? 'bg-primary text-primary-foreground rounded-2xl rounded-tr-sm' 
+                  message.role === 'user'
+                    ? 'bg-primary text-primary-foreground rounded-2xl rounded-tr-sm'
                     : 'bg-card rounded-2xl rounded-tl-sm border border-border shadow-sm'
                 } p-4`}>
                   <p className="whitespace-pre-wrap">{message.content}</p>
-                  
+
                   {message.sources && message.sources.length > 0 && (
                     <div className="mt-4 pt-3 border-t border-border">
                       <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground mb-2">

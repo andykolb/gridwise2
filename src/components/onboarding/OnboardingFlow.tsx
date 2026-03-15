@@ -39,22 +39,11 @@ export function OnboardingFlow() {
     });
   };
 
-  const handleLogin = (username: string) => {
-    // For now, simulate login by completing onboarding with the username
-    // In a real app, this would check against stored users
-    completeOnboarding({
-      name: username,
-      language: 'en',
-      interests: [],
-      level: 'beginner',
-    });
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted">
       <AnimatePresence mode="wait">
         {step === 'welcome' && (
-          <WelcomeStep key="welcome" onNext={() => setStep('language')} onLogin={handleLogin} />
+          <WelcomeStep key="welcome" onNext={() => setStep('language')} />
         )}
         {step === 'language' && (
           <LanguageStep

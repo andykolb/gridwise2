@@ -1,4 +1,4 @@
-import { DailyNugget, QuizQuestion, LeaderboardUser, Achievement, Topic } from '@/types';
+import { DailyNugget, QuizQuestion, Achievement, Topic } from '@/types';
 
 export const topics: { id: Topic; label: { en: string; de: string }; icon: string }[] = [
   { id: 'energy-basics', label: { en: 'Energy Markets Basics', de: 'Energiemarkt Grundlagen' }, icon: '⚡' },
@@ -644,18 +644,6 @@ export const quizQuestions: QuizQuestion[] = [
   },
 ];
 
-export const mockLeaderboard: LeaderboardUser[] = [
-  { rank: 1, name: 'Leo Birnbaum', xp: 4850, level: 'expert', avatar: '👨‍💼', streak: 45 },
-  { rank: 2, name: 'Victoria Ossadnik', xp: 4320, level: 'expert', avatar: '👩‍💻', streak: 32 },
-  { rank: 3, name: 'Thomas König', xp: 3890, level: 'advanced', avatar: '👨‍🔬', streak: 28 },
-  { rank: 4, name: 'Sabine Tröndle', xp: 3450, level: 'advanced', avatar: '👩‍🏫', streak: 21 },
-  { rank: 5, name: 'Chris D\'arcy', xp: 3120, level: 'advanced', avatar: '👨‍⚕️', streak: 19 },
-  { rank: 6, name: 'Michael Braun', xp: 2780, level: 'intermediate', avatar: '👨‍🔧', streak: 15 },
-  { rank: 7, name: 'Julia Wagner', xp: 2340, level: 'intermediate', avatar: '👩‍🎓', streak: 12 },
-  { rank: 8, name: 'Anna Becker', xp: 1980, level: 'intermediate', avatar: '👩‍💼', streak: 9 },
-  { rank: 9, name: 'Laura Hoffmann', xp: 1650, level: 'beginner', avatar: '👩‍🏭', streak: 7 },
-  { rank: 10, name: 'Stefan Koch', xp: 1420, level: 'beginner', avatar: '👨‍🎨', streak: 5 },
-];
 
 export const achievements: Achievement[] = [
   {
@@ -723,25 +711,3 @@ export const achievements: Achievement[] = [
   },
 ];
 
-export const mockAIResponses: Record<string, { en: string; de: string }> = {
-  default: {
-    en: "I'm here to help you understand energy markets! Feel free to ask me about power pricing, renewables, trading, or any other energy topic.",
-    de: "Ich bin hier, um Ihnen zu helfen, Energiemärkte zu verstehen! Fragen Sie mich gerne zu Strompreisen, Erneuerbaren, Handel oder anderen Energiethemen."
-  },
-  price: {
-    en: "Power prices in Europe are influenced by several key factors:\n\n**1. Fuel Costs:** Gas prices are particularly important as gas-fired plants often set the marginal price.\n\n**2. Carbon Prices:** EU ETS allowances add to the cost of fossil fuel generation.\n\n**3. Renewable Output:** High wind/solar pushes prices down; low renewable generation pushes prices up.\n\n**4. Demand Patterns:** Prices typically peak during morning and evening hours.\n\n**5. Interconnector Flows:** Cross-border trading affects local prices.",
-    de: "Strompreise in Europa werden von mehreren Schlüsselfaktoren beeinflusst:\n\n**1. Brennstoffkosten:** Gaspreise sind besonders wichtig, da Gaskraftwerke oft den Grenzpreis setzen.\n\n**2. CO2-Preise:** EU-ETS-Zertifikate erhöhen die Kosten fossiler Erzeugung.\n\n**3. Erneuerbare Erzeugung:** Hohe Wind-/Solarerzeugung drückt Preise; niedrige treibt sie hoch.\n\n**4. Nachfragemuster:** Preise steigen typischerweise morgens und abends.\n\n**5. Grenzüberschreitende Flüsse:** Internationaler Handel beeinflusst lokale Preise."
-  },
-  renewables: {
-    en: "Renewable energy integration is reshaping electricity markets:\n\n**Variable Generation:** Wind and solar output depends on weather, creating volatility.\n\n**Zero Marginal Cost:** Renewables bid at €0, displacing fossil plants in merit order.\n\n**Negative Prices:** Occur when high renewable output exceeds demand.\n\n**Flexibility Needs:** Storage, demand response, and flexible generation become crucial.\n\n**Grid Challenges:** Variable flows require grid upgrades and smart management.",
-    de: "Die Integration erneuerbarer Energien verändert Strommärkte:\n\n**Variable Erzeugung:** Wind- und Solarproduktion hängt vom Wetter ab und erzeugt Volatilität.\n\n**Null Grenzkosten:** Erneuerbare bieten zu 0€, verdrängen fossile Anlagen in der Merit Order.\n\n**Negative Preise:** Treten auf, wenn hohe erneuerbare Erzeugung die Nachfrage übersteigt.\n\n**Flexibilitätsbedarf:** Speicher, Lastmanagement und flexible Erzeugung werden entscheidend.\n\n**Netzherausforderungen:** Variable Flüsse erfordern Netzausbau und intelligentes Management."
-  },
-  grid: {
-    en: "The power grid is a complex system requiring constant balance:\n\n**TSOs vs DSOs:** TSOs manage high-voltage transmission; DSOs handle distribution.\n\n**Frequency Control:** Grid must stay at 50Hz; reserves correct deviations.\n\n**Congestion Management:** Redispatch adjusts plant output when lines are full.\n\n**Grid Fees:** Cover infrastructure costs, represent ~25% of retail prices.\n\n**Smart Grids:** Digitalization enables better forecasting and real-time control.",
-    de: "Das Stromnetz ist ein komplexes System, das ständige Balance erfordert:\n\n**ÜNB vs VNB:** ÜNB betreiben Hochspannungsübertragung; VNB die Verteilung.\n\n**Frequenzregelung:** Netz muss bei 50Hz bleiben; Reserven korrigieren Abweichungen.\n\n**Engpassmanagement:** Redispatch passt Kraftwerksleistung an, wenn Leitungen voll sind.\n\n**Netzentgelte:** Decken Infrastrukturkosten, machen ~25% der Endkundenpreise aus.\n\n**Smart Grids:** Digitalisierung ermöglicht bessere Prognosen und Echtzeitsteuerung."
-  },
-  trading: {
-    en: "Energy trading occurs across multiple timeframes:\n\n**Futures Markets:** Trade years ahead for hedging and price discovery.\n\n**Day-Ahead Market:** Auction for next-day delivery, closes at noon.\n\n**Intraday Market:** Continuous trading until close to delivery.\n\n**Balancing Market:** TSO activates reserves for real-time balance.\n\n**Key Products:** Base (24/7), Peak (8am-8pm), and hourly products.",
-    de: "Energiehandel findet über mehrere Zeithorizonte statt:\n\n**Terminmärkte:** Handel Jahre voraus für Absicherung und Preisfindung.\n\n**Day-Ahead-Markt:** Auktion für Lieferung am nächsten Tag, schließt mittags.\n\n**Intraday-Markt:** Kontinuierlicher Handel bis kurz vor Lieferung.\n\n**Regelenergiemarkt:** ÜNB aktiviert Reserven für Echtzeitbilanz.\n\n**Schlüsselprodukte:** Base (24/7), Peak (8-20 Uhr) und Stundenprodukte."
-  }
-};
