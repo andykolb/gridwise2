@@ -7,6 +7,12 @@ import { AuthProvider, useAuth } from "@/context/AuthContext";
 import Index from "./pages/Index";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
+import AuctionHome from "./pages/auction/AuctionHome";
+import HostLobby from "./pages/auction/HostLobby";
+import HostGame from "./pages/auction/HostGame";
+import PlayerJoin from "./pages/auction/PlayerJoin";
+import PlayerWaiting from "./pages/auction/PlayerWaiting";
+import PlayerGame from "./pages/auction/PlayerGame";
 
 const queryClient = new QueryClient();
 
@@ -50,6 +56,14 @@ const App = () => (
           <Routes>
             <Route path="/auth" element={<AuthRoute><Auth /></AuthRoute>} />
             <Route path="/" element={<ProtectedRoute><Index /></ProtectedRoute>} />
+            {/* Energy Auction game (no auth required) */}
+            <Route path="/auction" element={<AuctionHome />} />
+            <Route path="/auction/host/:roomCode" element={<HostLobby />} />
+            <Route path="/auction/host/:roomCode/game" element={<HostGame />} />
+            <Route path="/auction/join" element={<PlayerJoin />} />
+            <Route path="/auction/join/:roomCode" element={<PlayerJoin />} />
+            <Route path="/auction/play/:roomCode" element={<PlayerWaiting />} />
+            <Route path="/auction/play/:roomCode/game" element={<PlayerGame />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

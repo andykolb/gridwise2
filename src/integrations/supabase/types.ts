@@ -14,6 +14,143 @@ export type Database = {
   }
   public: {
     Tables: {
+      bids: {
+        Row: {
+          amount: number
+          asset_type: Database["public"]["Enums"]["asset_type"]
+          created_at: string
+          id: string
+          player_id: string
+          round: number
+          session_id: string
+          won: boolean | null
+        }
+        Insert: {
+          amount: number
+          asset_type: Database["public"]["Enums"]["asset_type"]
+          created_at?: string
+          id?: string
+          player_id: string
+          round: number
+          session_id: string
+          won?: boolean | null
+        }
+        Update: {
+          amount?: number
+          asset_type?: Database["public"]["Enums"]["asset_type"]
+          created_at?: string
+          id?: string
+          player_id?: string
+          round?: number
+          session_id?: string
+          won?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bids_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "bids_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      player_assets: {
+        Row: {
+          acquired_round: number
+          asset_type: Database["public"]["Enums"]["asset_type"]
+          id: string
+          player_id: string
+          price_paid: number
+          quantity: number
+          session_id: string
+        }
+        Insert: {
+          acquired_round: number
+          asset_type: Database["public"]["Enums"]["asset_type"]
+          id?: string
+          player_id: string
+          price_paid: number
+          quantity?: number
+          session_id: string
+        }
+        Update: {
+          acquired_round?: number
+          asset_type?: Database["public"]["Enums"]["asset_type"]
+          id?: string
+          player_id?: string
+          price_paid?: number
+          quantity?: number
+          session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "player_assets_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "player_assets_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      players: {
+        Row: {
+          budget: number
+          cost_score: number
+          created_at: string
+          display_name: string
+          id: string
+          is_connected: boolean
+          reliability_score: number
+          session_id: string
+          total_score: number
+        }
+        Insert: {
+          budget?: number
+          cost_score?: number
+          created_at?: string
+          display_name: string
+          id?: string
+          is_connected?: boolean
+          reliability_score?: number
+          session_id: string
+          total_score?: number
+        }
+        Update: {
+          budget?: number
+          cost_score?: number
+          created_at?: string
+          display_name?: string
+          id?: string
+          is_connected?: boolean
+          reliability_score?: number
+          session_id?: string
+          total_score?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "players_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           achievements: string[] | null
@@ -83,6 +220,99 @@ export type Database = {
         }
         Relationships: []
       }
+      round_results: {
+        Row: {
+          battery_charge: number
+          cost_score: number
+          coverage: number
+          created_at: string
+          demand: number
+          id: string
+          player_id: string
+          reliability_score: number
+          round: number
+          session_id: string
+          solar_output: number
+          wind_output: number
+        }
+        Insert: {
+          battery_charge?: number
+          cost_score?: number
+          coverage?: number
+          created_at?: string
+          demand?: number
+          id?: string
+          player_id: string
+          reliability_score?: number
+          round: number
+          session_id: string
+          solar_output?: number
+          wind_output?: number
+        }
+        Update: {
+          battery_charge?: number
+          cost_score?: number
+          coverage?: number
+          created_at?: string
+          demand?: number
+          id?: string
+          player_id?: string
+          reliability_score?: number
+          round?: number
+          session_id?: string
+          solar_output?: number
+          wind_output?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "round_results_player_id_fkey"
+            columns: ["player_id"]
+            isOneToOne: false
+            referencedRelation: "players"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "round_results_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sessions: {
+        Row: {
+          created_at: string
+          current_round: number
+          host_id: string
+          id: string
+          room_code: string
+          status: Database["public"]["Enums"]["session_status"]
+          updated_at: string
+          weather_seed: number
+        }
+        Insert: {
+          created_at?: string
+          current_round?: number
+          host_id: string
+          id?: string
+          room_code: string
+          status?: Database["public"]["Enums"]["session_status"]
+          updated_at?: string
+          weather_seed?: number
+        }
+        Update: {
+          created_at?: string
+          current_round?: number
+          host_id?: string
+          id?: string
+          room_code?: string
+          status?: Database["public"]["Enums"]["session_status"]
+          updated_at?: string
+          weather_seed?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -91,7 +321,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      asset_type: "solar" | "wind" | "gas" | "nuclear" | "battery"
+      session_status: "lobby" | "briefing" | "bidding" | "resolving" | "scoring" | "finished"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -218,6 +449,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      asset_type: ["solar", "wind", "gas", "nuclear", "battery"],
+      session_status: ["lobby", "briefing", "bidding", "resolving", "scoring", "finished"],
+    },
   },
 } as const
